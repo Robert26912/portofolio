@@ -1,0 +1,118 @@
+/*
+  4: Write minimal CSS
+  └─ Just typography, spacing, basic layout (no fancy animations)
+*/
+/* ===========================
+   RESET & BASE STYLES
+   Removes browser defaults and sets foundation
+   =========================== */
+
+/* Universal selector - applies to ALL elements */
+* {
+    margin: 0;           /* Remove default spacing outside elements */
+    padding: 0;          /* Remove default spacing inside elements */
+    box-sizing: border-box;  /* Makes width calculations include padding/border */
+}
+
+/* Body - main container styling */
+body {
+    font-family: Arial, sans-serif;  /* Default font for entire page */
+    line-height: 1.6;                /* Space between lines of text (readability) */
+    color: #333;                     /* Dark gray text color */
+    max-width: 800px;                /* Limit width so text isn't too wide */
+    margin: 0 auto;                  /* Center the page horizontally */
+    padding: 20px;                   /* Space from edges on mobile */
+}
+
+/* ===========================
+   HEADER SECTION
+   Top of page with name/title
+   =========================== */
+
+header {
+    text-align: center;              /* Center all text in header */
+    padding: 40px 0;                 /* Vertical spacing (top/bottom) */
+    border-bottom: 2px solid #333;   /* Line separator below header */
+    margin-bottom: 40px;             /* Space before next section */
+}
+
+/* Main heading - your name */
+header h1 {
+    font-size: 2.5rem;               /* Large text size (1rem = 16px default) */
+    margin-bottom: 10px;             /* Space below name */
+}
+
+/* Subheading - your tagline */
+header p {
+    font-size: 1.1rem;               /* Slightly larger than normal text */
+    color: #666;                     /* Medium gray */
+}
+
+/* ===========================
+   MAIN CONTENT SECTIONS
+   About, Skills, Experience, Contact
+   =========================== */
+
+/* Each section - space between them */
+section {
+    margin-bottom: 40px;             /* Vertical space between sections */
+}
+
+/* Section headings (About Me, Skills, etc.) */
+h2 {
+    font-size: 1.8rem;               /* Section title size */
+    margin-bottom: 15px;             /* Space below heading */
+    color: #222;                     /* Almost black */
+}
+
+/* Sub-headings (Job titles, etc.) */
+h3 {
+    font-size: 1.3rem;               /* Smaller than h2 */
+    margin-bottom: 5px;              /* Tight spacing */
+}
+
+/* ===========================
+   EXPERIENCE SECTION
+   Job history styling
+   =========================== */
+
+/* Individual experience entry */
+article {
+    margin-bottom: 25px;             /* Space between jobs */
+}
+
+/* Date display (Month Year - Present) */
+.date {
+    color: #666;                     /* Gray text */
+    font-style: italic;              /* Slanted text */
+    margin-bottom: 10px;             /* Space before description */
+}
+
+/* ===========================
+   LISTS
+   Bullet points in Skills section
+   =========================== */
+
+ul {
+    list-style-position: inside;     /* Bullets inside the content flow */
+    margin-left: 20px;               /* Indent the list */
+}
+
+/* Individual list items */
+li {
+    margin-bottom: 8px;              /* Space between bullet points */
+}
+
+/* ===========================
+   FOOTER
+   Bottom copyright section
+   =========================== */
+
+footer {
+    text-align: center;              /* Center text */
+    padding-top: 40px;               /* Space above footer */
+    margin-top: 60px;                /* Push footer down */
+    border-top: 1px solid #ddd;      /* Light line separator */
+    color: #666;                     /* Gray text */
+    font-size: 0.9rem;               /* Smaller text */
+}

@@ -1,0 +1,243 @@
+================================================================================
+GIT SETUP FOR YOUR PORTFOLIO WEBSITE
+Two methods: Command Prompt OR Visual Studio Code
+================================================================================
+
+--------------------------------------------------------------------------------
+METHOD 1: COMMAND PROMPT (WINDOWS) / TERMINAL (MAC/LINUX)
+--------------------------------------------------------------------------------
+
+STEP 1: Navigate to your project folder
+--------
+cd Desktop/portfolio
+# Explanation: Changes directory to where your files are
+# Replace "Desktop/portfolio" with your actual path
+
+STEP 2: Initialize Git repository
+--------
+git init
+# Explanation: Creates hidden .git folder - makes this folder a git repository
+# Only do this ONCE per project
+
+STEP 3: Check status (optional but helpful)
+--------
+git status
+# Explanation: Shows which files are tracked/untracked
+# Red = not staged, Green = staged for commit
+
+STEP 4: Add all files to staging area
+--------
+git add .
+# Explanation: The dot (.) means "add everything in this folder"
+# Staging = preparing files for commit (like packing a box before shipping)
+
+STEP 5: Create first commit
+--------
+git commit -m "Initial portfolio structure"
+# Explanation: Saves a snapshot of your project with a message
+# -m = message flag, always describe what you changed
+
+STEP 6: Go to GitHub.com and create new repository
+--------
+1. Click green "New" button (or go to github.com/new)
+2. Repository name: portfolio
+3. Description: My professional portfolio website
+4. Keep it PUBLIC (so GitHub Pages works free)
+5. DO NOT check "Initialize with README" (you already have one)
+6. Click "Create repository"
+
+STEP 7: Copy your repository URL
+--------
+# GitHub shows you the URL after creation
+# Looks like: https://github.com/yourusername/portfolio.git
+# Copy this exact URL
+
+STEP 8: Connect local folder to GitHub repository
+--------
+git remote add origin https://github.com/yourusername/portfolio.git
+# Explanation: "origin" is nickname for your GitHub repo
+# This links your local folder to the online repository
+# Replace URL with YOUR actual GitHub repo URL
+
+STEP 9: Rename branch to main (if needed)
+--------
+git branch -M main
+# Explanation: Ensures your branch is called "main" (modern standard)
+# Old repos used "master", GitHub now uses "main"
+
+STEP 10: Push your code to GitHub
+--------
+git push -u origin main
+# Explanation: Uploads your files to GitHub
+# -u = set upstream (only needed first time)
+# origin = the GitHub repo, main = the branch name
+
+STEP 11: Verify on GitHub
+--------
+# Refresh your GitHub repository page in browser
+# You should see: index.html, style.css, README.md, .gitignore
+
+
+--------------------------------------------------------------------------------
+METHOD 2: VISUAL STUDIO CODE (EASIER FOR BEGINNERS)
+--------------------------------------------------------------------------------
+
+PREREQUISITE: Install Git first
+--------
+# Download from: https://git-scm.com/downloads
+# Install with default settings
+# Restart VS Code after installation
+
+STEP 1: Open your portfolio folder in VS Code
+--------
+File → Open Folder → Select "portfolio" folder
+# Explanation: VS Code needs to know which folder you're working in
+
+STEP 2: Open Source Control panel
+--------
+Click the branch icon on left sidebar (3rd icon down)
+OR press: Ctrl+Shift+G (Windows) / Cmd+Shift+G (Mac)
+# Explanation: This is VS Code's git interface
+
+STEP 3: Initialize Repository
+--------
+Click "Initialize Repository" button
+# Explanation: Same as "git init" - creates .git folder
+# Button only appears if folder isn't already a git repo
+
+STEP 4: Stage all files
+--------
+Click the + icon next to "Changes" header
+OR hover over each file and click individual + icons
+# Explanation: Adds files to staging area (like "git add .")
+
+STEP 5: Commit files
+--------
+Type commit message in text box: "Initial portfolio structure"
+Click checkmark icon above the text box (or Ctrl+Enter)
+# Explanation: Saves snapshot locally (like "git commit -m")
+
+STEP 6: Create GitHub repository
+--------
+1. Go to github.com/new in your browser
+2. Repository name: portfolio
+3. Keep PUBLIC, do NOT initialize with README
+4. Click "Create repository"
+5. KEEP THIS PAGE OPEN - you'll need the URL
+
+STEP 7: Publish to GitHub (VS Code method)
+--------
+Click "Publish Branch" button in Source Control panel
+OR
+Click the cloud icon in bottom left of VS Code
+# VS Code will ask you to sign in to GitHub (do it)
+# Select "Publish to GitHub public repository"
+
+ALTERNATIVE STEP 7: Manual connection (if Publish fails)
+--------
+Open Terminal in VS Code: View → Terminal (or Ctrl+`)
+Type these commands:
+  git remote add origin https://github.com/yourusername/portfolio.git
+  git branch -M main
+  git push -u origin main
+# Replace URL with your actual GitHub repository URL
+
+
+--------------------------------------------------------------------------------
+DAILY WORKFLOW (AFTER INITIAL SETUP)
+When you make changes and want to update GitHub
+--------------------------------------------------------------------------------
+
+COMMAND PROMPT METHOD:
+--------
+git add .                              # Stage changes
+git commit -m "Description of changes" # Commit with message
+git push                               # Upload to GitHub
+
+VS CODE METHOD:
+--------
+1. Click Source Control icon (left sidebar)
+2. Click + next to "Changes" (stages all)
+3. Type commit message
+4. Click checkmark (commits)
+5. Click "Sync Changes" button (pushes to GitHub)
+
+
+--------------------------------------------------------------------------------
+ENABLE GITHUB PAGES (MAKE YOUR SITE LIVE)
+Do this AFTER your code is on GitHub
+--------------------------------------------------------------------------------
+
+STEP 1: Go to your repository on GitHub
+--------
+https://github.com/yourusername/portfolio
+
+STEP 2: Go to Settings
+--------
+Click "Settings" tab (top right of repo page)
+
+STEP 3: Find Pages section
+--------
+Scroll down left sidebar → Click "Pages"
+
+STEP 4: Configure source
+--------
+Under "Source" dropdown: Select "Deploy from a branch"
+Under "Branch" dropdown: Select "main"
+Under folder dropdown: Select "/ (root)"
+Click "Save"
+
+STEP 5: Wait 2-3 minutes
+--------
+Refresh the Pages settings page
+You'll see: "Your site is live at https://yourusername.github.io/portfolio"
+
+STEP 6: Visit your live site
+--------
+Click the URL or copy/paste into browser
+Your portfolio is now live on the internet!
+
+
+--------------------------------------------------------------------------------
+COMMON ISSUES & SOLUTIONS
+--------------------------------------------------------------------------------
+
+PROBLEM: "git: command not found"
+SOLUTION: Git not installed. Download from https://git-scm.com/downloads
+
+PROBLEM: "fatal: not a git repository"
+SOLUTION: You're in wrong folder. Run "cd" to navigate to portfolio folder
+
+PROBLEM: "rejected because remote contains work"
+SOLUTION: You checked "Initialize with README" on GitHub. Either:
+  - Delete the GitHub repo and recreate WITHOUT readme
+  - OR run: git pull origin main --allow-unrelated-histories
+
+PROBLEM: GitHub asks for username/password
+SOLUTION: GitHub no longer accepts passwords. Use Personal Access Token:
+  1. GitHub → Settings → Developer settings → Personal access tokens
+  2. Generate new token (classic)
+  3. Use token as password when prompted
+
+PROBLEM: VS Code "Publish Branch" button missing
+SOLUTION: Click "..." menu in Source Control panel → Push to → Add Remote
+
+
+--------------------------------------------------------------------------------
+WHAT EACH GIT TERM MEANS (MENTAL MODEL)
+--------------------------------------------------------------------------------
+
+Repository (repo)     = A project folder tracked by git
+Commit               = A saved snapshot of your project (like checkpoint in game)
+Staging area         = Files prepared for next commit (like items in shopping cart)
+Branch               = A version of your code (main = primary version)
+Remote               = The online copy of your repo (GitHub)
+Origin               = Nickname for your GitHub repository URL
+Push                 = Upload local commits to GitHub
+Pull                 = Download GitHub changes to local
+Clone                = Download entire repo from GitHub to your computer
+
+
+================================================================================
+END OF GUIDE
+================================================================================
