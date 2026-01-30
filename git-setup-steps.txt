@@ -1,6 +1,6 @@
 ================================================================================
 GIT SETUP FOR YOUR PORTFOLIO WEBSITE
-Two methods: Command Prompt OR Visual Studio Code
+Two methods: Command Prompt OR Visual Studio Code.
 ================================================================================
 
 --------------------------------------------------------------------------------
