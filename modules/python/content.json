@@ -1,0 +1,18 @@
+{
+  "summary": "Collection of Python projects showcasing backend development, automation, and data processing skills.",
+  "projects": [
+    {
+      "name": "API Automation Tool",
+      "description": "Automated testing and monitoring system for REST APIs",
+      "technologies": ["Python", "Requests", "Schedule"],
+      "github": "",
+      "status": "In Progress"
+    }
+  ],
+  "skills": [
+    "Python 3.x",
+    "REST API integration",
+    "Data processing"
+  ]
+}
+
