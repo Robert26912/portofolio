@@ -30,8 +30,14 @@ const DevTools = {
                 html = '<p>Tool not found</p>';
         }
         
-        workspace.innerHTML = html;
-        workspace.scrollIntoView({ behavior: 'smooth' });
+         workspace.innerHTML = html;
+        
+        // Scroll to workspace smoothly
+        setTimeout(() => {
+            workspace.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 100);
+        
+        console.log('Loaded tool:', toolType);
     },
     
     /**
@@ -225,5 +231,5 @@ const DevTools = {
     }
 };
 
-// Expose DevTools globally so buttons can access it
+// Make DevTools globally accessible
 window.DevTools = DevTools;

@@ -257,9 +257,9 @@ class ModuleLoader {
                     <div class="tool-item">
                         <h4>${tool.name}</h4>
                         <p>${tool.description}</p>
-                        <button class="btn btn-primary" onclick="DevTools.loadTool('${tool.type}', '${module.id}')">
-                            Open Tool
-                        </button>
+                        <button class="btn btn-primary" onclick="DevTools.loadTool('${tool.type}')">
+            Open Tool
+        </button>
                     </div>
                 `;
             });
