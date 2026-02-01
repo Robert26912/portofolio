@@ -1,41 +1,39 @@
 /**
- * Load a tool into the workspace
- */
-function loadToolIntoWorkspace(toolType) {
-    const workspace = document.getElementById('toolWorkspace');
-    if (!workspace) return;
-    
-    let html = '';
-    
-    switch(toolType) {
-        case 'calculator':
-            html = DevTools.calculator.render();
-            break;
-        case 'json-formatter':
-            html = DevTools.jsonFormatter.render();
-            break;
-        case 'base64':
-            html = DevTools.base64.render();
-            break;
-    }
-    
-    workspace.innerHTML = html;
-    workspace.scrollIntoView({ behavior: 'smooth' });
-}
-
-// Make it globally accessible
-window.DevTools = {
-    loadTool: loadToolIntoWorkspace
-};
-
-
-
-/**
  * DEVELOPER TOOLS
  * Interactive utilities that run in the modal
  */
 
 const DevTools = {
+    /**
+     * Load a tool into the workspace
+     */
+    loadTool(toolType) {
+        const workspace = document.getElementById('toolWorkspace');
+        if (!workspace) {
+            console.error('Tool workspace not found!');
+            return;
+        }
+        
+        let html = '';
+        
+        switch(toolType) {
+            case 'calculator':
+                html = this.calculator.render();
+                break;
+            case 'json-formatter':
+                html = this.jsonFormatter.render();
+                break;
+            case 'base64':
+                html = this.base64.render();
+                break;
+            default:
+                html = '<p>Tool not found</p>';
+        }
+        
+        workspace.innerHTML = html;
+        workspace.scrollIntoView({ behavior: 'smooth' });
+    },
+    
     /**
      * Calculator Tool
      */
@@ -79,7 +77,7 @@ const DevTools = {
         
         appendNumber(num) {
             const display = document.getElementById('calcDisplay');
-            if (this.currentValue === '0' || this.currentValue === '0') {
+            if (this.currentValue === '0') {
                 this.currentValue = num;
             } else {
                 this.currentValue += num;
@@ -226,7 +224,6 @@ const DevTools = {
         }
     }
 };
-// Expose tools methods
-window.DevTools.calculator = DevTools.calculator;
-window.DevTools.jsonFormatter = DevTools.jsonFormatter;
-window.DevTools.base64 = DevTools.base64;
+
+// Expose DevTools globally so buttons can access it
+window.DevTools = DevTools;
