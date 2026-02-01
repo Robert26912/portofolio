@@ -56,6 +56,8 @@ class ModuleLoader {
         
         // Display tiles
         this.renderTiles();
+        // Set up event listeners for search and filters
+        this.setupEventListeners();
         
         console.log('✅ Module Loader ready!');
     }
@@ -233,6 +235,38 @@ class ModuleLoader {
         // We'll create a proper modal in the next block
         alert(`${module.title}\n\n${module.content.summary || module.description}`);
     }
+    /**
+     * Set up event listeners for search and filters
+     */
+    setupEventListeners() {
+        // Search input listener
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                this.currentSearch = e.target.value;
+                this.renderTiles();
+                console.log('🔍 Search:', this.currentSearch);
+            });
+        }
+        
+        // Filter button listeners
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                // Remove active class from all buttons
+                filterButtons.forEach(b => b.classList.remove('active'));
+                
+                // Add active class to clicked button
+                e.target.classList.add('active');
+                
+                // Update filter and re-render
+                this.currentFilter = e.target.dataset.category;
+                this.renderTiles();
+                console.log('🎯 Filter:', this.currentFilter);
+            });
+        });
+    }
+
 }
 
 // Create instance when page loads
