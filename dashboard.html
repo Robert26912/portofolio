@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Character encoding -->
+    <meta charset="UTF-8">
+    
+    <!-- Responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Page title -->
+    <title>Dashboard - My Portfolio</title>
+    
+    <!-- Link to your existing CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Link to new dashboard CSS (we'll create this next) -->
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+
+    <!-- Header with navigation -->
+    <header class="dashboard-header">
+        <div class="header-content">
+            <!-- Logo/Name -->
+            <div class="logo">
+                <a href="index.html">← Back to Home</a>
+            </div>
+            
+            <!-- Page title -->
+            <h1>Project Dashboard</h1>
+        </div>
+    </header>
+
+    <!-- Main content area -->
+    <main class="dashboard-main">
+        
+        <!-- Introduction -->
+        <section class="dashboard-intro">
+            <p class="subtitle">
+                Explore my projects organized by technology and category. 
+                Click any tile to see details.
+            </p>
+        </section>
+
+        <!-- Search bar -->
+        <section class="controls">
+            <div class="search-bar">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="Search projects..."
+                    aria-label="Search projects"
+                >
+            </div>
+            
+            <!-- Category filters -->
+            <div class="filters">
+                <button class="filter-btn active" data-category="all">All</button>
+                <button class="filter-btn" data-category="projects">Projects</button>
+                <button class="filter-btn" data-category="tools">Tools</button>
+                <button class="filter-btn" data-category="iot">IoT</button>
+            </div>
+        </section>
+        <!-- Tile Grid - Module loader will fill this -->
+        <section class="tile-grid" id="tileGrid">
+            <!-- JavaScript will insert tiles here -->
+            <div class="loading">Loading modules...</div>
+        </section>
+
+    </main>
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 Your Name. All rights reserved.</p>
+    </footer>
+
+    <!-- Load the module loader script -->
+    <script src="module-loader.js"></script>
+
+</body>
+</html>
