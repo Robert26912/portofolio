@@ -1,0 +1,17 @@
+{
+  "summary": "Firmware development and embedded systems programming.",
+  "projects": [
+    {
+      "name": "Sensor Data Logger",
+      "description": "Real-time data logging for multiple sensor types",
+      "technologies": ["C++", "Arduino", "I2C"],
+      "github": "",
+      "status": "Active"
+    }
+  ],
+  "skills": [
+    "C/C++",
+    "Embedded C",
+    "Hardware interfacing"
+  ]
+}
