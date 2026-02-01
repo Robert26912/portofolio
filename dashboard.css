@@ -268,3 +268,269 @@ body {
         width: 100%;
     }
 }
+/* ============================================
+   MODAL STYLES
+   Beautiful popup for module details
+   ============================================ */
+
+/* Modal overlay - hidden by default */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    display: none; /* Hidden by default */
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+/* Show modal when active */
+.modal.active {
+    display: flex;
+}
+
+/* Dark backdrop */
+.modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+}
+
+/* Modal content box */
+.modal-content {
+    position: relative;
+    z-index: 1001;
+    width: 100%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background-color: white;
+    border-radius: 1rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: modalSlideUp 0.3s ease;
+}
+
+@keyframes modalSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Close button */
+.modal-close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    width: 40px;
+    height: 40px;
+    background-color: transparent;
+    border: none;
+    font-size: 2rem;
+    color: #64748b;
+    cursor: pointer;
+    border-radius: 0.5rem;
+    transition: all 0.2s;
+    line-height: 1;
+    z-index: 10;
+}
+
+.modal-close:hover {
+    background-color: #f1f5f9;
+    color: #1e293b;
+}
+
+/* Modal header */
+.modal-header {
+    padding: 2rem;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: center;
+}
+
+.modal-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.modal-header h2 {
+    margin: 0 0 0.5rem 0;
+    font-size: 2rem;
+    color: #1e293b;
+}
+
+.category-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #2563eb;
+    background-color: rgba(37, 99, 235, 0.1);
+    border-radius: 0.25rem;
+}
+
+/* Modal body */
+.modal-body {
+    padding: 2rem;
+}
+
+.module-summary {
+    font-size: 1.125rem;
+    color: #64748b;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+/* Projects section */
+.projects-section {
+    margin-top: 2rem;
+}
+
+.projects-section h3 {
+    font-size: 1.5rem;
+    color: #1e293b;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #2563eb;
+    padding-bottom: 0.5rem;
+}
+
+/* Individual project card */
+.project-card {
+    background-color: #f8fafc;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    border-left: 3px solid #2563eb;
+}
+
+.project-card h4 {
+    margin: 0 0 0.5rem 0;
+    color: #1e293b;
+}
+
+.project-card p {
+    color: #64748b;
+    margin: 0 0 1rem 0;
+}
+
+/* Technology tags */
+.tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.tech-tag {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.875rem;
+    background-color: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.25rem;
+    color: #64748b;
+}
+
+.project-status {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 0.25rem;
+}
+
+.project-status.active {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.project-status.completed {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+.project-status.in-progress {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+/* Skills section */
+.skills-section {
+    margin-top: 2rem;
+}
+
+.skills-section h3 {
+    font-size: 1.25rem;
+    color: #1e293b;
+    margin-bottom: 0.5rem;
+}
+
+.skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.skills-list li {
+    padding: 0.5rem 1rem;
+    background-color: #f1f5f9;
+    border-radius: 0.5rem;
+    color: #475569;
+    font-size: 0.875rem;
+}
+
+/* Modal footer */
+.modal-footer {
+    padding: 1.5rem 2rem;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-secondary {
+    background-color: #f1f5f9;
+    color: #475569;
+}
+
+.btn-secondary:hover {
+    background-color: #e2e8f0;
+}
+
+/* Responsive modal */
+@media (max-width: 768px) {
+    .modal-content {
+        max-height: 95vh;
+        margin: 0.5rem;
+    }
+    
+    .modal-header,
+    .modal-body,
+    .modal-footer {
+        padding: 1.5rem;
+    }
+}

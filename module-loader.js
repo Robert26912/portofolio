@@ -219,8 +219,8 @@ class ModuleLoader {
     }
 
 
-    /**
-     * Open module detail view (for now, just log to console)
+   /**
+     * Open module detail view in modal
      */
     openModule(module) {
         console.log('📂 Opening module:', module.title);
@@ -231,9 +231,73 @@ class ModuleLoader {
             return;
         }
         
-        // For now, just show an alert with module info
-        // We'll create a proper modal in the next block
-        alert(`${module.title}\n\n${module.content.summary || module.description}`);
+        // Get modal elements
+        const modal = document.getElementById('detailModal');
+        const modalIcon = document.getElementById('modalIcon');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalCategory = document.getElementById('modalCategory');
+        const modalBody = document.getElementById('modalBody');
+        
+        // Set modal content
+        modalIcon.textContent = module.icon || '📦';
+        modalTitle.textContent = module.title;
+        modalCategory.textContent = module.category;
+        
+        // Build body content
+        let bodyHTML = '';
+        
+        // Summary
+        if (module.content.summary) {
+            bodyHTML += `<p class="module-summary">${module.content.summary}</p>`;
+        }
+        
+        // Projects section
+        if (module.content.projects && module.content.projects.length > 0) {
+            bodyHTML += '<div class="projects-section"><h3>Projects</h3>';
+            
+            module.content.projects.forEach(project => {
+                const statusClass = project.status ? project.status.toLowerCase().replace(' ', '-') : '';
+                
+                bodyHTML += `
+                    <div class="project-card">
+                        <h4>${project.name}</h4>
+                        <p>${project.description}</p>
+                `;
+                
+                // Technologies
+                if (project.technologies && project.technologies.length > 0) {
+                    bodyHTML += '<div class="tech-tags">';
+                    project.technologies.forEach(tech => {
+                        bodyHTML += `<span class="tech-tag">${tech}</span>`;
+                    });
+                    bodyHTML += '</div>';
+                }
+                
+                // Status
+                if (project.status) {
+                    bodyHTML += `<span class="project-status ${statusClass}">${project.status}</span>`;
+                }
+                
+                bodyHTML += '</div>';
+            });
+            
+            bodyHTML += '</div>';
+        }
+        
+        // Skills section
+        if (module.content.skills && module.content.skills.length > 0) {
+            bodyHTML += '<div class="skills-section"><h3>Key Skills</h3><ul class="skills-list">';
+            module.content.skills.forEach(skill => {
+                bodyHTML += `<li>${skill}</li>`;
+            });
+            bodyHTML += '</ul></div>';
+        }
+        
+        modalBody.innerHTML = bodyHTML;
+        
+        // Show modal
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Prevent background scroll
     }
     /**
      * Set up event listeners for search and filters
@@ -247,6 +311,41 @@ class ModuleLoader {
                 this.renderTiles();
                 console.log('🔍 Search:', this.currentSearch);
             });
+            // Modal close handlers
+        const modal = document.getElementById('detailModal');
+        const modalClose = document.getElementById('modalClose');
+        const modalCloseBtn = document.getElementById('modalCloseBtn');
+        const modalBackdrop = document.querySelector('.modal-backdrop');
+        
+        // Function to close modal
+        const closeModal = () => {
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = ''; // Restore scrolling
+            }
+        };
+        
+        // Close on X button
+        if (modalClose) {
+            modalClose.addEventListener('click', closeModal);
+        }
+        
+        // Close on Close button
+        if (modalCloseBtn) {
+            modalCloseBtn.addEventListener('click', closeModal);
+        }
+        
+        // Close on backdrop click
+        if (modalBackdrop) {
+            modalBackdrop.addEventListener('click', closeModal);
+        }
+        
+        // Close on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
         }
         
         // Filter button listeners
