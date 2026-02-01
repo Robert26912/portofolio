@@ -1,0 +1,9 @@
+{
+  "id": "devops",
+  "title": "DeVops",
+  "description": "DevOps is a cultural philosophy, set of practices, and tools that bridges the gap between software development (Dev) and IT operations (Ops) teams, fostering collaboration, automation, and shared responsibility.",
+  "icon": "⚙️🔁🚀",
+  "category": "projects",
+  "visibility": "public",
+  "enabled": true
+}

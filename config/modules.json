@@ -1,6 +1,7 @@
 {
   "modules": [
     "python",
-    "cpp"
+    "cpp",
+    "web-dev"
   ]
 }
