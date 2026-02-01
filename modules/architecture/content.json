@@ -1,0 +1,17 @@
+{
+  "summary": "Collection of architecture drawings and planes done in FAU",
+  "projects": [
+    {
+      "name": "Apartment building rruga e Durresit",
+      "description": "This is an apartment building plus comercial space project designed for rruga e Durresit",
+      "technologies": ["Autocad", "Graphic design", "Blueprint"],
+      "github": "",
+      "status": "In Progress"
+    }
+  ],
+  "skills": [
+    "AutoCad",
+    "Composition",
+    "Structural knowledge"
+  ]
+}
