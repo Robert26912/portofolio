@@ -2,6 +2,7 @@
   "modules": [
     "python",
     "cpp",
-    "web-dev"
+    "web-dev",
+    "devops"
   ]
 }
