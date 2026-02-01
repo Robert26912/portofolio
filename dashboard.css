@@ -595,6 +595,14 @@ body {
     margin-bottom: 1rem;
     background-color: white;
 }
+.calc-operation {
+    text-align: right;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    color: #64748b;
+    min-height: 1.5rem;
+    margin-bottom: 0.5rem;
+}
 
 .calc-buttons {
     display: grid;

@@ -49,6 +49,7 @@ const DevTools = {
                 <div class="tool-container">
                     <div class="calculator">
                         <input type="text" id="calcDisplay" class="calc-display" readonly value="0">
+                        <div class="calc-operation" id="calcOperation"></div>
                         <div class="calc-buttons">
                             <button class="calc-btn" onclick="DevTools.calculator.appendNumber('7')">7</button>
                             <button class="calc-btn" onclick="DevTools.calculator.appendNumber('8')">8</button>
@@ -80,47 +81,123 @@ const DevTools = {
         currentValue: '0',
         previousValue: '',
         operator: null,
+        shouldResetDisplay: false,
+        
+        updateOperation() {
+            const opDisplay = document.getElementById('calcOperation');
+            if (opDisplay) {
+                if (this.operator && this.previousValue) {
+                    const opSymbol = {
+                        '+': '+',
+                        '-': '−',
+                        '*': '×',
+                        '/': '÷'
+                    }[this.operator] || this.operator;
+                    opDisplay.textContent = `${this.previousValue} ${opSymbol}`;
+                } else {
+                    opDisplay.textContent = '';
+                }
+            }
+        },
         
         appendNumber(num) {
             const display = document.getElementById('calcDisplay');
-            if (this.currentValue === '0') {
+            
+            // If we just calculated, start fresh
+            if (this.shouldResetDisplay) {
                 this.currentValue = num;
+                this.shouldResetDisplay = false;
             } else {
-                this.currentValue += num;
+                // Don't allow multiple decimal points
+                if (num === '.' && this.currentValue.includes('.')) {
+                    return;
+                }
+                
+                // Replace initial 0 or append
+                if (this.currentValue === '0' && num !== '.') {
+                    this.currentValue = num;
+                } else {
+                    this.currentValue += num;
+                }
             }
+            
             display.value = this.currentValue;
         },
         
         setOperator(op) {
+            const display = document.getElementById('calcDisplay');
+            
+            // If we already have an operator, calculate first
+            if (this.operator && !this.shouldResetDisplay) {
+                this.calculate();
+            }
+            
             this.operator = op;
             this.previousValue = this.currentValue;
-            this.currentValue = '0';
+            this.shouldResetDisplay = true;
+            
+            // Update operation display
+            this.updateOperation();
         },
         
         calculate() {
             const display = document.getElementById('calcDisplay');
+            
+            if (!this.operator || !this.previousValue) {
+                return;
+            }
+            
             const prev = parseFloat(this.previousValue);
             const current = parseFloat(this.currentValue);
             let result;
             
             switch(this.operator) {
-                case '+': result = prev + current; break;
-                case '-': result = prev - current; break;
-                case '*': result = prev * current; break;
-                case '/': result = prev / current; break;
-                default: return;
+                case '+':
+                    result = prev + current;
+                    break;
+                case '-':
+                    result = prev - current;
+                    break;
+                case '*':
+                    result = prev * current;
+                    break;
+                case '/':
+                    if (current === 0) {
+                        display.value = 'Error';
+                        this.clear();
+                        return;
+                    }
+                    result = prev / current;
+                    break;
+                default:
+                    return;
             }
+            
+            // Round to avoid floating point errors
+            result = Math.round(result * 100000000) / 100000000;
             
             this.currentValue = result.toString();
             display.value = this.currentValue;
+            
+            // Reset for next operation
+            this.previousValue = '';
             this.operator = null;
+            this.shouldResetDisplay = true;
+            
+            // Clear operation display
+            this.updateOperation();
         },
         
         clear() {
             this.currentValue = '0';
             this.previousValue = '';
             this.operator = null;
-            document.getElementById('calcDisplay').value = '0';
+            this.shouldResetDisplay = false;
+            
+            const display = document.getElementById('calcDisplay');
+            if (display) display.value = '0';
+            
+            this.updateOperation();
         }
     },
     
