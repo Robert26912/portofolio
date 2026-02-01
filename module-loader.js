@@ -125,3 +125,116 @@ class ModuleLoader {
         
         console.log(`✅ Loaded: ${metadata.title}`);
     }
+    /**
+     * Render all tiles on the page
+     */
+    renderTiles() {
+        // Clear existing tiles
+        this.tileGrid.innerHTML = '';
+        
+        // Filter modules based on current filter and search
+        const filteredModules = this.getFilteredModules();
+        
+        // Show message if no modules
+        if (filteredModules.length === 0) {
+            this.tileGrid.innerHTML = `
+                <div style="grid-column: 1/-1; text-align: center; padding: 3rem;">
+                    <p>No modules found. Add modules to the modules/ folder!</p>
+                </div>
+            `;
+            return;
+        }
+        
+        // Create a tile for each module
+        filteredModules.forEach(module => {
+            const tile = this.createTile(module);
+            this.tileGrid.appendChild(tile);
+        });
+        
+        console.log(`📊 Rendered ${filteredModules.length} tiles`);
+    }
+
+    /**
+     * Filter modules based on category and search
+     */
+    getFilteredModules() {
+        return this.modules.filter(module => {
+            // Check if enabled
+            if (!module.enabled) return false;
+            
+            // Check category filter
+            if (this.currentFilter !== 'all' && module.category !== this.currentFilter) {
+                return false;
+            }
+            
+            // Check search query
+            if (this.currentSearch) {
+                const searchLower = this.currentSearch.toLowerCase();
+                const matchesTitle = module.title.toLowerCase().includes(searchLower);
+                const matchesDescription = module.description.toLowerCase().includes(searchLower);
+                
+                if (!matchesTitle && !matchesDescription) {
+                    return false;
+                }
+            }
+            
+            return true;
+        });
+    }
+
+
+
+    /**
+     * Create HTML element for a single tile
+     */
+    createTile(module) {
+        // Create the tile container
+        const tile = document.createElement('div');
+        tile.className = 'tile';
+        tile.dataset.moduleId = module.id;
+        tile.dataset.category = module.category;
+        
+        // Add lock icon for private modules
+        const lockBadge = module.visibility === 'private' 
+            ? '<span class="lock-badge">🔒</span>' 
+            : '';
+        
+        // Build tile HTML
+        tile.innerHTML = `
+            ${lockBadge}
+            <div class="tile-icon">${module.icon || '📦'}</div>
+            <h3 class="tile-title">${module.title}</h3>
+            <p class="tile-description">${module.description}</p>
+            <div class="tile-footer">
+                <span class="tile-category">${module.category}</span>
+            </div>
+        `;
+        
+        // Add click handler
+        tile.addEventListener('click', () => this.openModule(module));
+        
+        return tile;
+    }
+
+
+    /**
+     * Open module detail view (for now, just log to console)
+     */
+    openModule(module) {
+        console.log('📂 Opening module:', module.title);
+        
+        // Check if private
+        if (module.visibility === 'private') {
+            alert('This module requires authentication. Login coming in Phase 2!');
+            return;
+        }
+        
+        // For now, just show an alert with module info
+        // We'll create a proper modal in the next block
+        alert(`${module.title}\n\n${module.content.summary || module.description}`);
+    }
+}
+
+// Create instance when page loads
+// This automatically starts the module loader
+const moduleLoader = new ModuleLoader();
