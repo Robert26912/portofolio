@@ -534,3 +534,161 @@ body {
         padding: 1.5rem;
     }
 }
+
+/* ============================================
+   INTERACTIVE TOOLS STYLING
+   ============================================ */
+
+/* Tools list */
+.tools-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.tool-item {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.tool-item h4 {
+    margin: 0 0 0.5rem 0;
+    color: #1e293b;
+}
+
+.tool-item p {
+    margin: 0 0 1rem 0;
+    color: #64748b;
+    font-size: 0.875rem;
+}
+
+/* Tool workspace */
+.tool-workspace {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 2px solid #e2e8f0;
+}
+
+.tool-container {
+    background-color: #f8fafc;
+    border-radius: 0.5rem;
+    padding: 2rem;
+}
+
+/* Calculator specific styles */
+.calculator {
+    max-width: 320px;
+    margin: 0 auto;
+}
+
+.calc-display {
+    width: 100%;
+    padding: 1.5rem;
+    font-size: 2rem;
+    text-align: right;
+    border: 2px solid #e2e8f0;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    background-color: white;
+}
+
+.calc-buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+}
+
+.calc-btn {
+    padding: 1.5rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: white;
+    color: #1e293b;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.calc-btn:hover {
+    background-color: #f1f5f9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.calc-btn:active {
+    transform: translateY(0);
+}
+
+.calc-operator {
+    background-color: #2563eb;
+    color: white;
+}
+
+.calc-operator:hover {
+    background-color: #1d4ed8;
+}
+
+.calc-equals {
+    background-color: #10b981;
+    color: white;
+}
+
+.calc-equals:hover {
+    background-color: #059669;
+}
+
+.calc-clear {
+    background-color: #ef4444;
+    color: white;
+}
+
+.calc-clear:hover {
+    background-color: #dc2626;
+}
+
+/* JSON Formatter & Base64 Tools */
+.tool-textarea {
+    width: 100%;
+    min-height: 150px;
+    padding: 1rem;
+    font-family: 'Courier New', monospace;
+    font-size: 0.875rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 0.5rem;
+    resize: vertical;
+    margin-bottom: 1rem;
+}
+
+.tool-textarea:focus {
+    outline: none;
+    border-color: #2563eb;
+}
+
+.tool-buttons {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.tool-output {
+    background-color: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    min-height: 100px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.875rem;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+.tool-output pre {
+    margin: 0;
+}

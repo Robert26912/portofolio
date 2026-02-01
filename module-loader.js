@@ -246,43 +246,83 @@ class ModuleLoader {
         // Build body content
         let bodyHTML = '';
         
-        // Summary
-        if (module.content.summary) {
+        // Check if this is an interactive tool module
+        if (module.interactive && module.content.tools) {
+            // Interactive tools module
             bodyHTML += `<p class="module-summary">${module.content.summary}</p>`;
-        }
-        
-        // Projects section
-        if (module.content.projects && module.content.projects.length > 0) {
-            bodyHTML += '<div class="projects-section"><h3>Projects</h3>';
+            bodyHTML += '<div class="tools-list">';
             
-            module.content.projects.forEach(project => {
-                const statusClass = project.status ? project.status.toLowerCase().replace(' ', '-') : '';
-                
+            module.content.tools.forEach(tool => {
                 bodyHTML += `
-                    <div class="project-card">
-                        <h4>${project.name}</h4>
-                        <p>${project.description}</p>
+                    <div class="tool-item">
+                        <h4>${tool.name}</h4>
+                        <p>${tool.description}</p>
+                        <button class="btn btn-primary" onclick="DevTools.loadTool('${tool.type}', '${module.id}')">
+                            Open Tool
+                        </button>
+                    </div>
                 `;
-                
-                // Technologies
-                if (project.technologies && project.technologies.length > 0) {
-                    bodyHTML += '<div class="tech-tags">';
-                    project.technologies.forEach(tech => {
-                        bodyHTML += `<span class="tech-tag">${tech}</span>`;
-                    });
-                    bodyHTML += '</div>';
-                }
-                
-                // Status
-                if (project.status) {
-                    bodyHTML += `<span class="project-status ${statusClass}">${project.status}</span>`;
-                }
-                
-                bodyHTML += '</div>';
             });
             
             bodyHTML += '</div>';
+            bodyHTML += '<div id="toolWorkspace" class="tool-workspace"></div>';
+            
+        } else {
+            // Regular content module (existing code)
+            
+            // Summary
+            if (module.content.summary) {
+                bodyHTML += `<p class="module-summary">${module.content.summary}</p>`;
+            }
+            
+            // Projects section
+            if (module.content.projects && module.content.projects.length > 0) {
+                bodyHTML += '<div class="projects-section"><h3>Projects</h3>';
+                
+                module.content.projects.forEach(project => {
+                    const statusClass = project.status ? project.status.toLowerCase().replace(' ', '-') : '';
+                    
+                    bodyHTML += `
+                        <div class="project-card">
+                            <h4>${project.name}</h4>
+                            <p>${project.description}</p>
+                    `;
+                    
+                    // Technologies
+                    if (project.technologies && project.technologies.length > 0) {
+                        bodyHTML += '<div class="tech-tags">';
+                        project.technologies.forEach(tech => {
+                            bodyHTML += `<span class="tech-tag">${tech}</span>`;
+                        });
+                        bodyHTML += '</div>';
+                    }
+                    
+                    // Status
+                    if (project.status) {
+                        bodyHTML += `<span class="project-status ${statusClass}">${project.status}</span>`;
+                    }
+                    
+                    bodyHTML += '</div>';
+                });
+                
+                bodyHTML += '</div>';
+            }
+            
+            // Skills section
+            if (module.content.skills && module.content.skills.length > 0) {
+                bodyHTML += '<div class="skills-section"><h3>Key Skills</h3><ul class="skills-list">';
+                module.content.skills.forEach(skill => {
+                    bodyHTML += `<li>${skill}</li>`;
+                });
+                bodyHTML += '</ul></div>';
+            }
         }
+        
+        modalBody.innerHTML = bodyHTML;
+        
+        // Show modal
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
         
         // Skills section
         if (module.content.skills && module.content.skills.length > 0) {
