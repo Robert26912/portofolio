@@ -331,15 +331,7 @@ class ModuleLoader {
                 
                 bodyHTML += '</div>';
             }
-            
-            // Skills section
-            if (module.content.skills && module.content.skills.length > 0) {
-                bodyHTML += '<div class="skills-section"><h3>Key Skills</h3><ul class="skills-list">';
-                module.content.skills.forEach(skill => {
-                    bodyHTML += `<li>${skill}</li>`;
-                });
-                bodyHTML += '</ul></div>';
-            }
+          
         }
         
         modalBody.innerHTML = bodyHTML;
