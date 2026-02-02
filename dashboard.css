@@ -1,3 +1,11 @@
+/* This forces every container from the root down to stretch */
+html, body, main, #root, #app, .wrapper, .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block !important;
+}
 /**
  * DASHBOARD STYLES
  * Styling for the interactive tile dashboard
@@ -42,14 +50,21 @@ body {
 .logo a:hover {
     color: #2563eb;
 }
-
+/* Add this if you have a sidebar or multiple main elements */
+.page-wrapper {
+    display: flex;
+    width: 100%;
+}
 
 /* Main content container */
 .dashboard-main {
-    max-width: 95%; /* Use 95% of screen width */
-    margin: 0 auto;
-    padding: 2rem 1.5rem;
-    min-height: calc(100vh - 200px);
+    width: 100%;           /* Force full width */
+    max-width: 1600px;     /* Prevents it from getting TOO wide on ultrawide monitors */
+    margin-left: auto;     /* These two center the dashboard */
+    margin-right: auto;
+    display: block;        /* Ensures it behaves as a block-level element */
+    flex: 1 0 auto;        /* If the parent is a flexbox, this tells it to GROW */
+    box-sizing: border-box; /* Critical: ensures padding doesn't push it off-screen */
 }
 
 
@@ -127,13 +142,21 @@ body {
 
 /* Tile Grid - responsive grid layout */
 .tile-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
-  width: 100%;
+    display: grid;
+    /* auto-fit makes tiles expand to fill the row if there's extra space */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+    gap: 2rem;
+    width: 100%;
 }
 
 
-
+/* Ensure the entire path from HTML to Dashboard is wide */
+html, body, .dashboard-wrapper {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: block; 
+}
 
 /* Loading state with spinner */
 .loading {
