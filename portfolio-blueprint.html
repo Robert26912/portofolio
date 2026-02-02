@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio Architecture — Complete Blueprint</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap');
+  
+  :root {
+    --bg: #0c0f14;
+    --surface: #141820;
+    --card: #1a1f2b;
+    --border: #2a3040;
+    --text: #e2e8f0;
+    --muted: #8892a4;
+    --dim: #5a6478;
+    --accent: #3b82f6;
+    --green: #10b981;
+    --yellow: #f59e0b;
+    --red: #ef4444;
+    --purple: #a855f7;
+    --font: 'DM Sans', sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+  
+  * { margin:0; padding:0; box-sizing:border-box; }
+  
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  
+  h1 {
+    font-size: 2rem;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.5rem;
+  }
+  h1 span { color: var(--accent); }
+  
+  .subtitle {
+    color: var(--muted);
+    font-size: 0.9375rem;
+    margin-bottom: 3rem;
+  }
+  
+  /* Tab nav */
+  .tabs {
+    display: flex;
+    gap: 0.25rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+  }
+  .tab {
+    padding: 0.75rem 1.25rem;
+    font-family: var(--font);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--muted);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+  
+  .panel { display: none; }
+  .panel.active { display: block; }
+  
+  /* Schematic blocks */
+  .schematic {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .level {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    overflow: hidden;
+  }
+  .level-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    user-select: none;
+  }
+  .level-header:hover { background: var(--card); }
+  .level-tag {
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 2rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .tag-file { color: var(--accent); background: rgba(59,130,246,0.1); }
+  .tag-block { color: var(--green); background: rgba(16,185,129,0.1); }
+  .tag-fn { color: var(--purple); background: rgba(168,85,247,0.1); }
+  .tag-data { color: var(--yellow); background: rgba(245,158,11,0.1); }
+  .tag-pipe { color: var(--red); background: rgba(239,68,68,0.1); }
+  
+  .level-name {
+    font-weight: 700;
+    font-size: 0.9375rem;
+  }
+  .level-arrow {
+    margin-left: auto;
+    color: var(--dim);
+    transition: transform 0.2s;
+    font-size: 0.75rem;
+  }
+  .level.open .level-arrow { transform: rotate(90deg); }
+  
+  .level-body {
+    display: none;
+    padding: 0 1.25rem 1.25rem;
+  }
+  .level.open .level-body { display: block; }
+  
+  .level-desc {
+    color: var(--muted);
+    font-size: 0.8125rem;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+  
+  /* Connection diagram */
+  .connections {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+  .conn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+    padding: 0.375rem 0.625rem;
+    background: var(--card);
+    border-radius: 0.375rem;
+    border-left: 3px solid var(--border);
+  }
+  .conn-in  { border-left-color: var(--green); }
+  .conn-out { border-left-color: var(--accent); }
+  .conn-internal { border-left-color: var(--purple); }
+  .conn-label {
+    font-family: var(--font);
+    font-weight: 600;
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    min-width: 2.5rem;
+  }
+  .conn-in .conn-label { color: var(--green); }
+  .conn-out .conn-label { color: var(--accent); }
+  .conn-internal .conn-label { color: var(--purple); }
+  
+  /* Pseudo code */
+  .pseudo {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    line-height: 1.8;
+    color: var(--muted);
+    overflow-x: auto;
+    margin-top: 0.75rem;
+  }
+  .pseudo .kw { color: var(--accent); font-weight: 600; }
+  .pseudo .fn { color: var(--purple); }
+  .pseudo .str { color: var(--green); }
+  .pseudo .cmt { color: var(--dim); font-style: italic; }
+  .pseudo .indent { padding-left: 1.5rem; }
+  .pseudo .indent2 { padding-left: 3rem; }
+  
+  /* Security / Readiness */
+  .checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.875rem 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+  }
+  .check-icon { font-size: 1rem; flex-shrink: 0; margin-top: 0.1rem; }
+  .check-text { flex: 1; }
+  .check-title {
+    font-weight: 700;
+    font-size: 0.875rem;
+    margin-bottom: 0.125rem;
+  }
+  .check-desc {
+    font-size: 0.8125rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .check-status {
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    padding: 0.15rem 0.5rem;
+    border-radius: 2rem;
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+  }
+  .status-ok { color: var(--green); background: rgba(16,185,129,0.1); }
+  .status-warn { color: var(--yellow); background: rgba(245,158,11,0.1); }
+  .status-missing { color: var(--red); background: rgba(239,68,68,0.1); }
+  .status-na { color: var(--dim); background: rgba(90,100,120,0.1); }
+  
+  /* Skills grid */
+  .stack-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+  .stack-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+  }
+  .stack-card h4 {
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+  }
+  .stack-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+  }
+  .stack-pill {
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.3rem 0.75rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 2rem;
+    color: var(--muted);
+  }
+  .stack-pill.strong {
+    color: var(--text);
+    border-color: var(--accent);
+    background: rgba(59,130,246,0.08);
+  }
+  .stack-pill.learning {
+    color: var(--yellow);
+    border-color: rgba(245,158,11,0.2);
+    background: rgba(245,158,11,0.05);
+  }
+  
+  .legend {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid;
+  }
+  .legend-dot.strong { border-color: var(--accent); background: rgba(59,130,246,0.2); }
+  .legend-dot.normal { border-color: var(--border); background: var(--card); }
+  .legend-dot.learning { border-color: var(--yellow); background: rgba(245,158,11,0.1); }
+  
+  /* Section titles */
+  .section-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .section-desc {
+    color: var(--muted);
+    font-size: 0.875rem;
+    margin-bottom: 1.5rem;
+    max-width: 680px;
+  }
+  
+  /* Industry comparison */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8125rem;
+    margin-top: 1rem;
+  }
+  .compare-table th {
+    text-align: left;
+    padding: 0.75rem;
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--dim);
+    border-bottom: 1px solid var(--border);
+  }
+  .compare-table td {
+    padding: 0.75rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    vertical-align: top;
+  }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td:first-child { color: var(--text); font-weight: 500; }
+  
+  @media (max-width: 640px) {
+    body { padding: 1rem; }
+    .tabs { gap: 0; }
+    .tab { padding: 0.625rem 0.75rem; font-size: 0.75rem; }
+    .stack-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Portfolio <span>Architecture</span> Blueprint</h1>
+<p class="subtitle">System schematic, security audit, readiness checklist, and your provable tech stack</p>
+
+<div class="tabs">
+  <button class="tab active" data-panel="schematic">🔧 Schematic</button>
+  <button class="tab" data-panel="pseudo">📝 Pseudo Code</button>
+  <button class="tab" data-panel="security">🔒 Security</button>
+  <button class="tab" data-panel="readiness">✅ Readiness</button>
+  <button class="tab" data-panel="industry">📊 vs Industry</button>
+  <button class="tab" data-panel="stack">💎 Your Tech Stack</button>
+</div>
+
+<!-- ============ SCHEMATIC ============ -->
+<div class="panel active" id="schematic">
+<p class="section-desc">Click any block to expand and see its internals, what it receives (IN), what it sends (OUT), and how its children connect.</p>
+
+<div class="schematic">
+
+  <!-- index.html -->
+  <div class="level">
+    <div class="level-header" onclick="toggle(this)">
+      <span class="level-tag tag-file">FILE</span>
+      <span class="level-name">index.html — Landing Page</span>
+      <span class="level-arrow">▶</span>
+    </div>
+    <div class="level-body">
+      <p class="level-desc">The public face. Static HTML — no JS needed. Loads Google Fonts and style.css. Pure presentation.</p>
+      <div class="connections">
+        <div class="conn conn-in"><span class="conn-label">IN</span> Browser requests URL → server sends this file</div>
+        <div class="conn conn-out"><span class="conn-label">OUT</span> Links to dashboard.html, mailto:, GitHub, LinkedIn</div>
+        <div class="conn conn-internal"><span class="conn-label">USES</span> style.css (layout + theme), Google Fonts CDN</div>
+      </div>
+      <div class="connections" style="margin-top:0.75rem;">
+        <div class="conn conn-internal"><span class="conn-label">CHILD</span> &lt;nav&gt; — fixed top bar, links to sections + dashboard</div>
+        <div class="conn conn-internal"><span class="conn-label">CHILD</span> &lt;header.hero&gt; — name, tagline, CTA buttons, stats</div>
+        <div class="conn conn-internal"><span class="conn-label">CHILD</span> &lt;section#about&gt; — bio text + 4 highlight cards</div>
+        <div class="conn conn-internal"><span class="conn-label">CHILD</span> &lt;section#skills&gt; — 4 skill groups with pills</div>
+        <div class="conn conn-internal"><span class="conn-label">CHILD</span> &lt;section#experience&gt; — timeline with Genelec + projects</div>
+        <div class="conn conn-internal"><span class="conn-label">CHILD</span> &lt;section#contact&gt; — 3 clickable contact cards</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- dashboard.html -->
+  <div class="level">
+    <div class="level-header" onclick="toggle(this)">
+      <span class="level-tag tag-file">FILE</span>
+      <span class="level-name">dashboard.html — App Shell</span>
+      <span class="level-arrow">▶</span>
+    </div>
+    <div class="level-body">
+      <p class="level-desc">The interactive app. Provides empty containers (#tileGrid, #detailModal) that JavaScript fills dynamically. Loads two scripts in order: tools.js then module-loader.js.</p>
+      <div class="connections">
+        <div class="conn conn-in"><span class="conn-label">IN</span> User clicks "Dashboard →" from landing page</div>
+        <div class="conn conn-out"><span class="conn-label">OUT</span> Renders tiles, modals, interactive tools to DOM</div>
+        <div class="conn conn-internal"><span class="conn-label">USES</span> dashboard.css, module-loader.js, tools.js</div>
+      </div>
+      <div class="connections" style="margin-top:0.75rem;">
+        <div class="conn conn-internal"><span class="conn-label">CHILD</span> &lt;header&gt; — back link, title, tag</div>
+        <div class="conn conn-internal"><span class="conn-label">CHILD</span> &lt;input#searchInput&gt; → JS listens for 'input' event</div>
+        <div class="conn conn-internal"><span class="conn-label">CHILD</span> &lt;button.filter-btn&gt; × 4 → JS listens for 'click'</div>
+        <div class="conn conn-internal"><span class="conn-label">CHILD</span> &lt;section#tileGrid&gt; — EMPTY, JS fills with tiles</div>
+        <div class="conn conn-internal"><span class="conn-label">CHILD</span> &lt;div#detailModal&gt; — hidden overlay, JS shows/hides</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- module-loader.js -->
+  <div class="level">
+    <div class="level-header" onclick="toggle(this)">
+      <span class="level-tag tag-block">CLASS</span>
+      <span class="level-name">module-loader.js — ModuleLoader Class</span>
+      <span class="level-arrow">▶</span>
+    </div>
+    <div class="level-body">
+      <p class="level-desc">The brain. A single ES6 class that: discovers module data from JSON, creates DOM elements, handles all user interaction (search, filter, modal). It self-initializes on load.</p>
+      <div class="connections">
+        <div class="conn conn-in"><span class="conn-label">IN</span> &lt;script&gt; tag in dashboard.html loads this file</div>
+        <div class="conn conn-in"><span class="conn-label">IN</span> fetch('config/modules-bundle.json') → gets module data</div>
+        <div class="conn conn-in"><span class="conn-label">IN</span> DOM events: input, click, keydown from user</div>
+        <div class="conn conn-out"><span class="conn-label">OUT</span> Creates tile &lt;div&gt; elements → appends to #tileGrid</div>
+        <div class="conn conn-out"><span class="conn-label">OUT</span> Sets innerHTML of #modalBody → shows modal</div>
+        <div class="conn conn-out"><span class="conn-label">OUT</span> Calls DevTools.loadTool() via onclick in modal HTML</div>
+      </div>
+      <div class="connections" style="margin-top:0.75rem;">
+        <div class="conn conn-internal"><span class="conn-label">STATE</span> this.modules[] — array of loaded module objects</div>
+        <div class="conn conn-internal"><span class="conn-label">STATE</span> this.currentFilter — 'all' | 'projects' | 'tools' | 'iot'</div>
+        <div class="conn conn-internal"><span class="conn-label">STATE</span> this.currentSearch — string from search input</div>
+      </div>
+      <div class="connections" style="margin-top:0.75rem;">
+        <div class="conn conn-internal"><span class="conn-label">FN</span> constructor() → init() → setup()</div>
+        <div class="conn conn-internal"><span class="conn-label">FN</span> discoverModules() → fetch bundle or fallback</div>
+        <div class="conn conn-internal"><span class="conn-label">FN</span> renderTiles() → getFilteredModules() → createTile()</div>
+        <div class="conn conn-internal"><span class="conn-label">FN</span> openModule(mod) → build HTML string → set modal</div>
+        <div class="conn conn-internal"><span class="conn-label">FN</span> setupEventListeners() → search, filters, modal close</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- tools.js -->
+  <div class="level">
+    <div class="level-header" onclick="toggle(this)">
+      <span class="level-tag tag-block">OBJECT</span>
+      <span class="level-name">tools.js — DevTools Object</span>
+      <span class="level-arrow">▶</span>
+    </div>
+    <div class="level-body">
+      <p class="level-desc">A global object with sub-objects for each tool (calculator, jsonFormatter, base64). Each tool has a render() method that returns HTML and action methods that manipulate DOM elements inside that HTML.</p>
+      <div class="connections">
+        <div class="conn conn-in"><span class="conn-label">IN</span> ModuleLoader calls DevTools.loadTool('calculator')</div>
+        <div class="conn conn-in"><span class="conn-label">IN</span> onclick="" attributes in rendered HTML call DevTools.calculator.appendNumber() etc.</div>
+        <div class="conn conn-out"><span class="conn-label">OUT</span> Sets workspace.innerHTML with tool UI</div>
+        <div class="conn conn-out"><span class="conn-label">OUT</span> Updates #calcDisplay, #jsonOutput, #base64Output</div>
+      </div>
+      <div class="connections" style="margin-top:0.75rem;">
+        <div class="conn conn-internal"><span class="conn-label">CHILD</span> calculator: { render(), appendNumber(), setOperator(), calculate(), clear() }</div>
+        <div class="conn conn-internal"><span class="conn-label">CHILD</span> jsonFormatter: { render(), format(), minify(), validate() }</div>
+        <div class="conn conn-internal"><span class="conn-label">CHILD</span> base64: { render(), encode(), decode() }</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Config -->
+  <div class="level">
+    <div class="level-header" onclick="toggle(this)">
+      <span class="level-tag tag-data">DATA</span>
+      <span class="level-name">config/modules-bundle.json — Module Registry</span>
+      <span class="level-arrow">▶</span>
+    </div>
+    <div class="level-body">
+      <p class="level-desc">Single JSON file containing ALL module metadata + content. The "database" of the system. One HTTP request loads everything. Fallback: modules.json registry + individual module.json/content.json files.</p>
+      <div class="connections">
+        <div class="conn conn-in"><span class="conn-label">IN</span> Hand-edited by developer (you) in text editor</div>
+        <div class="conn conn-out"><span class="conn-label">OUT</span> ModuleLoader.discoverModules() reads this via fetch()</div>
+      </div>
+      <div class="connections" style="margin-top:0.75rem;">
+        <div class="conn conn-internal"><span class="conn-label">SHAPE</span> { modules: { [id]: { id, title, description, icon, category, visibility, enabled, interactive?, content: { summary, projects[], skills[], interests[], tools[], learning_notes } } } }</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Module folders -->
+  <div class="level">
+    <div class="level-header" onclick="toggle(this)">
+      <span class="level-tag tag-data">PATTERN</span>
+      <span class="level-name">modules/[name]/ — Module Folders (Fractal Unit)</span>
+      <span class="level-arrow">▶</span>
+    </div>
+    <div class="level-body">
+      <p class="level-desc">Each module folder is a self-contained unit. It has config (module.json), data (content.json), and optionally logic (tools.js). This is your fractal pattern — same structure at every level. Adding a module = creating a folder + registering it.</p>
+      <div class="connections">
+        <div class="conn conn-in"><span class="conn-label">IN</span> Referenced by modules-bundle.json (fast) or modules.json (fallback)</div>
+        <div class="conn conn-out"><span class="conn-label">OUT</span> Data flows to ModuleLoader → rendered as tile + modal</div>
+      </div>
+      <div class="connections" style="margin-top:0.75rem;">
+        <div class="conn conn-internal"><span class="conn-label">CONFIG</span> module.json — id, title, icon, category, enabled, visibility</div>
+        <div class="conn conn-internal"><span class="conn-label">DATA</span> content.json — summary, projects[], skills[], learning_notes</div>
+        <div class="conn conn-internal"><span class="conn-label">LOGIC</span> [optional] tools.js, tracker.js, etc. — interactive behavior</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CSS -->
+  <div class="level">
+    <div class="level-header" onclick="toggle(this)">
+      <span class="level-tag tag-file">STYLE</span>
+      <span class="level-name">style.css + dashboard.css — Design System</span>
+      <span class="level-arrow">▶</span>
+    </div>
+    <div class="level-body">
+      <p class="level-desc">Two separate CSS files — one per page. They share the same CSS custom properties (variables) for colors, fonts, spacing. style.css handles the landing page, dashboard.css handles the app.</p>
+      <div class="connections">
+        <div class="conn conn-in"><span class="conn-label">IN</span> Loaded by &lt;link&gt; tags in HTML &lt;head&gt;</div>
+        <div class="conn conn-out"><span class="conn-label">OUT</span> Controls all visual rendering — layout, colors, animation</div>
+      </div>
+      <div class="connections" style="margin-top:0.75rem;">
+        <div class="conn conn-internal"><span class="conn-label">SHARED</span> :root variables — --bg, --accent, --font, --border, etc.</div>
+        <div class="conn conn-internal"><span class="conn-label">UNIQUE</span> style.css — hero, about-grid, timeline, contact-grid</div>
+        <div class="conn conn-internal"><span class="conn-label">UNIQUE</span> dashboard.css — tiles, modal, tools, calc-buttons</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data Flow -->
+  <div class="level">
+    <div class="level-header" onclick="toggle(this)">
+      <span class="level-tag tag-pipe">FLOW</span>
+      <span class="level-name">Complete Data Flow — What Happens When</span>
+      <span class="level-arrow">▶</span>
+    </div>
+    <div class="level-body">
+      <p class="level-desc">The full journey of data from file to screen.</p>
+      <div class="connections">
+        <div class="conn conn-in"><span class="conn-label">1</span> Browser loads dashboard.html → parses HTML</div>
+        <div class="conn conn-in"><span class="conn-label">2</span> Browser loads dashboard.css → applies styles</div>
+        <div class="conn conn-in"><span class="conn-label">3</span> Browser loads tools.js → DevTools object exists globally</div>
+        <div class="conn conn-in"><span class="conn-label">4</span> Browser loads module-loader.js → new ModuleLoader() runs</div>
+        <div class="conn conn-internal"><span class="conn-label">5</span> constructor() → init() → checks DOM ready → setup()</div>
+        <div class="conn conn-internal"><span class="conn-label">6</span> setup() → discoverModules() → fetch('modules-bundle.json')</div>
+        <div class="conn conn-internal"><span class="conn-label">7</span> GitHub CDN responds with JSON → parsed → pushed to this.modules[]</div>
+        <div class="conn conn-out"><span class="conn-label">8</span> renderTiles() → getFilteredModules() → createTile() × 6</div>
+        <div class="conn conn-out"><span class="conn-label">9</span> Each tile → addEventListener('click') → openModule(mod)</div>
+        <div class="conn conn-out"><span class="conn-label">10</span> setupEventListeners() → search input, filter buttons, modal close</div>
+      </div>
+      <div class="connections" style="margin-top:0.75rem;">
+        <div class="conn conn-in"><span class="conn-label">USER</span> Types in search → input event → this.currentSearch = value → renderTiles()</div>
+        <div class="conn conn-in"><span class="conn-label">USER</span> Clicks filter → click event → this.currentFilter = category → renderTiles()</div>
+        <div class="conn conn-in"><span class="conn-label">USER</span> Clicks tile → openModule(mod) → build HTML → set modalBody → show modal</div>
+        <div class="conn conn-in"><span class="conn-label">USER</span> Clicks "Open" tool → DevTools.loadTool() → render() → workspace.innerHTML</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ============ PSEUDO CODE ============ -->
+<div class="panel" id="pseudo">
+<p class="section-title">System as Pseudo Code</p>
+<p class="section-desc">The entire application logic in readable pseudo code. This maps 1:1 to the real JavaScript.</p>
+
+<div class="pseudo">
+<span class="cmt">// ===== STARTUP SEQUENCE =====</span><br>
+<span class="kw">WHEN</span> browser loads dashboard.html:<br>
+<div class="indent">
+  load dashboard.css → apply styles<br>
+  load tools.js → <span class="fn">DevTools</span> exists in memory<br>
+  load module-loader.js → creates <span class="fn">new ModuleLoader()</span><br>
+</div>
+<br>
+
+<span class="cmt">// ===== MODULE LOADER =====</span><br>
+<span class="kw">CLASS</span> <span class="fn">ModuleLoader</span>:<br>
+<br>
+<div class="indent">
+  <span class="kw">STATE</span>: modules = [], filter = <span class="str">'all'</span>, search = <span class="str">''</span><br><br>
+
+  <span class="kw">ON CREATE</span>:<br>
+  <div class="indent">
+    wait for DOM ready<br>
+    find #tileGrid element<br>
+    <span class="kw">CALL</span> <span class="fn">discoverModules()</span><br>
+    <span class="kw">CALL</span> <span class="fn">renderTiles()</span><br>
+    <span class="kw">CALL</span> <span class="fn">setupEventListeners()</span><br>
+  </div>
+  <br>
+
+  <span class="kw">FUNCTION</span> <span class="fn">discoverModules()</span>:<br>
+  <div class="indent">
+    <span class="kw">TRY</span> fetch <span class="str">'config/modules-bundle.json'</span><br>
+    <div class="indent">
+      <span class="kw">FOR EACH</span> module in bundle.modules:<br>
+      <div class="indent">
+        <span class="kw">IF</span> module.enabled → push to this.modules[]<br>
+      </div>
+    </div>
+    <span class="kw">CATCH</span> → fallback to individual files<br>
+    <div class="indent">
+      fetch <span class="str">'config/modules.json'</span> → get list of names<br>
+      <span class="kw">FOR EACH</span> name:<br>
+      <div class="indent">
+        fetch <span class="str">'modules/{name}/module.json'</span><br>
+        fetch <span class="str">'modules/{name}/content.json'</span><br>
+        merge and push to this.modules[]<br>
+      </div>
+    </div>
+  </div>
+  <br>
+
+  <span class="kw">FUNCTION</span> <span class="fn">renderTiles()</span>:<br>
+  <div class="indent">
+    clear #tileGrid<br>
+    filtered = <span class="fn">getFilteredModules()</span><br>
+    <span class="kw">IF</span> filtered empty → show "no results"<br>
+    <span class="kw">FOR EACH</span> module in filtered:<br>
+    <div class="indent">
+      tile = <span class="fn">createTile(module)</span><br>
+      append tile to #tileGrid<br>
+    </div>
+  </div>
+  <br>
+
+  <span class="kw">FUNCTION</span> <span class="fn">getFilteredModules()</span>:<br>
+  <div class="indent">
+    <span class="kw">RETURN</span> this.modules <span class="kw">WHERE</span>:<br>
+    <div class="indent">
+      enabled == true<br>
+      <span class="kw">AND</span> (filter == 'all' <span class="kw">OR</span> category == filter)<br>
+      <span class="kw">AND</span> (search empty <span class="kw">OR</span> title/description contains search)<br>
+    </div>
+  </div>
+  <br>
+
+  <span class="kw">FUNCTION</span> <span class="fn">createTile(module)</span>:<br>
+  <div class="indent">
+    create &lt;div class="tile"&gt;<br>
+    set data-category, data-moduleId<br>
+    fill innerHTML: icon, title, description, category<br>
+    <span class="kw">ON CLICK</span> → <span class="fn">openModule(module)</span><br>
+    <span class="kw">RETURN</span> tile element<br>
+  </div>
+  <br>
+
+  <span class="kw">FUNCTION</span> <span class="fn">openModule(module)</span>:<br>
+  <div class="indent">
+    <span class="kw">IF</span> private → alert "needs auth" → return<br>
+    set modal icon, title, category<br>
+    <br>
+    <span class="kw">IF</span> module.interactive:<br>
+    <div class="indent">
+      build tool buttons HTML<br>
+      each button → onclick=<span class="str">"DevTools.loadTool(type)"</span><br>
+      add empty #toolWorkspace div<br>
+    </div>
+    <span class="kw">ELSE</span>:<br>
+    <div class="indent">
+      <span class="kw">IF</span> summary → add paragraph<br>
+      <span class="kw">IF</span> projects → build project cards with tech tags + status<br>
+      <span class="kw">IF</span> skills → build skill pills<br>
+      <span class="kw">IF</span> interests → build interest pills<br>
+      <span class="kw">IF</span> learning_notes → add italic note<br>
+    </div>
+    <br>
+    set #modalBody.innerHTML = built HTML <span class="cmt">// only ONCE</span><br>
+    add 'active' class to modal <span class="cmt">// only ONCE</span><br>
+    disable body scroll<br>
+  </div>
+  <br>
+
+  <span class="kw">FUNCTION</span> <span class="fn">setupEventListeners()</span>:<br>
+  <div class="indent">
+    #searchInput → on 'input' → update this.search → <span class="fn">renderTiles()</span><br>
+    .filter-btn → on 'click' → update active class + this.filter → <span class="fn">renderTiles()</span><br>
+    #modalClose → on 'click' → remove 'active', restore scroll<br>
+    #modalCloseBtn → on 'click' → same<br>
+    .modal-backdrop → on 'click' → same<br>
+    document → on 'Escape' key → same<br>
+  </div>
+</div>
+<br>
+
+<span class="cmt">// ===== DEV TOOLS =====</span><br>
+<span class="kw">OBJECT</span> <span class="fn">DevTools</span>:<br>
+<div class="indent">
+  <span class="kw">FUNCTION</span> <span class="fn">loadTool(type)</span>:<br>
+  <div class="indent">
+    <span class="kw">SWITCH</span> type:<br>
+    <div class="indent">
+      'calculator' → html = calculator.<span class="fn">render()</span><br>
+      'json-formatter' → html = jsonFormatter.<span class="fn">render()</span><br>
+      'base64' → html = base64.<span class="fn">render()</span><br>
+    </div>
+    set #toolWorkspace.innerHTML = html<br>
+    smooth scroll to workspace<br>
+  </div>
+  <br>
+  <span class="kw">OBJECT</span> calculator: <span class="cmt">// state: currentValue, previousValue, operator</span><br>
+  <div class="indent">
+    <span class="fn">render()</span> → returns calculator HTML with buttons<br>
+    <span class="fn">appendNumber(n)</span> → updates display, handles decimals<br>
+    <span class="fn">setOperator(op)</span> → stores op, chains calculations<br>
+    <span class="fn">calculate()</span> → prev op current = result<br>
+    <span class="fn">clear()</span> → reset all state<br>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ============ SECURITY ============ -->
+<div class="panel" id="security">
+<p class="section-title">Security Audit</p>
+<p class="section-desc">Current state is a static site served by GitHub Pages. Here's what matters now and what will matter when you add a backend.</p>
+
+<div class="checklist">
+  <div class="check-item">
+    <span class="check-icon">✅</span>
+    <div class="check-text">
+      <div class="check-title">HTTPS enforced</div>
+      <div class="check-desc">GitHub Pages serves over HTTPS by default. All data in transit is encrypted. No action needed.</div>
+    </div>
+    <span class="check-status status-ok">SAFE</span>
+  </div>
+  
+  <div class="check-item">
+    <span class="check-icon">✅</span>
+    <div class="check-text">
+      <div class="check-title">No secrets in code</div>
+      <div class="check-desc">No API keys, passwords, or tokens in your repository. Your .gitignore exists. Static site needs no secrets.</div>
+    </div>
+    <span class="check-status status-ok">SAFE</span>
+  </div>
+
+  <div class="check-item">
+    <span class="check-icon">✅</span>
+    <div class="check-text">
+      <div class="check-title">No user input stored</div>
+      <div class="check-desc">Calculator and tools process data client-side only. Nothing is sent to a server or saved. Zero attack surface for data theft.</div>
+    </div>
+    <span class="check-status status-ok">SAFE</span>
+  </div>
+  
+  <div class="check-item">
+    <span class="check-icon">⚠️</span>
+    <div class="check-text">
+      <div class="check-title">XSS via JSON content</div>
+      <div class="check-desc">Module data is inserted with innerHTML. If someone injected &lt;script&gt; tags into your JSON files, it could execute. LOW RISK now because only you edit the JSON. HIGH RISK if you ever let users submit content. Fix: sanitize strings or use textContent where possible.</div>
+    </div>
+    <span class="check-status status-warn">LOW RISK</span>
+  </div>
+
+  <div class="check-item">
+    <span class="check-icon">⚠️</span>
+    <div class="check-text">
+      <div class="check-title">Email address visible in source</div>
+      <div class="check-desc">robert0hidri@gmail.com is in the HTML source. Bots can harvest it for spam. Consider: use a contact form (needs backend), or obfuscate the email with JavaScript encoding.</div>
+    </div>
+    <span class="check-status status-warn">LOW RISK</span>
+  </div>
+
+  <div class="check-item">
+    <span class="check-icon">✅</span>
+    <div class="check-text">
+      <div class="check-title">External links use rel="noopener"</div>
+      <div class="check-desc">Your GitHub and LinkedIn links include rel="noopener" which prevents the linked page from accessing your page's window object. Correct security practice.</div>
+    </div>
+    <span class="check-status status-ok">SAFE</span>
+  </div>
+
+  <div class="check-item">
+    <span class="check-icon">ℹ️</span>
+    <div class="check-text">
+      <div class="check-title">No Content Security Policy (CSP)</div>
+      <div class="check-desc">A CSP header tells the browser which scripts/styles are allowed to run. Not critical for a static site, but adding one is best practice. GitHub Pages supports it via a meta tag.</div>
+    </div>
+    <span class="check-status status-na">OPTIONAL</span>
+  </div>
+
+  <div class="check-item">
+    <span class="check-icon">🔮</span>
+    <div class="check-text">
+      <div class="check-title">PHASE 2: Authentication needed</div>
+      <div class="check-desc">When you add private modules and a backend: use proper password hashing (bcrypt), JWT tokens, HTTPS-only cookies, rate limiting on login endpoints. Never store plain passwords.</div>
+    </div>
+    <span class="check-status status-na">FUTURE</span>
+  </div>
+  
+  <div class="check-item">
+    <span class="check-icon">🔮</span>
+    <div class="check-text">
+      <div class="check-title">PHASE 2: Input validation</div>
+      <div class="check-desc">When you accept user input (forms, file uploads): validate on BOTH client and server. Never trust client-side validation alone. Sanitize all data before storing or displaying.</div>
+    </div>
+    <span class="check-status status-na">FUTURE</span>
+  </div>
+</div>
+</div>
+
+<!-- ============ READINESS ============ -->
+<div class="panel" id="readiness">
+<p class="section-title">Production Readiness Checklist</p>
+<p class="section-desc">What employers and users look for when they visit a portfolio site.</p>
+
+<div class="checklist">
+  <div class="check-item"><span class="check-icon">✅</span><div class="check-text"><div class="check-title">Working live URL</div><div class="check-desc">robert26912.github.io/portofolio is live and accessible. Employers can click the link.</div></div><span class="check-status status-ok">DONE</span></div>
+
+  <div class="check-item"><span class="check-icon">✅</span><div class="check-text"><div class="check-title">Responsive design</div><div class="check-desc">CSS Grid + media queries adapt to mobile, tablet, laptop. Test on phone to confirm.</div></div><span class="check-status status-ok">DONE</span></div>
+
+  <div class="check-item"><span class="check-icon">✅</span><div class="check-text"><div class="check-title">Professional visual design</div><div class="check-desc">Dark theme with consistent typography, colors, spacing. No generic Bootstrap look.</div></div><span class="check-status status-ok">DONE</span></div>
+
+  <div class="check-item"><span class="check-icon">✅</span><div class="check-text"><div class="check-title">Clean code structure</div><div class="check-desc">Separated concerns (HTML/CSS/JS), single class architecture, modular folders.</div></div><span class="check-status status-ok">DONE</span></div>
+
+  <div class="check-item"><span class="check-icon">✅</span><div class="check-text"><div class="check-title">Interactive features</div><div class="check-desc">Search, filters, modal, calculator, JSON formatter — proves JavaScript ability.</div></div><span class="check-status status-ok">DONE</span></div>
+
+  <div class="check-item"><span class="check-icon">⚠️</span><div class="check-text"><div class="check-title">Real project links</div><div class="check-desc">Most projects have github: "" (empty). Employers want to click through to actual repos. Add links to your real repositories or mark projects clearly as "in progress."</div></div><span class="check-status status-warn">PARTIAL</span></div>
+
+  <div class="check-item"><span class="check-icon">⚠️</span><div class="check-text"><div class="check-title">About Me specificity</div><div class="check-desc">The about text is good but generic in places. Add: what you specifically did at Genelec (any concrete technologies, systems, or achievements). Employers love specifics.</div></div><span class="check-status status-warn">IMPROVE</span></div>
+  
+  <div class="check-item"><span class="check-icon">❌</span><div class="check-text"><div class="check-title">Meta & SEO tags</div><div class="check-desc">Missing: Open Graph tags (og:title, og:description, og:image) for LinkedIn/social sharing. When you share your URL on LinkedIn, it should show a nice preview card.</div></div><span class="check-status status-missing">MISSING</span></div>
+
+  <div class="check-item"><span class="check-icon">❌</span><div class="check-text"><div class="check-title">Favicon</div><div class="check-desc">No favicon set. Browser tab shows a generic icon. Create a simple favicon.ico (even just "RH" in your accent color).</div></div><span class="check-status status-missing">MISSING</span></div>
+
+  <div class="check-item"><span class="check-icon">❌</span><div class="check-text"><div class="check-title">404 page</div><div class="check-desc">If someone types a wrong URL, they see GitHub's default 404. Create a custom 404.html that matches your design and links back to the homepage.</div></div><span class="check-status status-missing">MISSING</span></div>
+
+  <div class="check-item"><span class="check-icon">❌</span><div class="check-text"><div class="check-title">Performance: image optimization</div><div class="check-desc">No images yet, but when you add project screenshots, compress them. Use WebP format. Lazy load with loading="lazy".</div></div><span class="check-status status-na">FUTURE</span></div>
+
+  <div class="check-item"><span class="check-icon">❌</span><div class="check-text"><div class="check-title">Accessibility (a11y)</div><div class="check-desc">Missing: aria-labels on icon-only buttons, skip-to-content link, proper focus management in modal, color contrast verification. Important for inclusive design.</div></div><span class="check-status status-missing">MISSING</span></div>
+</div>
+</div>
+
+<!-- ============ INDUSTRY ============ -->
+<div class="panel" id="industry">
+<p class="section-title">Your Site vs Industry Standard</p>
+<p class="section-desc">Comparison between what you have, what a typical junior dev portfolio has, and what a professional production site expects.</p>
+
+<table class="compare-table">
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>Your Site</th>
+      <th>Typical Junior</th>
+      <th>Industry Standard</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Architecture</td>
+      <td style="color:var(--green)">Plugin system with auto-discovery — well above average</td>
+      <td>Single page or basic template</td>
+      <td>Component framework (React/Vue) with routing</td>
+    </tr>
+    <tr>
+      <td>Design</td>
+      <td style="color:var(--green)">Custom dark theme, CSS variables, animations</td>
+      <td>Bootstrap template</td>
+      <td>Design system with tokens, Figma specs</td>
+    </tr>
+    <tr>
+      <td>Code Quality</td>
+      <td style="color:var(--green)">ES6 class, async/await, separated files</td>
+      <td>jQuery or inline scripts</td>
+      <td>TypeScript, linting, build pipeline, tests</td>
+    </tr>
+    <tr>
+      <td>Interactivity</td>
+      <td style="color:var(--green)">Search, filter, modal, 3 working tools</td>
+      <td>Static pages</td>
+      <td>Full CRUD, real-time, auth</td>
+    </tr>
+    <tr>
+      <td>Testing</td>
+      <td style="color:var(--yellow)">Manual (browser DevTools)</td>
+      <td>None</td>
+      <td>Unit + integration + E2E tests</td>
+    </tr>
+    <tr>
+      <td>Build Pipeline</td>
+      <td style="color:var(--yellow)">Manual deploy (git push)</td>
+      <td>None or Netlify drag-drop</td>
+      <td>CI/CD with build step, minification, bundling</td>
+    </tr>
+    <tr>
+      <td>SEO / Meta</td>
+      <td style="color:var(--red)">Basic title + description only</td>
+      <td>Often nothing</td>
+      <td>OG tags, structured data, sitemap, robots.txt</td>
+    </tr>
+    <tr>
+      <td>Accessibility</td>
+      <td style="color:var(--yellow)">Semantic HTML used, but missing ARIA</td>
+      <td>Rarely considered</td>
+      <td>WCAG 2.1 AA compliance, keyboard navigation</td>
+    </tr>
+    <tr>
+      <td>Documentation</td>
+      <td style="color:var(--green)">MODULE-GUIDE, ARCHITECTURE docs exist</td>
+      <td>No docs</td>
+      <td>README, contributing guide, API docs, ADRs</td>
+    </tr>
+  </tbody>
+</table>
+
+<p style="margin-top:1.5rem; color:var(--muted); font-size:0.875rem;"><strong style="color:var(--text)">Verdict:</strong> Your architecture and code quality are <strong style="color:var(--green)">above typical junior level</strong>. The plugin system is a genuine differentiator — most portfolios don't show architectural thinking. The gaps are in polish items (SEO, accessibility, testing) which are quick wins. The biggest impression-maker for employers would be adding real project links with actual code they can review.</p>
+</div>
+
+<!-- ============ TECH STACK ============ -->
+<div class="panel" id="stack">
+<p class="section-title">Your Provable Tech Stack</p>
+<p class="section-desc">These are skills you can legitimately claim because you've written working code that demonstrates them. Strong = used extensively. Normal = used correctly. Learning = exposed to but still growing.</p>
+
+<div class="legend">
+  <div class="legend-item"><span class="legend-dot strong"></span>Strong — built working features</div>
+  <div class="legend-item"><span class="legend-dot normal"></span>Used — applied correctly</div>
+  <div class="legend-item"><span class="legend-dot learning"></span>Learning — exploring, not yet deep</div>
+</div>
+
+<div class="stack-grid">
+  <div class="stack-card">
+    <h4>Languages</h4>
+    <div class="stack-pills">
+      <span class="stack-pill strong">JavaScript (ES6+)</span>
+      <span class="stack-pill strong">HTML5</span>
+      <span class="stack-pill strong">CSS3</span>
+      <span class="stack-pill">JSON</span>
+      <span class="stack-pill">YAML</span>
+    </div>
+  </div>
+  <div class="stack-card">
+    <h4>JavaScript Concepts</h4>
+    <div class="stack-pills">
+      <span class="stack-pill strong">ES6 Classes</span>
+      <span class="stack-pill strong">async / await</span>
+      <span class="stack-pill strong">Fetch API</span>
+      <span class="stack-pill strong">DOM Manipulation</span>
+      <span class="stack-pill strong">Event Handling</span>
+      <span class="stack-pill">Template Literals</span>
+      <span class="stack-pill">Destructuring</span>
+      <span class="stack-pill">Array Methods</span>
+      <span class="stack-pill">Error Handling</span>
+    </div>
+  </div>
+  <div class="stack-card">
+    <h4>CSS Concepts</h4>
+    <div class="stack-pills">
+      <span class="stack-pill strong">CSS Grid</span>
+      <span class="stack-pill strong">Flexbox</span>
+      <span class="stack-pill strong">CSS Custom Properties</span>
+      <span class="stack-pill strong">Responsive Design</span>
+      <span class="stack-pill strong">Media Queries</span>
+      <span class="stack-pill strong">Keyframe Animations</span>
+      <span class="stack-pill">Transitions</span>
+      <span class="stack-pill">Backdrop Filter</span>
+    </div>
+  </div>
+  <div class="stack-card">
+    <h4>Architecture & Patterns</h4>
+    <div class="stack-pills">
+      <span class="stack-pill strong">Plugin Architecture</span>
+      <span class="stack-pill strong">Config-driven Design</span>
+      <span class="stack-pill strong">Separation of Concerns</span>
+      <span class="stack-pill strong">Module Pattern</span>
+      <span class="stack-pill">Auto-discovery</span>
+      <span class="stack-pill">State Management</span>
+    </div>
+  </div>
+  <div class="stack-card">
+    <h4>Development Tools</h4>
+    <div class="stack-pills">
+      <span class="stack-pill strong">Git</span>
+      <span class="stack-pill strong">GitHub</span>
+      <span class="stack-pill strong">GitHub Pages</span>
+      <span class="stack-pill strong">VS Code</span>
+      <span class="stack-pill strong">Browser DevTools</span>
+      <span class="stack-pill">Live Server</span>
+      <span class="stack-pill">CLI / Terminal</span>
+    </div>
+  </div>
+  <div class="stack-card">
+    <h4>Web Fundamentals</h4>
+    <div class="stack-pills">
+      <span class="stack-pill strong">HTTP / HTTPS</span>
+      <span class="stack-pill strong">Static Hosting</span>
+      <span class="stack-pill">CORS</span>
+      <span class="stack-pill">DNS basics</span>
+      <span class="stack-pill">SEO basics</span>
+      <span class="stack-pill learning">Accessibility</span>
+    </div>
+  </div>
+  <div class="stack-card">
+    <h4>From Genelec + IoT work</h4>
+    <div class="stack-pills">
+      <span class="stack-pill">C/C++</span>
+      <span class="stack-pill">Python</span>
+      <span class="stack-pill">ESP32 / Arduino</span>
+      <span class="stack-pill">MQTT</span>
+      <span class="stack-pill learning">FreeRTOS</span>
+      <span class="stack-pill learning">I2C / SPI</span>
+      <span class="stack-pill learning">Docker</span>
+    </div>
+  </div>
+  <div class="stack-card">
+    <h4>How to list on CV</h4>
+    <div class="stack-pills" style="flex-direction: column; gap: 0.5rem;">
+      <span class="stack-pill" style="border-radius: 0.5rem; text-align:left; padding: 0.5rem 0.75rem;">
+        <strong style="color:var(--text)">Languages:</strong> JavaScript, HTML/CSS, Python, C/C++
+      </span>
+      <span class="stack-pill" style="border-radius: 0.5rem; text-align:left; padding: 0.5rem 0.75rem;">
+        <strong style="color:var(--text)">Frontend:</strong> Vanilla JS (ES6+), CSS Grid, Responsive Design
+      </span>
+      <span class="stack-pill" style="border-radius: 0.5rem; text-align:left; padding: 0.5rem 0.75rem;">
+        <strong style="color:var(--text)">Architecture:</strong> Plugin Systems, Modular Design, REST APIs
+      </span>
+      <span class="stack-pill" style="border-radius: 0.5rem; text-align:left; padding: 0.5rem 0.75rem;">
+        <strong style="color:var(--text)">Tools:</strong> Git, GitHub, VS Code, Linux, Docker (basics)
+      </span>
+      <span class="stack-pill" style="border-radius: 0.5rem; text-align:left; padding: 0.5rem 0.75rem;">
+        <strong style="color:var(--text)">IoT:</strong> ESP32, MQTT, Sensor Networks, Embedded C
+      </span>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+// Tab switching
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.panel).classList.add('active');
+  });
+});
+
+// Accordion toggle
+function toggle(header) {
+  header.parentElement.classList.toggle('open');
+}
+</script>
+</body>
+</html>
