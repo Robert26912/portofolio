@@ -1,11 +1,4 @@
-/* This forces every container from the root down to stretch */
-html, body, main, #root, #app, .wrapper, .container {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    display: block !important;
-}
+
 /**
  * DASHBOARD STYLES
  * Styling for the interactive tile dashboard
@@ -17,6 +10,7 @@ body {
     margin: 0;
     padding: 0;
     min-height: 100vh;
+    max-width: none;
 }
 
 /* Dashboard header at top */
@@ -28,9 +22,13 @@ body {
     top: 0;
     z-index: 100;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    
 }
 
-
+.header-content h1 {
+    margin-left: auto;   /* push it to the far right */
+    padding-right:0; /* optional: reduce space from edge */
+}
 .header-content {
     max-width: 95%; /* Match the main content */
     margin: 0 auto;
