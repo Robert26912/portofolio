@@ -1,0 +1,72 @@
+{
+  "name": "Robert Hidri",
+  "title": "IoT Engineer · Architect",
+  "tagline": "I build connected systems — from embedded firmware on microcontrollers to cloud dashboards and everything in between.",
+  
+  "stats": [
+    { "value": "5+", "label": "Tech Domains" },
+    { "value": "10mo", "label": "Genelec OY" },
+    { "value": "∞", "label": "Curiosity" }
+  ],
+
+  "about": {
+    "heading": "Bridging hardware and software",
+    "paragraphs": [
+      "I'm an IoT engineer with a dual passion for embedded systems and building architecture. My background spans firmware development on ARM microcontrollers, Python backend services, and web-based dashboards for real-time data.",
+      "During my internship at <strong>Genelec OY</strong> in Iisalmi, Finland, I worked on production-related technology systems, gaining hands-on experience with industrial processes and audio engineering excellence.",
+      "I approach every project with an architect's mindset — whether I'm designing a sensor network or a software system, I think about structure, modularity, and how the pieces connect. This portfolio itself is built on a plugin architecture where each module is a self-contained unit that plugs into the dashboard."
+    ],
+    "highlights": [
+      { "icon": "🔌", "title": "IoT & Embedded", "text": "ESP32, STM32, BLE mesh networks, sensor integration" },
+      { "icon": "🐍", "title": "Backend & Data", "text": "Python, Flask, REST APIs, MQTT, data processing" },
+      { "icon": "🌐", "title": "Web & Frontend", "text": "JavaScript, modular architecture, responsive UI" },
+      { "icon": "🏗️", "title": "Architecture", "text": "Building design, system design, smart buildings" }
+    ]
+  },
+
+  "skills": [
+    {
+      "category": "Languages",
+      "items": ["Python", "C/C++", "JavaScript", "HTML/CSS", "Bash", "YAML"]
+    },
+    {
+      "category": "Embedded & IoT",
+      "items": ["ESP32", "STM32", "Arduino", "FreeRTOS", "I2C / SPI / UART", "MQTT", "BLE"]
+    },
+    {
+      "category": "Frameworks & Tools",
+      "items": ["Flask", "Pandas", "Git", "Docker", "GitHub Actions", "Linux", "VS Code"]
+    },
+    {
+      "category": "Concepts",
+      "items": ["REST API Design", "Modular Architecture", "CI/CD", "Real-time Systems", "Sensor Networks", "System Design"]
+    }
+  ],
+
+  "experience": [
+    {
+      "role": "Intern",
+      "company": "Genelec OY",
+      "location": "Iisalmi, Finland",
+      "startDate": "Aug 2022",
+      "endDate": "Jun 2023",
+      "description": "Genelec is a world-leading manufacturer of professional active loudspeakers. During my 10-month internship I worked with production technology and gained exposure to industrial IoT systems, quality-driven engineering processes, and cross-functional collaboration in a manufacturing environment.",
+      "tags": ["Industrial IoT", "Production Technology", "Manufacturing"]
+    },
+    {
+      "role": "Self-directed Projects",
+      "company": "",
+      "location": "",
+      "startDate": "2023",
+      "endDate": "Present",
+      "description": "Building a personal ecosystem of connected tools: this modular portfolio platform, IoT sensor networks with ESP32 devices, Python backend services, and exploring the intersection of building architecture and smart home technology.",
+      "tags": ["Full Stack", "IoT", "Architecture"]
+    }
+  ],
+
+  "contact": [
+    { "icon": "✉️", "label": "Email", "value": "robert0hidri@gmail.com", "url": "mailto:robert0hidri@gmail.com" },
+    { "icon": "💻", "label": "GitHub", "value": "Robert26912", "url": "https://github.com/Robert26912" },
+    { "icon": "🔗", "label": "LinkedIn", "value": "robert-h", "url": "https://www.linkedin.com/in/robert-h-326155199/" }
+  ]
+}
