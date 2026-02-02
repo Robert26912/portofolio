@@ -78,14 +78,14 @@
     },
     "architecture": {
       "id": "architecture",
-      "title": "Architecture",
-      "description": "System design and software architecture",
+      "title": "Architecture & Design",
+      "description": "Building architecture, software architecture, and system design",
       "icon": "🏗️",
       "category": "projects",
       "visibility": "public",
       "enabled": true,
       "content": {
-        "summary": "System architecture design and engineering principles.",
+        "summary": "Exploring architecture from physical buildings to digital systems.",
         "projects": [
           {
             "name": "Modular Portfolio Platform",
@@ -95,8 +95,15 @@
             "status": "Active"
           }
         ],
-        "skills": ["System design", "API design", "Scalability"]
+        "skills": ["System design", "API design", "Scalability"],
+        "interests": [
+          "Sustainable building design",
+          "Smart home integration",
+          "Urban planning & IoT",
+          "Building automation systems"
+        ]
       }
+    
     },
     "dev-tools": {
       "id": "dev-tools",

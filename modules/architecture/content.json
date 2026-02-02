@@ -1,5 +1,17 @@
 {
-  "summary": "System architecture design and software engineering principles. Focus on scalable, maintainable solutions from embedded systems to cloud platforms.",
+  "summary": "Exploring architecture from physical buildings to digital systems. Interest in both structural design and software engineering principles.",
+  "areas": [
+    {
+      "name": "Building Architecture",
+      "description": "Interest in architectural design, urban planning, and sustainable building practices",
+      "focus": ["Residential design", "Modern architecture", "Sustainable materials", "Space planning"]
+    },
+    {
+      "name": "Software Architecture",
+      "description": "System design, scalable solutions, and engineering best practices",
+      "focus": ["Modular design", "API architecture", "Microservices", "Design patterns"]
+    }
+  ],
   "projects": [
     {
       "name": "Modular Portfolio Platform",
@@ -20,16 +32,15 @@
     "System design patterns",
     "Microservices architecture",
     "API design",
-    "Database architecture",
     "Scalability planning",
     "Documentation"
   ],
-  "concepts": [
-    "Separation of concerns",
-    "Plugin architecture",
-    "Event-driven design",
-    "RESTful principles",
-    "Clean code practices"
+  "interests": [
+    "Sustainable building design",
+    "Smart home integration",
+    "Urban planning & IoT",
+    "Architectural rendering",
+    "Building automation systems"
   ],
-  "learning_notes": "Studying distributed systems architecture and event sourcing patterns for IoT platforms."
+  "learning_notes": "Studying how architectural principles apply to both physical structures and software systems. Exploring smart building technologies that bridge both worlds."
 }

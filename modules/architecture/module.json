@@ -1,8 +1,8 @@
 {
   "id": "architecture",
-  "title": "Architecture Projects",
-  "description": "My architeture projects during school years and after",
-  "icon": "🏛️ 🏠 🏢 🏗️ 🏚️ 🏘️",
+  "title": "Architecture & Design",
+  "description": "Building architecture, software architecture, and system design principles",
+  "icon": "🏗️",
   "category": "projects",
   "visibility": "public",
   "enabled": true
