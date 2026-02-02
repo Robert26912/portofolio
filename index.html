@@ -3,8 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Robert Hidri — IoT Engineer & Architect. Building connected systems from embedded firmware to cloud dashboards.">
-    <title>Robert Hidri — IoT Engineer & Architect</title>
+    <meta name="description" content="Robert Hidri — IoT Engineer. Building connected systems from carbon footprint calculators to sensor networks.">
+    <title>Robert Hidri — IoT Engineer</title>
+    
+    <!-- Open Graph for social sharing -->
+    <meta property="og:title" content="Robert Hidri — IoT Engineer">
+    <meta property="og:description" content="Building connected systems from carbon footprint calculators to sensor networks.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://robert26912.github.io/portofolio/">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -18,8 +25,9 @@
             <a href="index.html" class="nav-logo">R<span class="accent">.</span>H</a>
             <div class="nav-links">
                 <a href="#about">About</a>
-                <a href="#skills">Skills</a>
                 <a href="#experience">Experience</a>
+                <a href="#education">Education</a>
+                <a href="#skills">Skills</a>
                 <a href="#contact">Contact</a>
                 <a href="dashboard.html" class="nav-cta">Dashboard →</a>
             </div>
@@ -27,84 +35,97 @@
     </nav>
 
     <!-- ===== HERO ===== -->
-    <!-- Data comes from: config/profile.json → name, title, tagline, stats -->
     <header class="hero">
         <div class="hero-bg"></div>
         <div class="hero-content">
-            <p class="hero-label" id="heroTitle">IoT Engineer · Architect</p>
+            <p class="hero-label" id="heroTitle">IoT Engineer</p>
             <h1 class="hero-name" id="heroName">Robert Hidri</h1>
-            <p class="hero-tagline" id="heroTagline">I build connected systems — from embedded firmware on microcontrollers to cloud dashboards and everything in between.</p>
+            <p class="hero-tagline" id="heroTagline">Loading...</p>
             <div class="hero-actions">
                 <a href="dashboard.html" class="btn btn-primary">Explore Projects →</a>
                 <a href="#contact" class="btn btn-ghost">Get in Touch</a>
             </div>
-            <div class="hero-stats" id="heroStats">
-                <!-- JS fills this from profile.json stats[] -->
-            </div>
+            <div class="hero-stats" id="heroStats"></div>
         </div>
     </header>
 
     <main>
 
         <!-- ===== ABOUT ===== -->
-        <!-- Data comes from: config/profile.json → about.heading, about.paragraphs[], about.highlights[] -->
         <section id="about" class="section">
             <div class="section-inner">
                 <span class="section-tag">01 — About</span>
-                <h2 id="aboutHeading">Bridging hardware and software</h2>
+                <h2 id="aboutHeading">Loading...</h2>
                 <div class="about-grid">
-                    <div class="about-text" id="aboutText">
-                        <!-- JS fills this from profile.json about.paragraphs[] -->
-                    </div>
-                    <div class="about-highlights" id="aboutHighlights">
-                        <!-- JS fills this from profile.json about.highlights[] -->
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ===== SKILLS ===== -->
-        <!-- Data comes from: config/profile.json → skills[] -->
-        <section id="skills" class="section section-alt">
-            <div class="section-inner">
-                <span class="section-tag">02 — Skills</span>
-                <h2>Technical toolkit</h2>
-                <div class="skills-grid" id="skillsGrid">
-                    <!-- JS fills this from profile.json skills[] -->
+                    <div class="about-text" id="aboutText"></div>
+                    <div class="about-highlights" id="aboutHighlights"></div>
                 </div>
             </div>
         </section>
 
         <!-- ===== EXPERIENCE ===== -->
-        <!-- Data comes from: config/profile.json → experience[] -->
-        <section id="experience" class="section">
+        <section id="experience" class="section section-alt">
             <div class="section-inner">
-                <span class="section-tag">03 — Experience</span>
-                <h2>Where I've worked</h2>
-                <div class="timeline" id="experienceTimeline">
-                    <!-- JS fills this from profile.json experience[] -->
-                </div>
+                <span class="section-tag">02 — Experience</span>
+                <h2>Work History</h2>
+                <div class="timeline" id="experienceTimeline"></div>
+            </div>
+        </section>
+
+        <!-- ===== EDUCATION ===== -->
+        <section id="education" class="section">
+            <div class="section-inner">
+                <span class="section-tag">03 — Education</span>
+                <h2>Academic Background</h2>
+                <div class="timeline" id="educationTimeline"></div>
+            </div>
+        </section>
+
+        <!-- ===== SKILLS ===== -->
+        <section id="skills" class="section section-alt">
+            <div class="section-inner">
+                <span class="section-tag">04 — Skills</span>
+                <h2>Technical Toolkit</h2>
+                <div class="skills-grid" id="skillsGrid"></div>
+            </div>
+        </section>
+
+        <!-- ===== REFERENCES ===== -->
+        <section id="references" class="section">
+            <div class="section-inner">
+                <span class="section-tag">05 — References</span>
+                <h2>What Others Say</h2>
+                <div class="references-grid" id="referencesGrid"></div>
+            </div>
+        </section>
+
+        <!-- ===== HOBBIES ===== -->
+        <section id="hobbies" class="section section-alt">
+            <div class="section-inner">
+                <span class="section-tag">06 — Interests</span>
+                <h2>Beyond the Code</h2>
+                <div class="hobbies-grid" id="hobbiesGrid"></div>
             </div>
         </section>
 
         <!-- ===== DASHBOARD CTA ===== -->
         <section class="section section-cta">
             <div class="section-inner" style="text-align: center;">
-                <h2>See the work in action</h2>
-                <p style="max-width: 540px; margin: 0 auto 2rem; color: var(--text-muted);">The interactive dashboard showcases every project, tool, and technical domain — built with the same modular plugin system described above.</p>
+                <h2>See the Work in Action</h2>
+                <p style="max-width: 540px; margin: 0 auto 2rem; color: var(--text-muted);">
+                    The interactive dashboard showcases projects, thesis, certificates, and tools — 
+                    built with the same modular architecture described above.
+                </p>
                 <a href="dashboard.html" class="btn btn-primary btn-lg">Open Project Dashboard →</a>
             </div>
         </section>
 
         <!-- ===== CONTACT ===== -->
-        <!-- Data comes from: config/profile.json → contact[] -->
         <section id="contact" class="section">
             <div class="section-inner">
-                <span class="section-tag">04 — Contact</span>
-                <h2>Let's connect</h2>
-                <div class="contact-grid" id="contactGrid">
-                    <!-- JS fills this from profile.json contact[] -->
-                </div>
+                <span class="section-tag">07 — Contact</span>
+                <h2>Let's Connect</h2>
+                <div class="contact-grid" id="contactGrid"></div>
             </div>
         </section>
 
@@ -116,7 +137,6 @@
         </div>
     </footer>
 
-    <!-- Profile loader - reads config/profile.json and fills the page -->
     <script src="profile-loader.js"></script>
 
 </body>

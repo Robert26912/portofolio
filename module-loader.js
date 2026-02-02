@@ -221,6 +221,23 @@ class ModuleLoader {
                         html += '</div>';
                     }
 
+                    // Project links (GitHub, thesis, etc.)
+                    if (proj.github || (proj.links && Object.keys(proj.links).length > 0)) {
+                        html += '<div class="project-links">';
+                        if (proj.github) {
+                            html += `<a href="${proj.github}" target="_blank" rel="noopener" class="project-link">View on GitHub →</a>`;
+                        }
+                        if (proj.links) {
+                            if (proj.links.thesis) {
+                                html += `<a href="${proj.links.thesis}" target="_blank" rel="noopener" class="project-link">Read Thesis →</a>`;
+                            }
+                            if (proj.links.demo) {
+                                html += `<a href="${proj.links.demo}" target="_blank" rel="noopener" class="project-link">View Demo →</a>`;
+                            }
+                        }
+                        html += '</div>';
+                    }
+
                     if (proj.status) {
                         html += `<span class="project-status ${statusClass}">${proj.status}</span>`;
                     }
@@ -230,8 +247,64 @@ class ModuleLoader {
                 html += '</div>';
             }
 
-            // Skills — FIX: this was outside the else block before, 
-            // placed AFTER modal was shown, causing double render
+            // Areas (for hobbies module)
+            if (mod.content.areas && mod.content.areas.length > 0) {
+                html += '<div class="areas-grid">';
+                mod.content.areas.forEach(area => {
+                    html += `
+                        <div class="area-card">
+                            <span class="area-icon">${area.icon || ''}</span>
+                            <h4>${area.name}</h4>
+                            <p>${area.description}</p>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+            }
+
+            // Downloads (for CV module)
+            if (mod.content.downloads && mod.content.downloads.length > 0) {
+                html += '<div class="downloads-section"><h3>Available Downloads</h3>';
+                mod.content.downloads.forEach(dl => {
+                    const isPlaceholder = dl.url.includes('PLACEHOLDER');
+                    html += `
+                        <div class="download-card ${isPlaceholder ? 'placeholder' : ''}">
+                            <div class="download-info">
+                                <h4>${dl.name}</h4>
+                                <p>${dl.description}</p>
+                            </div>
+                            ${isPlaceholder 
+                                ? '<span class="download-status">Coming soon</span>'
+                                : `<a href="${dl.url}" target="_blank" class="btn btn-primary">Download PDF</a>`
+                            }
+                        </div>
+                    `;
+                });
+                html += '</div>';
+            }
+
+            // Roadmap (for certificates module)
+            if (mod.content.roadmap && mod.content.roadmap.length > 0) {
+                html += '<div class="roadmap-section"><h3>Learning Roadmap</h3>';
+                mod.content.roadmap.forEach(item => {
+                    const priorityClass = item.priority ? item.priority.toLowerCase() : '';
+                    html += `
+                        <div class="roadmap-card">
+                            <div class="roadmap-info">
+                                <h4>${item.name}</h4>
+                                <p>${item.description}</p>
+                            </div>
+                            <div class="roadmap-actions">
+                                <span class="roadmap-priority ${priorityClass}">${item.priority || ''}</span>
+                                ${item.url ? `<a href="${item.url}" target="_blank" rel="noopener" class="btn btn-secondary">Learn more →</a>` : ''}
+                            </div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+            }
+
+            // Skills
             if (mod.content.skills && mod.content.skills.length > 0) {
                 html += '<div class="skills-section"><h3>Key Skills</h3><ul class="skills-list">';
                 mod.content.skills.forEach(skill => {
@@ -240,7 +313,7 @@ class ModuleLoader {
                 html += '</ul></div>';
             }
 
-            // Interests (for architecture module)
+            // Interests
             if (mod.content.interests && mod.content.interests.length > 0) {
                 html += '<div class="skills-section"><h3>Interests</h3><ul class="skills-list">';
                 mod.content.interests.forEach(interest => {
@@ -255,7 +328,7 @@ class ModuleLoader {
             }
         }
 
-        // Set content and show modal — ONCE only (was done twice before)
+        // Set content and show modal — ONCE only
         modalBody.innerHTML = html;
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';

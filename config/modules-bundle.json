@@ -1,213 +1,275 @@
 {
   "modules": {
+    "thesis": {
+      "id": "thesis",
+      "title": "Bachelor's Thesis",
+      "description": "Carbon Footprint Calculator for Product Structure Data — Grade: 4/5",
+      "icon": "🎓",
+      "category": "projects",
+      "visibility": "public",
+      "enabled": true,
+      "content": {
+        "summary": "Designed and implemented a Python-based carbon footprint calculator at Genelec OY that calculates CO₂e emissions for individual products using real production data. Based on simplified Life Cycle Assessment (LCA) methodology.",
+        "projects": [
+          {
+            "name": "Carbon Footprint Calculator",
+            "description": "Software tool that calculates CO₂ equivalent emissions per product by analyzing materials, energy consumption, transport distances, and packaging. Users can modify inputs (material choices, transport distances) and see real-time impact on product emissions. Built for Genelec's sustainability planning.",
+            "technologies": ["Python", "LCA Methodology", "Data Analysis", "Technical Documentation"],
+            "github": "",
+            "status": "Completed",
+            "links": {
+              "thesis": "https://www.theseus.fi/handle/10024/796937"
+            }
+          }
+        ],
+        "skills": [
+          "Python development",
+          "Life Cycle Assessment (LCA)",
+          "Emissions calculation (CO₂e)",
+          "Technical documentation",
+          "Stakeholder collaboration",
+          "Scenario testing"
+        ],
+        "learning_notes": "This project taught me to work with cross-functional teams (production, design, sustainability experts) and translate complex environmental data into actionable software."
+      }
+    },
+
     "python": {
       "id": "python",
       "title": "Python Projects",
-      "description": "Backend development, automation, and data processing",
+      "description": "Backend development, data processing, automation scripts",
       "icon": "🐍",
       "category": "projects",
       "visibility": "public",
       "enabled": true,
       "content": {
-        "summary": "Backend development, automation, and data processing projects built with Python. Focus on clean code, efficient algorithms, and practical solutions.",
+        "summary": "Python is my strongest language. I've used it for everything from carbon footprint calculations at Genelec to machine learning experiments and IoT backend services.",
         "projects": [
           {
+            "name": "Carbon Footprint Calculator",
+            "description": "Production-grade tool calculating CO₂e emissions per product using LCA methodology. My thesis project at Genelec.",
+            "technologies": ["Python", "Data Processing", "LCA"],
+            "github": "",
+            "status": "Completed"
+          },
+          {
             "name": "IoT Data Logger",
-            "description": "Python backend for collecting and processing sensor data from embedded devices via MQTT",
+            "description": "[PLACEHOLDER] Backend service for collecting sensor data from ESP32 devices via MQTT.",
             "technologies": ["Python", "Flask", "MQTT", "SQLite"],
             "github": "",
             "status": "In Progress"
           },
           {
-            "name": "API Testing Framework",
-            "description": "Automated testing suite for REST API endpoints with structured reporting",
-            "technologies": ["Python", "Requests", "Pytest", "JSON"],
+            "name": "ML Experiments",
+            "description": "Coursework from Metropolia UAS: Introduction to AI, Artificial Intelligence with Python. Hands-on with ML libraries.",
+            "technologies": ["Python", "ML Libraries", "Jupyter"],
             "github": "",
             "status": "Completed"
           }
         ],
         "skills": [
           "Python 3.x",
-          "REST API development",
-          "Data processing with Pandas",
-          "Async programming",
-          "Testing & debugging"
+          "Data processing",
+          "ML libraries (basics)",
+          "Flask web framework",
+          "SQL databases",
+          "API development"
         ],
-        "learning_notes": "Currently exploring FastAPI for high-performance async APIs and integration with embedded systems."
+        "learning_notes": "Completed AI/ML courses at Metropolia UAS. Currently exploring FastAPI for async APIs."
       }
     },
+
     "cpp": {
       "id": "cpp",
-      "title": "C++ & Embedded",
-      "description": "Firmware and embedded systems for microcontrollers",
+      "title": "C/C++ & Embedded",
+      "description": "Microcontrollers, firmware, sensor systems",
       "icon": "⚡",
       "category": "projects",
       "visibility": "public",
       "enabled": true,
       "content": {
-        "summary": "Firmware and embedded systems development with focus on resource-constrained environments. Experience with microcontrollers, real-time systems, and hardware communication protocols.",
+        "summary": "Embedded systems development from my IoT engineering degree. Experience with microprocessors, sensor integration, and real-time systems.",
         "projects": [
           {
-            "name": "ESP32 Environmental Monitor",
-            "description": "WiFi-connected multi-sensor system with web dashboard for real-time monitoring",
-            "technologies": ["C++", "ESP32", "Arduino", "I2C", "MQTT"],
-            "github": "",
-            "status": "Active"
-          },
-          {
-            "name": "Motor Control System",
-            "description": "Precise DC motor control using PID algorithms for robotics applications",
-            "technologies": ["C", "STM32", "PWM", "Timers", "ADC"],
+            "name": "Microprocessor Programming Projects",
+            "description": "Coursework from Savonia UAS: Basics of Microprocessor Programming, Sensor Basics, Digital/Analog Electronics. Hands-on with embedded C.",
+            "technologies": ["C", "Microprocessors", "Sensors", "Electronics"],
             "github": "",
             "status": "Completed"
           },
           {
-            "name": "Bluetooth Sensor Network",
-            "description": "BLE mesh network for distributed temperature and humidity monitoring",
-            "technologies": ["C++", "nRF52", "Bluetooth 5.0", "Nordic SDK"],
+            "name": "ESP32 Environmental Monitor",
+            "description": "[PLACEHOLDER] WiFi-connected sensor system with temperature, humidity, and air quality monitoring.",
+            "technologies": ["C++", "ESP32", "Arduino", "MQTT"],
             "github": "",
             "status": "In Progress"
           }
         ],
         "skills": [
-          "C/C++ for embedded",
-          "ARM Cortex-M architecture",
-          "FreeRTOS",
-          "I2C / SPI / UART",
-          "Power optimization",
-          "JTAG/SWD debugging"
+          "C programming",
+          "Microprocessor basics",
+          "Sensor integration",
+          "Digital electronics",
+          "Analog electronics",
+          "Embedded debugging"
         ],
-        "learning_notes": "Exploring Zephyr RTOS for multi-platform embedded development and low-power wireless protocols."
+        "learning_notes": "Strong foundation from degree program. Building more hands-on projects to deepen practical experience."
       }
     },
+
     "web-dev": {
       "id": "web-dev",
       "title": "Web Development",
-      "description": "Frontend interfaces and full-stack web applications",
+      "description": "This portfolio — modular architecture with auto-discovery",
       "icon": "🌐",
       "category": "projects",
       "visibility": "public",
       "enabled": true,
       "content": {
-        "summary": "Web development projects from vanilla JavaScript to full-stack applications. Building responsive, modular, accessible interfaces.",
+        "summary": "Frontend development with vanilla JavaScript. This portfolio demonstrates modular architecture: data-driven pages, plugin system, separation of concerns.",
         "projects": [
           {
             "name": "Modular Portfolio Platform",
-            "description": "This website — plugin-based architecture with auto-discovery, search, filtering, and interactive tools",
-            "technologies": ["JavaScript", "HTML5", "CSS3", "JSON", "Git"],
+            "description": "This website — plugin-based architecture where modules are self-contained folders. JSON config drives both landing page and dashboard. No code changes needed to add content.",
+            "technologies": ["JavaScript ES6+", "HTML5", "CSS3", "JSON", "Git"],
             "github": "https://github.com/Robert26912/portofolio",
             "status": "Active"
           }
         ],
         "skills": [
-          "Vanilla JavaScript (ES6+)",
-          "HTML5 / CSS3",
-          "Responsive design",
-          "CSS Grid & Flexbox",
+          "JavaScript (ES6 classes, async/await)",
           "DOM manipulation",
-          "Fetch API / async-await"
+          "CSS Grid & Flexbox",
+          "Responsive design",
+          "Fetch API",
+          "Modular architecture"
         ],
-        "learning_notes": "Building a strong vanilla JS foundation before moving to React. Migration path already planned."
+        "learning_notes": "Built this from scratch to learn fundamentals before frameworks. React migration path planned."
       }
     },
-    "devops": {
-      "id": "devops",
-      "title": "DevOps",
-      "description": "CI/CD pipelines, containerization, and infrastructure automation",
-      "icon": "🚀",
+
+    "networking": {
+      "id": "networking",
+      "title": "Networking & Infrastructure",
+      "description": "IP routing, OSI model, industrial networks, Linux",
+      "icon": "🌐",
       "category": "projects",
       "visibility": "public",
       "enabled": true,
       "content": {
-        "summary": "DevOps practices, CI/CD pipelines, and infrastructure automation. Focus on streamlining development workflows and deployment processes.",
+        "summary": "Strong foundation in networking from IoT degree: IP routing, OSI model, industrial networks, and Linux systems.",
         "projects": [
           {
-            "name": "GitHub Actions CI/CD",
-            "description": "Automated build, test, and deployment pipeline for portfolio website",
-            "technologies": ["GitHub Actions", "YAML", "Git", "GitHub Pages"],
-            "github": "https://github.com/Robert26912/portofolio",
-            "status": "Active"
-          },
-          {
-            "name": "Docker Development Environment",
-            "description": "Containerized development setup for consistent cross-platform builds",
-            "technologies": ["Docker", "Docker Compose", "Linux"],
+            "name": "IP Routing Networks and OSI Model",
+            "description": "Coursework: Network configuration, routing protocols, OSI layer understanding.",
+            "technologies": ["Networking", "Routing", "OSI Model"],
             "github": "",
             "status": "Completed"
           },
           {
-            "name": "Automated Testing Suite",
-            "description": "Integration and unit testing framework with automated reporting",
-            "technologies": ["Pytest", "Git Hooks", "CI/CD"],
+            "name": "Industrial Automation and Networking",
+            "description": "Coursework: Industrial network protocols, automation systems, PLC basics.",
+            "technologies": ["Industrial Networks", "Automation", "PLCs"],
             "github": "",
-            "status": "In Progress"
+            "status": "Completed"
           }
         ],
         "skills": [
-          "Git version control",
-          "GitHub Actions",
-          "Docker containerization",
-          "Linux command line",
-          "Bash scripting",
-          "CI/CD best practices"
-        ],
-        "learning_notes": "Learning Kubernetes for container orchestration and exploring infrastructure-as-code with Terraform."
+          "IP Routing",
+          "OSI Model",
+          "Industrial networks",
+          "Linux administration",
+          "Network troubleshooting"
+        ]
       }
     },
-    "architecture": {
-      "id": "architecture",
-      "title": "Architecture & Design",
-      "description": "Building architecture, software architecture, and system design",
-      "icon": "🏗️",
-      "category": "projects",
+
+    "certificates": {
+      "id": "certificates",
+      "title": "Certificates & Learning",
+      "description": "Completed and planned certifications",
+      "icon": "📜",
+      "category": "learning",
       "visibility": "public",
       "enabled": true,
       "content": {
-        "summary": "Exploring architecture from physical buildings to digital systems. Interest in both structural design and software engineering principles.",
+        "summary": "Track record of continuous learning. Certifications completed and roadmap for career development.",
         "projects": [
           {
-            "name": "Modular Portfolio Platform",
-            "description": "Plugin-based web application with auto-discovery and scalable architecture",
-            "technologies": ["JavaScript", "Modular Design", "JSON Config", "Design Patterns"],
-            "github": "https://github.com/Robert26912/portofolio",
-            "status": "Active"
+            "name": "LUT University: Code Camp",
+            "description": "Intensive programming course. Completed Dec 2020.",
+            "technologies": ["Programming Fundamentals"],
+            "github": "",
+            "status": "Completed"
           },
           {
-            "name": "IoT System Architecture",
-            "description": "End-to-end architecture for IoT sensor network with cloud integration",
-            "technologies": ["MQTT", "WebSockets", "REST API", "Database Design"],
+            "name": "Metropolia: Python Programming",
+            "description": "Python development course. Completed May 2022.",
+            "technologies": ["Python"],
             "github": "",
-            "status": "Planning"
+            "status": "Completed"
+          },
+          {
+            "name": "Metropolia: Introduction to AI",
+            "description": "Fundamentals of artificial intelligence. Completed May 2022.",
+            "technologies": ["AI/ML Basics"],
+            "github": "",
+            "status": "Completed"
+          },
+          {
+            "name": "Metropolia: AI with Python",
+            "description": "Practical AI implementation with Python. Completed May 2022.",
+            "technologies": ["Python", "ML Libraries"],
+            "github": "",
+            "status": "Completed"
+          },
+          {
+            "name": "Metropolia: C Programming",
+            "description": "C language fundamentals. Completed May 2022.",
+            "technologies": ["C"],
+            "github": "",
+            "status": "Completed"
           }
         ],
-        "skills": [
-          "System design patterns",
-          "Microservices architecture",
-          "API design",
-          "Scalability planning",
-          "Documentation"
+        "skills": [],
+        "roadmap": [
+          {
+            "name": "Microsoft Azure Fundamentals (AZ-900)",
+            "description": "Cloud computing basics, Azure services overview. Good entry point for cloud skills.",
+            "url": "https://learn.microsoft.com/en-us/credentials/certifications/azure-fundamentals/",
+            "priority": "High",
+            "status": "Planned"
+          },
+          {
+            "name": "AWS Certified Cloud Practitioner",
+            "description": "Alternative cloud certification. AWS is widely used in Finland.",
+            "url": "https://aws.amazon.com/certification/certified-cloud-practitioner/",
+            "priority": "Medium",
+            "status": "Planned"
+          },
+          {
+            "name": "Python Institute PCEP",
+            "description": "Certified Entry-Level Python Programmer. Validates Python fundamentals.",
+            "url": "https://pythoninstitute.org/pcep",
+            "priority": "Medium",
+            "status": "Planned"
+          }
         ],
-        "interests": [
-          "Sustainable building design",
-          "Smart home integration",
-          "Urban planning & IoT",
-          "Architectural rendering",
-          "Building automation systems"
-        ],
-        "learning_notes": "Studying how architectural principles apply to both physical structures and software systems. Exploring smart building technologies that bridge both worlds."
+        "learning_notes": "Focus recommendation: Azure AZ-900 is the quickest win — widely recognized, relatively easy, free learning materials from Microsoft."
       }
     },
+
     "dev-tools": {
       "id": "dev-tools",
       "title": "Developer Tools",
-      "description": "Interactive utilities — calculators, formatters, encoders",
+      "description": "Interactive utilities — calculator, JSON formatter, Base64",
       "icon": "🧰",
       "category": "tools",
       "visibility": "public",
       "enabled": true,
       "interactive": true,
       "content": {
-        "summary": "Collection of developer utilities accessible right in your browser. No installation needed.",
+        "summary": "Browser-based developer utilities built to demonstrate JavaScript skills. No installation needed.",
         "tools": [
           {
             "name": "Calculator",
@@ -225,6 +287,69 @@
             "type": "base64"
           }
         ]
+      }
+    },
+
+    "cv-download": {
+      "id": "cv-download",
+      "title": "Download CV",
+      "description": "Get my CV in PDF format",
+      "icon": "📄",
+      "category": "tools",
+      "visibility": "public",
+      "enabled": true,
+      "content": {
+        "summary": "Download my curriculum vitae for detailed work history, education, and skills.",
+        "downloads": [
+          {
+            "name": "CV (Finnish)",
+            "description": "Ansioluettelo suomeksi",
+            "filename": "Robert_Hidri_CV_FI.pdf",
+            "url": "[PLACEHOLDER - upload your CV to GitHub repo and link here]"
+          },
+          {
+            "name": "CV (English)",
+            "description": "Curriculum Vitae in English",
+            "filename": "Robert_Hidri_CV_EN.pdf",
+            "url": "[PLACEHOLDER - create English version and upload]"
+          }
+        ]
+      }
+    },
+
+    "hobbies": {
+      "id": "hobbies",
+      "title": "Hobbies & Interests",
+      "description": "What I do outside of work",
+      "icon": "🎯",
+      "category": "projects",
+      "visibility": "public",
+      "enabled": true,
+      "content": {
+        "summary": "Balance between technical work and personal interests. These hobbies often inspire my projects.",
+        "areas": [
+          {
+            "name": "Architecture & Design",
+            "description": "Background in architecture studies — passion for building design, urban planning, sustainable structures. This influences how I think about software architecture too.",
+            "icon": "🏗️"
+          },
+          {
+            "name": "Fitness & Exercise",
+            "description": "Regular training and progress tracking. Interested in building exercise tracking into my personal ecosystem.",
+            "icon": "🏋️"
+          },
+          {
+            "name": "DIY & Making",
+            "description": "Hands-on projects, home automation experiments, building things that solve real problems.",
+            "icon": "🔧"
+          },
+          {
+            "name": "Continuous Learning",
+            "description": "Always taking courses, reading documentation, exploring new technologies. Learning is the hobby that powers all others.",
+            "icon": "📚"
+          }
+        ],
+        "skills": []
       }
     }
   }

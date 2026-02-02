@@ -1,72 +1,148 @@
 {
   "name": "Robert Hidri",
-  "title": "IoT Engineer · Architect",
-  "tagline": "I build connected systems — from embedded firmware on microcontrollers to cloud dashboards and everything in between.",
+  "title": "IoT Engineer",
+  "tagline": "I build connected systems — from carbon footprint calculators to sensor networks. Problem solver who explains complex tech through stories and analogies.",
   
   "stats": [
-    { "value": "5+", "label": "Tech Domains" },
-    { "value": "10mo", "label": "Genelec OY" },
-    { "value": "∞", "label": "Curiosity" }
+    { "value": "4.32", "label": "GPA /5" },
+    { "value": "10mo", "label": "Genelec R&D" },
+    { "value": "4/5", "label": "Thesis Grade" }
   ],
 
   "about": {
-    "heading": "Bridging hardware and software",
+    "heading": "Engineer who explains, builds, and solves",
     "paragraphs": [
-      "I'm an IoT engineer with a dual passion for embedded systems and building architecture. My background spans firmware development on ARM microcontrollers, Python backend services, and web-based dashboards for real-time data.",
-      "During my internship at <strong>Genelec OY</strong> in Iisalmi, Finland, I worked on production-related technology systems, gaining hands-on experience with industrial processes and audio engineering excellence.",
-      "I approach every project with an architect's mindset — whether I'm designing a sensor network or a software system, I think about structure, modularity, and how the pieces connect. This portfolio itself is built on a plugin architecture where each module is a self-contained unit that plugs into the dashboard."
+      "I'm an IoT engineer with a talent for explaining complex technical topics through stories and analogies. I lead understanding through structured thinking, and I'm an experimental problem solver who creates and tests ideas quickly.",
+      "At <strong>Genelec OY</strong>, I started in logistics automation planning, then transitioned to the R&D team where I designed and built a <strong>carbon footprint calculator</strong> — a Python-based tool that calculates CO₂e emissions for individual products based on real production data. This became my thesis (grade: 4/5).",
+      "I thrive under constraints — they sharpen my creativity for finding elegant solutions. Whether designing embedded systems or software architecture, I think in modules, interfaces, and connections. This portfolio itself demonstrates that: a plugin architecture where data is separate from presentation."
     ],
     "highlights": [
-      { "icon": "🔌", "title": "IoT & Embedded", "text": "ESP32, STM32, BLE mesh networks, sensor integration" },
-      { "icon": "🐍", "title": "Backend & Data", "text": "Python, Flask, REST APIs, MQTT, data processing" },
-      { "icon": "🌐", "title": "Web & Frontend", "text": "JavaScript, modular architecture, responsive UI" },
-      { "icon": "🏗️", "title": "Architecture", "text": "Building design, system design, smart buildings" }
+      { "icon": "🎯", "title": "Problem Solver", "text": "Experimental approach — create, test, iterate quickly" },
+      { "icon": "🔌", "title": "IoT & Embedded", "text": "Sensors, automation logic, industrial networks, microcontrollers" },
+      { "icon": "🐍", "title": "Software Dev", "text": "Python (incl. ML libraries), C, C#, Java, SQL" },
+      { "icon": "🤝", "title": "Team Player", "text": "Collaborative, takes responsibility, supports others' decisions" }
     ]
   },
 
   "skills": [
     {
-      "category": "Languages",
-      "items": ["Python", "C/C++", "JavaScript", "HTML/CSS", "Bash", "YAML"]
+      "category": "Programming Languages",
+      "items": ["Python", "C", "C#", "Java", "SQL", "JavaScript", "HTML/CSS"]
     },
     {
-      "category": "Embedded & IoT",
-      "items": ["ESP32", "STM32", "Arduino", "FreeRTOS", "I2C / SPI / UART", "MQTT", "BLE"]
+      "category": "IoT & Embedded",
+      "items": ["Sensor Integration", "Automation Logic", "Microprocessors", "Industrial Networks", "Wireless/Radio Tech", "MQTT"]
     },
     {
-      "category": "Frameworks & Tools",
-      "items": ["Flask", "Pandas", "Git", "Docker", "GitHub Actions", "Linux", "VS Code"]
+      "category": "Data & Analytics",
+      "items": ["Data Structures & Algorithms", "Big Data Basics", "ML Libraries", "Business Intelligence", "IoT Cloud Platforms"]
     },
     {
-      "category": "Concepts",
-      "items": ["REST API Design", "Modular Architecture", "CI/CD", "Real-time Systems", "Sensor Networks", "System Design"]
+      "category": "Networking & Infrastructure",
+      "items": ["IP Routing", "OSI Model", "Industrial Automation", "Linux", "Real-time Systems"]
+    },
+    {
+      "category": "Tools & Methods",
+      "items": ["Git/GitHub", "AI Tools", "LCA Methodology", "Technical Documentation", "Agile Collaboration"]
+    },
+    {
+      "category": "Languages (Human)",
+      "items": ["Albanian (native)", "English (fluent)", "Italian (good)", "Finnish (developing)"]
     }
   ],
 
   "experience": [
     {
-      "role": "Intern",
+      "role": "Newspaper Delivery",
+      "company": "Lounais-Suomen Tietojakelu Oy",
+      "location": "Turku, Finland",
+      "startDate": "Jun 2024",
+      "endDate": "Present",
+      "description": "Early morning newspaper distribution ensuring subscribers receive papers on time. Core of the operation: reliability and consistency.",
+      "tags": ["Logistics", "Reliability", "Time Management"]
+    },
+    {
+      "role": "R&D Intern → Software Developer",
       "company": "Genelec OY",
       "location": "Iisalmi, Finland",
       "startDate": "Aug 2022",
       "endDate": "Jun 2023",
-      "description": "Genelec is a world-leading manufacturer of professional active loudspeakers. During my 10-month internship I worked with production technology and gained exposure to industrial IoT systems, quality-driven engineering processes, and cross-functional collaboration in a manufacturing environment.",
-      "tags": ["Industrial IoT", "Production Technology", "Manufacturing"]
+      "description": "Started in logistics automation planning — mapped manual processes and proposed improvements. Evaluated external automation solutions from technical and financial perspectives, created ROI analysis materials. Transitioned to R&D team where I designed and implemented a carbon footprint calculator (thesis project) — a Python-based system calculating CO₂e emissions per product using real production data, materials, energy consumption, transport, and packaging based on simplified LCA methodology.",
+      "tags": ["Python", "LCA", "R&D", "Automation", "Data Analysis"]
     },
     {
-      "role": "Self-directed Projects",
-      "company": "",
-      "location": "",
-      "startDate": "2023",
-      "endDate": "Present",
-      "description": "Building a personal ecosystem of connected tools: this modular portfolio platform, IoT sensor networks with ESP32 devices, Python backend services, and exploring the intersection of building architecture and smart home technology.",
-      "tags": ["Full Stack", "IoT", "Architecture"]
+      "role": "Police Officer",
+      "company": "Tirana Police Department",
+      "location": "Tirana, Albania",
+      "startDate": "2017",
+      "endDate": "2019",
+      "description": "Law enforcement and public order: implementing laws, handling citations, assisting citizens, maintaining public safety. Emergency response with rapid action principles, safety prioritization, and conflict resolution.",
+      "tags": ["Leadership", "Crisis Response", "Public Service"]
+    }
+  ],
+
+  "education": [
+    {
+      "degree": "Bachelor of Engineering (IoT)",
+      "school": "Savonia University of Applied Sciences",
+      "location": "Finland",
+      "startDate": "2019",
+      "endDate": "2023",
+      "gpa": "4.32 / 5",
+      "thesis": {
+        "title": "Carbon Footprint Calculator for Product Structure Data",
+        "grade": "4 / 5 (Very Good)",
+        "url": "https://www.theseus.fi/handle/10024/796937"
+      },
+      "highlights": [
+        "Industrial IoT and Digital Health Ecosystems",
+        "Object Oriented Programming",
+        "Wireless and Radiotechnology", 
+        "IoT Cloud Platforms, Analytics and Applications",
+        "Industrial Automation and Networking",
+        "AI/ML courses at Metropolia UAS"
+      ]
+    },
+    {
+      "degree": "Finnish Language Studies",
+      "school": "Turun TAITO-koulutus",
+      "location": "Turku, Finland",
+      "startDate": "2024",
+      "endDate": "2025",
+      "highlights": ["Professional Finnish for workplace integration"]
+    },
+    {
+      "degree": "Architecture (discontinued)",
+      "school": "Polytechnic University of Tirana",
+      "location": "Tirana, Albania",
+      "startDate": "2013",
+      "endDate": "2019",
+      "highlights": ["Foundation in structural design and spatial thinking"]
+    }
+  ],
+
+  "hobbies": [
+    { "icon": "🏗️", "name": "Architecture & Design", "description": "Passion for building design, urban planning, smart buildings — bridging physical and digital architecture" },
+    { "icon": "🏋️", "name": "Fitness & Exercise", "description": "Regular training, tracking progress, understanding body systems" },
+    { "icon": "🔧", "name": "DIY & Making", "description": "Building things, home automation projects, hands-on problem solving" },
+    { "icon": "📚", "name": "Continuous Learning", "description": "Online courses, certifications, exploring new technologies" }
+  ],
+
+  "references": [
+    {
+      "name": "Aki Mäkivirta",
+      "title": "Chief Technology Officer",
+      "company": "Genelec Oy",
+      "quote": "Robert is a hard-working, creative and diligent software engineer with the capacity to find creative solutions to challenging engineering problems and ability to efficiently adopt new tools and methods in software creation. He contributes very positively as a member of a team, and actively and independently searches for solutions and discovers the application domain information.",
+      "contact": "Available upon request"
     }
   ],
 
   "contact": [
-    { "icon": "✉️", "label": "Email", "value": "robert0hidri@gmail.com", "url": "mailto:robert0hidri@gmail.com" },
+    { "icon": "📱", "label": "Phone", "value": "+358 46 613 3040", "url": "tel:" },
+    { "icon": "✉️", "label": "Email", "value": "robert0hidri@gmail.com", "url": "mailto:" },
     { "icon": "💻", "label": "GitHub", "value": "Robert26912", "url": "https://github.com/Robert26912" },
-    { "icon": "🔗", "label": "LinkedIn", "value": "robert-h", "url": "https://www.linkedin.com/in/robert-h-326155199/" }
+    { "icon": "🔗", "label": "LinkedIn", "value": "robert-hidri", "url": "https://www.linkedin.com/in/robert-h-326155199/" },
+    { "icon": "📍", "label": "Location", "value": "Turku, Finland", "url": "" }
   ]
 }

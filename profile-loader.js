@@ -2,13 +2,15 @@
  * PROFILE LOADER
  * Reads config/profile.json and populates the landing page
  * 
- * Same pattern as module-loader.js:
- * 1. Fetch data from JSON
- * 2. Build HTML from data
- * 3. Insert into DOM
- * 
- * To add new experience/skills/etc: just edit profile.json
- * No code changes needed.
+ * Sections supported:
+ * - Hero (name, title, tagline, stats)
+ * - About (heading, paragraphs, highlights)
+ * - Skills (categories with items)
+ * - Experience (timeline)
+ * - Education (degrees, thesis)
+ * - Hobbies (interests)
+ * - References (quotes)
+ * - Contact (links)
  */
 
 class ProfileLoader {
@@ -34,7 +36,6 @@ class ProfileLoader {
             console.log('✅ Profile loaded');
         } catch (error) {
             console.error('❌ Failed to load profile:', error);
-            // Page still works with static fallback content
         }
     }
 
@@ -43,6 +44,9 @@ class ProfileLoader {
         this.renderAbout();
         this.renderSkills();
         this.renderExperience();
+        this.renderEducation();
+        this.renderHobbies();
+        this.renderReferences();
         this.renderContact();
     }
 
@@ -50,15 +54,11 @@ class ProfileLoader {
     renderHero() {
         const p = this.profile;
         
-        const nameEl = document.getElementById('heroName');
-        const titleEl = document.getElementById('heroTitle');
-        const taglineEl = document.getElementById('heroTagline');
-        const statsEl = document.getElementById('heroStats');
-
-        if (nameEl) nameEl.textContent = p.name;
-        if (titleEl) titleEl.textContent = p.title;
-        if (taglineEl) taglineEl.textContent = p.tagline;
+        this.setText('heroName', p.name);
+        this.setText('heroTitle', p.title);
+        this.setText('heroTagline', p.tagline);
         
+        const statsEl = document.getElementById('heroStats');
         if (statsEl && p.stats) {
             statsEl.innerHTML = p.stats.map(stat => `
                 <div class="stat">
@@ -74,16 +74,14 @@ class ProfileLoader {
         const about = this.profile.about;
         if (!about) return;
 
-        const headingEl = document.getElementById('aboutHeading');
-        const textEl = document.getElementById('aboutText');
-        const highlightsEl = document.getElementById('aboutHighlights');
-
-        if (headingEl) headingEl.textContent = about.heading;
+        this.setText('aboutHeading', about.heading);
         
+        const textEl = document.getElementById('aboutText');
         if (textEl && about.paragraphs) {
             textEl.innerHTML = about.paragraphs.map(p => `<p>${p}</p>`).join('');
         }
 
+        const highlightsEl = document.getElementById('aboutHighlights');
         if (highlightsEl && about.highlights) {
             highlightsEl.innerHTML = about.highlights.map(h => `
                 <div class="highlight-card">
@@ -157,6 +155,91 @@ class ProfileLoader {
         }).join('');
     }
 
+    // ===== EDUCATION =====
+    renderEducation() {
+        const education = this.profile.education;
+        if (!education) return;
+
+        const container = document.getElementById('educationTimeline');
+        if (!container) return;
+
+        container.innerHTML = education.map(edu => {
+            const dateRange = edu.endDate 
+                ? `${edu.startDate} – ${edu.endDate}`
+                : edu.startDate;
+
+            const gpaHtml = edu.gpa 
+                ? `<p class="timeline-gpa">GPA: ${edu.gpa}</p>`
+                : '';
+
+            const thesisHtml = edu.thesis
+                ? `<div class="thesis-card">
+                    <strong>Thesis:</strong> ${edu.thesis.title}<br>
+                    <span class="thesis-grade">Grade: ${edu.thesis.grade}</span>
+                    ${edu.thesis.url ? `<a href="${edu.thesis.url}" target="_blank" rel="noopener" class="thesis-link">Read thesis →</a>` : ''}
+                   </div>`
+                : '';
+
+            const highlightsHtml = edu.highlights && edu.highlights.length > 0
+                ? `<div class="timeline-tags">
+                    ${edu.highlights.map(h => `<span class="pill pill-sm">${h}</span>`).join('')}
+                   </div>`
+                : '';
+
+            return `
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-header">
+                            <h3>${edu.degree}</h3>
+                            <span class="timeline-date">${dateRange}</span>
+                        </div>
+                        <p class="timeline-location">${edu.school}${edu.location ? ', ' + edu.location : ''}</p>
+                        ${gpaHtml}
+                        ${thesisHtml}
+                        ${highlightsHtml}
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // ===== HOBBIES =====
+    renderHobbies() {
+        const hobbies = this.profile.hobbies;
+        if (!hobbies) return;
+
+        const container = document.getElementById('hobbiesGrid');
+        if (!container) return;
+
+        container.innerHTML = hobbies.map(hobby => `
+            <div class="hobby-card">
+                <span class="hobby-icon">${hobby.icon}</span>
+                <h4>${hobby.name}</h4>
+                <p>${hobby.description}</p>
+            </div>
+        `).join('');
+    }
+
+    // ===== REFERENCES =====
+    renderReferences() {
+        const references = this.profile.references;
+        if (!references) return;
+
+        const container = document.getElementById('referencesGrid');
+        if (!container) return;
+
+        container.innerHTML = references.map(ref => `
+            <div class="reference-card">
+                <blockquote>"${ref.quote}"</blockquote>
+                <div class="reference-author">
+                    <strong>${ref.name}</strong>
+                    <span>${ref.title}, ${ref.company}</span>
+                </div>
+            </div>
+        `).join('');
+    }
+
     // ===== CONTACT =====
     renderContact() {
         const contact = this.profile.contact;
@@ -165,13 +248,31 @@ class ProfileLoader {
         const container = document.getElementById('contactGrid');
         if (!container) return;
 
-        container.innerHTML = contact.map(c => `
-            <a href="${c.url}" ${c.url.startsWith('http') ? 'target="_blank" rel="noopener"' : ''} class="contact-card">
-                <span class="contact-icon">${c.icon}</span>
-                <span class="contact-label">${c.label}</span>
-                <span class="contact-value">${c.value}</span>
-            </a>
-        `).join('');
+        container.innerHTML = contact.map(c => {
+            // Skip items with no URL (like location)
+            if (!c.url) {
+                return `
+                    <div class="contact-card contact-card-static">
+                        <span class="contact-icon">${c.icon}</span>
+                        <span class="contact-label">${c.label}</span>
+                        <span class="contact-value">${c.value}</span>
+                    </div>
+                `;
+            }
+            return `
+                <a href="${c.url}" ${c.url.startsWith('http') ? 'target="_blank" rel="noopener"' : ''} class="contact-card">
+                    <span class="contact-icon">${c.icon}</span>
+                    <span class="contact-label">${c.label}</span>
+                    <span class="contact-value">${c.value}</span>
+                </a>
+            `;
+        }).join('');
+    }
+
+    // Helper
+    setText(id, text) {
+        const el = document.getElementById(id);
+        if (el && text) el.textContent = text;
     }
 }
 
