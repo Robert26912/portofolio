@@ -27,29 +27,19 @@
     </nav>
 
     <!-- ===== HERO ===== -->
+    <!-- Data comes from: config/profile.json → name, title, tagline, stats -->
     <header class="hero">
         <div class="hero-bg"></div>
         <div class="hero-content">
-            <p class="hero-label">IoT Engineer · Architect</p>
-            <h1 class="hero-name">Robert Hidri</h1>
-            <p class="hero-tagline">I build connected systems — from embedded firmware on microcontrollers to cloud dashboards and everything in between.</p>
+            <p class="hero-label" id="heroTitle">IoT Engineer · Architect</p>
+            <h1 class="hero-name" id="heroName">Robert Hidri</h1>
+            <p class="hero-tagline" id="heroTagline">I build connected systems — from embedded firmware on microcontrollers to cloud dashboards and everything in between.</p>
             <div class="hero-actions">
                 <a href="dashboard.html" class="btn btn-primary">Explore Projects →</a>
                 <a href="#contact" class="btn btn-ghost">Get in Touch</a>
             </div>
-            <div class="hero-stats">
-                <div class="stat">
-                    <span class="stat-value">5+</span>
-                    <span class="stat-label">Tech Domains</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-value">12mo</span>
-                    <span class="stat-label">Genelec OY</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-value">∞</span>
-                    <span class="stat-label">Curiosity</span>
-                </div>
+            <div class="hero-stats" id="heroStats">
+                <!-- JS fills this from profile.json stats[] -->
             </div>
         </div>
     </header>
@@ -57,153 +47,42 @@
     <main>
 
         <!-- ===== ABOUT ===== -->
+        <!-- Data comes from: config/profile.json → about.heading, about.paragraphs[], about.highlights[] -->
         <section id="about" class="section">
             <div class="section-inner">
                 <span class="section-tag">01 — About</span>
-                <h2>Bridging hardware and software</h2>
+                <h2 id="aboutHeading">Bridging hardware and software</h2>
                 <div class="about-grid">
-                    <div class="about-text">
-                        <p>I'm an IoT engineer with a dual passion for embedded systems and building architecture. My background spans firmware development on ARM microcontrollers, Python backend services, and web-based dashboards for real-time data.</p>
-                        <p>During my internship at <strong>Genelec OY</strong> in Iisalmi, Finland, I worked as a trainee where i developed a internal Co2 calculator based on the product stack.</p>
-                        <p>I approach every project with an architect's mindset — whether I'm designing a sensor network or a software system, I think about structure, modularity, and how the pieces connect. This portfolio itself is built on a plugin architecture where each module is a self-contained unit that plugs into the dashboard.</p>
+                    <div class="about-text" id="aboutText">
+                        <!-- JS fills this from profile.json about.paragraphs[] -->
                     </div>
-                    <div class="about-highlights">
-                        <div class="highlight-card">
-                            <span class="highlight-icon">🔌</span>
-                            <h4>IoT & Embedded</h4>
-                            <p>ESP32, STM32, BLE mesh networks, sensor integration</p>
-                        </div>
-                        <div class="highlight-card">
-                            <span class="highlight-icon">🐍</span>
-                            <h4>Backend & Data</h4>
-                            <p>Python, Flask, REST APIs, MQTT, data processing</p>
-                        </div>
-                        <div class="highlight-card">
-                            <span class="highlight-icon">🌐</span>
-                            <h4>Web & Frontend</h4>
-                            <p>JavaScript, modular architecture, responsive UI</p>
-                        </div>
-                        <div class="highlight-card">
-                            <span class="highlight-icon">🏗️</span>
-                            <h4>Architecture</h4>
-                            <p>Building design, system design, smart buildings</p>
-                        </div>
+                    <div class="about-highlights" id="aboutHighlights">
+                        <!-- JS fills this from profile.json about.highlights[] -->
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- ===== SKILLS ===== -->
+        <!-- Data comes from: config/profile.json → skills[] -->
         <section id="skills" class="section section-alt">
             <div class="section-inner">
                 <span class="section-tag">02 — Skills</span>
                 <h2>Technical toolkit</h2>
-                <div class="skills-grid">
-                    <div class="skill-group">
-                        <h4>Languages</h4>
-                        <div class="skill-pills">
-                            <span class="pill">Python</span>
-                            <span class="pill">C/C++</span>
-                            <span class="pill">JavaScript</span>
-                            <span class="pill">HTML/CSS</span>
-                            <span class="pill">Bash</span>
-                            <span class="pill">YAML</span>
-                        </div>
-                    </div>
-                    <div class="skill-group">
-                        <h4>Embedded & IoT</h4>
-                        <div class="skill-pills">
-                            <span class="pill">ESP32</span>
-                            <span class="pill">STM32</span>
-                            <span class="pill">Arduino</span>
-                            <span class="pill">FreeRTOS</span>
-                            <span class="pill">I2C / SPI / UART</span>
-                            <span class="pill">MQTT</span>
-                            <span class="pill">BLE</span>
-                        </div>
-                    </div>
-                    <div class="skill-group">
-                        <h4>Frameworks & Tools</h4>
-                        <div class="skill-pills">
-                            <span class="pill">Flask</span>
-                            <span class="pill">Pandas</span>
-                            <span class="pill">Git</span>
-                            <span class="pill">Docker</span>
-                            <span class="pill">GitHub Actions</span>
-                            <span class="pill">Linux</span>
-                            <span class="pill">VS Code</span>
-                        </div>
-                    </div>
-                    <div class="skill-group">
-                        <h4>Concepts</h4>
-                        <div class="skill-pills">
-                            <span class="pill">REST API Design</span>
-                            <span class="pill">Modular Architecture</span>
-                            <span class="pill">CI/CD</span>
-                            <span class="pill">Real-time Systems</span>
-                            <span class="pill">Sensor Networks</span>
-                            <span class="pill">System Design</span>
-                        </div>
-                    </div>
+                <div class="skills-grid" id="skillsGrid">
+                    <!-- JS fills this from profile.json skills[] -->
                 </div>
             </div>
         </section>
 
         <!-- ===== EXPERIENCE ===== -->
+        <!-- Data comes from: config/profile.json → experience[] -->
         <section id="experience" class="section">
             <div class="section-inner">
                 <span class="section-tag">03 — Experience</span>
                 <h2>Where I've worked</h2>
-
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-marker"></div>
-                        <div class="timeline-content">
-                            <div class="timeline-header">
-                                <h3>Intern — Genelec OY</h3>
-                                <span class="timeline-date">Aug 2022 – Jun 2023</span>
-                            </div>
-                            <p class="timeline-location">Iisalmi, Finland</p>
-                            <p>Genelec is a world-leading manufacturer of professional active loudspeakers. During my 12-month internship I worked in the automation of logistics part of the company aswell as developing a tool to calculate Co2 based on product components.</p>
-                            <div class="timeline-tags">
-                                <span class="pill pill-sm">Industrial IoT</span>
-                                <span class="pill pill-sm">Production Technology</span>
-                                <span class="pill pill-sm">Manufacturing</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-marker"></div>
-                        <div class="timeline-content">
-                            <div class="timeline-header">
-                                <h3>Self-directed Projects</h3>
-                                <span class="timeline-date">2023 – Present</span>
-                            </div>
-                            <p>Building a personal ecosystem of connected tools: this modular portfolio platform, IoT sensor networks with ESP32 devices, Python backend services, and exploring the intersection of building architecture and smart home technology.</p>
-                            <div class="timeline-tags">
-                                <span class="pill pill-sm">Full Stack</span>
-                                <span class="pill pill-sm">IoT</span>
-                                <span class="pill pill-sm">Architecture</span>
-                            </div>
-                        </div>
-                    </div>
-
-                     <div class="timeline-item">
-                        <div class="timeline-marker"></div>
-                        <div class="timeline-content">
-                            <div class="timeline-header">
-                                <h3>Police Office</h3>
-                                <span class="timeline-date">May,2017 – August,2019</span>
-                            </div>
-                            <p>During my time as police officer in the capital of Albania i was working in the position of patrol which means i was first responder in any and all situations.</p>
-                            <div class="timeline-tags">
-                                <span class="pill pill-sm">Law</span>
-                                <span class="pill pill-sm">Problem solving</span>
-                                <span class="pill pill-sm">Communication</span>
-                            </div>
-                        </div>
-                    </div>
+                <div class="timeline" id="experienceTimeline">
+                    <!-- JS fills this from profile.json experience[] -->
                 </div>
             </div>
         </section>
@@ -218,26 +97,13 @@
         </section>
 
         <!-- ===== CONTACT ===== -->
+        <!-- Data comes from: config/profile.json → contact[] -->
         <section id="contact" class="section">
             <div class="section-inner">
                 <span class="section-tag">04 — Contact</span>
                 <h2>Let's connect</h2>
-                <div class="contact-grid">
-                    <a href="mailto:robert0hidri@gmail.com" class="contact-card">
-                        <span class="contact-icon">✉️</span>
-                        <span class="contact-label">Email</span>
-                        <span class="contact-value">robert0hidri@gmail.com</span>
-                    </a>
-                    <a href="https://github.com/Robert26912" target="_blank" rel="noopener" class="contact-card">
-                        <span class="contact-icon">💻</span>
-                        <span class="contact-label">GitHub</span>
-                        <span class="contact-value">Robert26912</span>
-                    </a>
-                    <a href="https://www.linkedin.com/in/robert-h-326155199/" target="_blank" rel="noopener" class="contact-card">
-                        <span class="contact-icon">🔗</span>
-                        <span class="contact-label">LinkedIn</span>
-                        <span class="contact-value">robert-h</span>
-                    </a>
+                <div class="contact-grid" id="contactGrid">
+                    <!-- JS fills this from profile.json contact[] -->
                 </div>
             </div>
         </section>
@@ -249,6 +115,9 @@
             <p>&copy; 2026 Robert Hidri. Built with vanilla JS and a plugin architecture.</p>
         </div>
     </footer>
+
+    <!-- Profile loader - reads config/profile.json and fills the page -->
+    <script src="profile-loader.js"></script>
 
 </body>
 </html>
