@@ -8,6 +8,7 @@ body {
     background-color: #f8fafc;
     margin: 0;
     padding: 0;
+    min-height: 100vh;
 }
 
 /* Dashboard header at top */
@@ -41,17 +42,20 @@ body {
     color: #2563eb;
 }
 
-.header-content h1 {
-    font-size: 1.5rem;
-    margin: 0;
-    color: #1e293b;
+.header-content {
+    max-width: 95%; /* Match the main content */
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
-
 /* Main content container */
 .dashboard-main {
-    max-width: 1400px;
+    max-width: 95%; /* Use 95% of screen width */
     margin: 0 auto;
     padding: 2rem 1.5rem;
+    min-height: calc(100vh - 200px);
 }
 
 /* Dashboard intro section */
@@ -126,41 +130,13 @@ body {
     color: white;
 }
 
-/* Tile entrance animation */
-.tile {
-    position: relative;
-    background-color: white;
-    border: 1px solid #e2e8f0;
-    border-radius: 1rem;
-    padding: 2rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    
-    /* Entrance animation */
-    animation: tileAppear 0.4s ease-out backwards;
-}
-
-/* Stagger animation for each tile */
-.tile:nth-child(1) { animation-delay: 0.05s; }
-.tile:nth-child(2) { animation-delay: 0.1s; }
-.tile:nth-child(3) { animation-delay: 0.15s; }
-.tile:nth-child(4) { animation-delay: 0.2s; }
-.tile:nth-child(5) { animation-delay: 0.25s; }
-.tile:nth-child(6) { animation-delay: 0.3s; }
-
-@keyframes tileAppear {
-    from {
-        opacity: 0;
-        transform: translateY(20px) scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
+/* Tile Grid - responsive grid layout */
+.tile-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Changed auto-fill to auto-fit */
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+    width: 100%;
 }
 
 /* Loading state with spinner */
@@ -187,8 +163,7 @@ body {
     to { transform: rotate(360deg); }
 }
 
-
-/* Tile entrance animation */
+/* Individual Tile */
 .tile {
     position: relative;
     background-color: white;
@@ -201,8 +176,6 @@ body {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    
-    /* Entrance animation */
     animation: tileAppear 0.4s ease-out backwards;
 }
 
@@ -225,7 +198,7 @@ body {
     }
 }
 
-/* Hover effect - tile lifts up */
+/* Hover effect */
 .tile:hover {
     transform: translateY(-4px);
     box-shadow: 0 12px 28px rgba(37, 99, 235, 0.15);
@@ -306,28 +279,6 @@ body {
     background-color: rgba(220, 38, 38, 0.1);
 }
 
-/* Different colors per category */
-.tile[data-category="projects"] .tile-category {
-    color: #2563eb;
-    background-color: rgba(37, 99, 235, 0.1);
-}
-
-.tile[data-category="tools"] .tile-category {
-    color: #7c3aed;
-    background-color: rgba(124, 58, 237, 0.1);
-}
-
-.tile[data-category="iot"] .tile-category {
-    color: #059669;
-    background-color: rgba(5, 150, 105, 0.1);
-}
-
-.tile[data-category="learning"] .tile-category {
-    color: #dc2626;
-    background-color: rgba(220, 38, 38, 0.1);
-}
-
-
 /* Footer */
 .footer {
     background-color: #1e293b;
@@ -341,46 +292,10 @@ body {
     margin: 0;
 }
 
-
-
-/* Responsive adjustments */
-
-/* Tablet and smaller */
-@media (max-width: 768px) {
-    .header-content h1 {
-        font-size: 1.25rem;
-    }
-    
-    .tile-grid {
-        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-        gap: 1rem;
-    }
-}
-
-/* Mobile */
-@media (max-width: 480px) {
-    .dashboard-main {
-        padding: 1rem;
-    }
-    
-    .tile-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .filters {
-        flex-direction: column;
-    }
-    
-    .filter-btn {
-        width: 100%;
-    }
-}
 /* ============================================
    MODAL STYLES
-   Beautiful popup for module details
    ============================================ */
 
-/* Modal overlay - hidden by default */
 .modal {
     position: fixed;
     top: 0;
@@ -388,18 +303,16 @@ body {
     right: 0;
     bottom: 0;
     z-index: 1000;
-    display: none; /* Hidden by default */
+    display: none;
     align-items: center;
     justify-content: center;
     padding: 1rem;
 }
 
-/* Show modal when active */
 .modal.active {
     display: flex;
 }
 
-/* Dark backdrop */
 .modal-backdrop {
     position: absolute;
     top: 0;
@@ -408,9 +321,14 @@ body {
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(4px);
+    animation: fadeIn 0.3s ease;
 }
 
-/* Modal content box */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
 .modal-content {
     position: relative;
     z-index: 1001;
@@ -435,18 +353,6 @@ body {
     }
 }
 
-/* Backdrop fade in */
-.modal.active .modal-backdrop {
-    animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-
-/* Close button */
 .modal-close {
     position: absolute;
     top: 1.5rem;
@@ -469,7 +375,6 @@ body {
     color: #1e293b;
 }
 
-/* Modal header */
 .modal-header {
     padding: 2rem;
     border-bottom: 1px solid #e2e8f0;
@@ -498,7 +403,6 @@ body {
     border-radius: 0.25rem;
 }
 
-/* Modal body */
 .modal-body {
     padding: 2rem;
 }
@@ -511,7 +415,6 @@ body {
     text-align: center;
 }
 
-/* Projects section */
 .projects-section {
     margin-top: 2rem;
 }
@@ -524,7 +427,6 @@ body {
     padding-bottom: 0.5rem;
 }
 
-/* Individual project card */
 .project-card {
     background-color: #f8fafc;
     border-radius: 0.5rem;
@@ -543,7 +445,6 @@ body {
     margin: 0 0 1rem 0;
 }
 
-/* Technology tags */
 .tech-tags {
     display: flex;
     flex-wrap: wrap;
@@ -584,7 +485,6 @@ body {
     color: #92400e;
 }
 
-/* Skills section */
 .skills-section {
     margin-top: 2rem;
 }
@@ -612,7 +512,6 @@ body {
     font-size: 0.875rem;
 }
 
-/* Modal footer */
 .modal-footer {
     padding: 1.5rem 2rem;
     border-top: 1px solid #e2e8f0;
@@ -630,6 +529,15 @@ body {
     transition: all 0.2s;
 }
 
+.btn-primary {
+    background-color: #2563eb;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #1d4ed8;
+}
+
 .btn-secondary {
     background-color: #f1f5f9;
     color: #475569;
@@ -639,25 +547,10 @@ body {
     background-color: #e2e8f0;
 }
 
-/* Responsive modal */
-@media (max-width: 768px) {
-    .modal-content {
-        max-height: 95vh;
-        margin: 0.5rem;
-    }
-    
-    .modal-header,
-    .modal-body,
-    .modal-footer {
-        padding: 1.5rem;
-    }
-}
-
 /* ============================================
-   INTERACTIVE TOOLS STYLING
+   INTERACTIVE TOOLS
    ============================================ */
 
-/* Tools list */
 .tools-list {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -684,7 +577,6 @@ body {
     font-size: 0.875rem;
 }
 
-/* Tool workspace */
 .tool-workspace {
     margin-top: 2rem;
     padding-top: 2rem;
@@ -697,7 +589,6 @@ body {
     padding: 2rem;
 }
 
-/* Calculator specific styles */
 .calculator {
     max-width: 320px;
     margin: 0 auto;
@@ -710,9 +601,10 @@ body {
     text-align: right;
     border: 2px solid #e2e8f0;
     border-radius: 0.5rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     background-color: white;
 }
+
 .calc-operation {
     text-align: right;
     padding: 0.5rem 1rem;
@@ -778,7 +670,6 @@ body {
     background-color: #dc2626;
 }
 
-/* JSON Formatter & Base64 Tools */
 .tool-textarea {
     width: 100%;
     min-height: 150px;
@@ -817,4 +708,48 @@ body {
 
 .tool-output pre {
     margin: 0;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+    .header-content h1 {
+        font-size: 1.25rem;
+    }
+    
+    .tile-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 1rem;
+    }
+    
+    .modal-content {
+        max-height: 95vh;
+        margin: 0.5rem;
+    }
+    
+    .modal-header,
+    .modal-body,
+    .modal-footer {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-main {
+        padding: 1rem;
+    }
+    
+    .tile-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .filters {
+        flex-direction: column;
+    }
+    
+    .filter-btn {
+        width: 100%;
+    }
 }
