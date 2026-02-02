@@ -1,94 +1,236 @@
-
-<!--
-Write basic HTML skeleton
-  └─ Sections: Header, About, Skills, Experience, Contact
--->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Character encoding - ensures special characters display correctly -->
     <meta charset="UTF-8">
-    
-    <!-- Viewport - makes site responsive on mobile devices -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- SEO description - shows up in Google search results -->
-    <meta name="description" content="Portfolio showcasing my qualifications, knowledge, and experience in software development and technology.">
-    
-    <!-- Page title - shows in browser tab -->
-    <title>My Portfolio</title>
-    
-    <!-- Link to external CSS file - separates styling from structure -->
+    <meta name="description" content="Robert Hidri — IoT Engineer & Architect. Building connected systems from embedded firmware to cloud dashboards.">
+    <title>Robert Hidri — IoT Engineer & Architect</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Header section - top of page with name and tagline -->
-    <header>
-        <h1>Robert Hidri</h1>
-        <p>IoT Engineer | Architect</p>
+
+    <!-- ===== NAV ===== -->
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">R<span class="accent">.</span>H</a>
+            <div class="nav-links">
+                <a href="#about">About</a>
+                <a href="#skills">Skills</a>
+                <a href="#experience">Experience</a>
+                <a href="#contact">Contact</a>
+                <a href="dashboard.html" class="nav-cta">Dashboard →</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== HERO ===== -->
+    <header class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <p class="hero-label">IoT Engineer · Architect</p>
+            <h1 class="hero-name">Robert Hidri</h1>
+            <p class="hero-tagline">I build connected systems — from embedded firmware on microcontrollers to cloud dashboards and everything in between.</p>
+            <div class="hero-actions">
+                <a href="dashboard.html" class="btn btn-primary">Explore Projects →</a>
+                <a href="#contact" class="btn btn-ghost">Get in Touch</a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-value">5+</span>
+                    <span class="stat-label">Tech Domains</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">10mo</span>
+                    <span class="stat-label">Genelec OY</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">∞</span>
+                    <span class="stat-label">Curiosity</span>
+                </div>
+            </div>
+        </div>
     </header>
-<!-- Call to Action - Link to Dashboard -->
-<section style="text-align: center; padding: 2rem; background-color: #f8fafc;">
-    <h2>Explore My Work</h2>
-    <p style="color: #64748b; margin-bottom: 1.5rem;">
-        Interactive dashboard showcasing projects organized by technology and category
-    </p>
-    <a href="dashboard.html" style="
-        display: inline-block;
-        padding: 1rem 2rem;
-        background-color: #2563eb;
-        color: white;
-        text-decoration: none;
-        border-radius: 0.5rem;
-        font-weight: 600;
-        transition: background-color 0.2s;
-    ">View Project Dashboard →</a>
-</section>
-    <!-- Main content area - contains all primary sections -->
+
     <main>
-        <!-- About section - personal introduction -->
-        <section id="about">
-            <h2>About Me</h2>
-            <p>Here I provide a brief introduction to where I come from, where I am now, and where I want to go.</p>
+
+        <!-- ===== ABOUT ===== -->
+        <section id="about" class="section">
+            <div class="section-inner">
+                <span class="section-tag">01 — About</span>
+                <h2>Bridging hardware and software</h2>
+                <div class="about-grid">
+                    <div class="about-text">
+                        <p>I'm an IoT engineer with a dual passion for embedded systems and building architecture. My background spans firmware development on ARM microcontrollers, Python backend services, and web-based dashboards for real-time data.</p>
+                        <p>During my internship at <strong>Genelec OY</strong> in Iisalmi, Finland, I worked on production-related technology systems, gaining hands-on experience with industrial processes and audio engineering excellence.</p>
+                        <p>I approach every project with an architect's mindset — whether I'm designing a sensor network or a software system, I think about structure, modularity, and how the pieces connect. This portfolio itself is built on a plugin architecture where each module is a self-contained unit that plugs into the dashboard.</p>
+                    </div>
+                    <div class="about-highlights">
+                        <div class="highlight-card">
+                            <span class="highlight-icon">🔌</span>
+                            <h4>IoT & Embedded</h4>
+                            <p>ESP32, STM32, BLE mesh networks, sensor integration</p>
+                        </div>
+                        <div class="highlight-card">
+                            <span class="highlight-icon">🐍</span>
+                            <h4>Backend & Data</h4>
+                            <p>Python, Flask, REST APIs, MQTT, data processing</p>
+                        </div>
+                        <div class="highlight-card">
+                            <span class="highlight-icon">🌐</span>
+                            <h4>Web & Frontend</h4>
+                            <p>JavaScript, modular architecture, responsive UI</p>
+                        </div>
+                        <div class="highlight-card">
+                            <span class="highlight-icon">🏗️</span>
+                            <h4>Architecture</h4>
+                            <p>Building design, system design, smart buildings</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
 
-        <!-- Skills section - technical knowledge display -->
-        <section id="skills">
-            <h2>Skills & Knowledge</h2>
-            <ul>
-                <li>Programming Languages</li>
-                <li>Frameworks & Tools</li>
-                <li>Hardware & Embedded Systems</li>  
-            </ul>
+        <!-- ===== SKILLS ===== -->
+        <section id="skills" class="section section-alt">
+            <div class="section-inner">
+                <span class="section-tag">02 — Skills</span>
+                <h2>Technical toolkit</h2>
+                <div class="skills-grid">
+                    <div class="skill-group">
+                        <h4>Languages</h4>
+                        <div class="skill-pills">
+                            <span class="pill">Python</span>
+                            <span class="pill">C/C++</span>
+                            <span class="pill">JavaScript</span>
+                            <span class="pill">HTML/CSS</span>
+                            <span class="pill">Bash</span>
+                            <span class="pill">YAML</span>
+                        </div>
+                    </div>
+                    <div class="skill-group">
+                        <h4>Embedded & IoT</h4>
+                        <div class="skill-pills">
+                            <span class="pill">ESP32</span>
+                            <span class="pill">STM32</span>
+                            <span class="pill">Arduino</span>
+                            <span class="pill">FreeRTOS</span>
+                            <span class="pill">I2C / SPI / UART</span>
+                            <span class="pill">MQTT</span>
+                            <span class="pill">BLE</span>
+                        </div>
+                    </div>
+                    <div class="skill-group">
+                        <h4>Frameworks & Tools</h4>
+                        <div class="skill-pills">
+                            <span class="pill">Flask</span>
+                            <span class="pill">Pandas</span>
+                            <span class="pill">Git</span>
+                            <span class="pill">Docker</span>
+                            <span class="pill">GitHub Actions</span>
+                            <span class="pill">Linux</span>
+                            <span class="pill">VS Code</span>
+                        </div>
+                    </div>
+                    <div class="skill-group">
+                        <h4>Concepts</h4>
+                        <div class="skill-pills">
+                            <span class="pill">REST API Design</span>
+                            <span class="pill">Modular Architecture</span>
+                            <span class="pill">CI/CD</span>
+                            <span class="pill">Real-time Systems</span>
+                            <span class="pill">Sensor Networks</span>
+                            <span class="pill">System Design</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
 
-        <!-- Experience section - work history -->
-        <section id="experience">
-            <h2>Experience</h2>
-            <!-- Article tag - semantic HTML for individual experience entry -->
-            <article>
-                <h3>Intern - Genelec OY</h3>
-                <!-- Date with class for styling -->
-                <p class="date">01 August 2022 - 01 June 2023</p>
-                <p></p>
-            </article>
-            
-               
+        <!-- ===== EXPERIENCE ===== -->
+        <section id="experience" class="section">
+            <div class="section-inner">
+                <span class="section-tag">03 — Experience</span>
+                <h2>Where I've worked</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <h3>Intern — Genelec OY</h3>
+                                <span class="timeline-date">Aug 2022 – Jun 2023</span>
+                            </div>
+                            <p class="timeline-location">Iisalmi, Finland</p>
+                            <p>Genelec is a world-leading manufacturer of professional active loudspeakers. During my 10-month internship I worked with production technology and gained exposure to industrial IoT systems, quality-driven engineering processes, and cross-functional collaboration in a manufacturing environment.</p>
+                            <div class="timeline-tags">
+                                <span class="pill pill-sm">Industrial IoT</span>
+                                <span class="pill pill-sm">Production Technology</span>
+                                <span class="pill pill-sm">Manufacturing</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <h3>Self-directed Projects</h3>
+                                <span class="timeline-date">2023 – Present</span>
+                            </div>
+                            <p>Building a personal ecosystem of connected tools: this modular portfolio platform, IoT sensor networks with ESP32 devices, Python backend services, and exploring the intersection of building architecture and smart home technology.</p>
+                            <div class="timeline-tags">
+                                <span class="pill pill-sm">Full Stack</span>
+                                <span class="pill pill-sm">IoT</span>
+                                <span class="pill pill-sm">Architecture</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
 
-        <!-- Contact section - how to reach you -->
-        <section id="contact">
-            <h2>Contact</h2>
-            <p>Email: robert0hidri@gmail.com</p>
-            <p>GitHub: https://github.com/Robert26912</p>
-            <p>LinkedIn: https://www.linkedin.com/in/robert-h-326155199/ </p>
+        <!-- ===== DASHBOARD CTA ===== -->
+        <section class="section section-cta">
+            <div class="section-inner" style="text-align: center;">
+                <h2>See the work in action</h2>
+                <p style="max-width: 540px; margin: 0 auto 2rem; color: var(--text-muted);">The interactive dashboard showcases every project, tool, and technical domain — built with the same modular plugin system described above.</p>
+                <a href="dashboard.html" class="btn btn-primary btn-lg">Open Project Dashboard →</a>
+            </div>
         </section>
+
+        <!-- ===== CONTACT ===== -->
+        <section id="contact" class="section">
+            <div class="section-inner">
+                <span class="section-tag">04 — Contact</span>
+                <h2>Let's connect</h2>
+                <div class="contact-grid">
+                    <a href="mailto:robert0hidri@gmail.com" class="contact-card">
+                        <span class="contact-icon">✉️</span>
+                        <span class="contact-label">Email</span>
+                        <span class="contact-value">robert0hidri@gmail.com</span>
+                    </a>
+                    <a href="https://github.com/Robert26912" target="_blank" rel="noopener" class="contact-card">
+                        <span class="contact-icon">💻</span>
+                        <span class="contact-label">GitHub</span>
+                        <span class="contact-value">Robert26912</span>
+                    </a>
+                    <a href="https://www.linkedin.com/in/robert-h-326155199/" target="_blank" rel="noopener" class="contact-card">
+                        <span class="contact-icon">🔗</span>
+                        <span class="contact-label">LinkedIn</span>
+                        <span class="contact-value">robert-h</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
     </main>
 
-    <!-- Footer - copyright and bottom page info -->
-    <footer>
-        <p>&copy; 2026 Robert Hidri. All rights reserved.</p>
+    <footer class="footer">
+        <div class="footer-inner">
+            <p>&copy; 2026 Robert Hidri. Built with vanilla JS and a plugin architecture.</p>
+        </div>
     </footer>
+
 </body>
 </html>

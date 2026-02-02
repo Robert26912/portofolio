@@ -12,68 +12,146 @@
         "summary": "Backend development, automation, and data processing projects built with Python. Focus on clean code, efficient algorithms, and practical solutions.",
         "projects": [
           {
-            "name": "Portfolio Website System",
-            "description": "Modular portfolio platform with plugin architecture for scalable content management",
-            "technologies": ["JavaScript", "HTML5", "CSS3", "Git"],
-            "github": "https://github.com/Robert26912/portfolio",
-            "status": "Active"
-          },
-          {
             "name": "IoT Data Logger",
-            "description": "Python backend for collecting and processing sensor data from embedded devices",
+            "description": "Python backend for collecting and processing sensor data from embedded devices via MQTT",
             "technologies": ["Python", "Flask", "MQTT", "SQLite"],
             "github": "",
             "status": "In Progress"
+          },
+          {
+            "name": "API Testing Framework",
+            "description": "Automated testing suite for REST API endpoints with structured reporting",
+            "technologies": ["Python", "Requests", "Pytest", "JSON"],
+            "github": "",
+            "status": "Completed"
           }
         ],
         "skills": [
           "Python 3.x",
           "REST API development",
-          "Data processing with Pandas"
-        ]
+          "Data processing with Pandas",
+          "Async programming",
+          "Testing & debugging"
+        ],
+        "learning_notes": "Currently exploring FastAPI for high-performance async APIs and integration with embedded systems."
       }
     },
     "cpp": {
       "id": "cpp",
       "title": "C++ & Embedded",
-      "description": "Low-level systems and embedded device programming",
+      "description": "Firmware and embedded systems for microcontrollers",
       "icon": "⚡",
       "category": "projects",
       "visibility": "public",
       "enabled": true,
       "content": {
-        "summary": "Firmware and embedded systems development with focus on resource-constrained environments.",
+        "summary": "Firmware and embedded systems development with focus on resource-constrained environments. Experience with microcontrollers, real-time systems, and hardware communication protocols.",
         "projects": [
           {
             "name": "ESP32 Environmental Monitor",
-            "description": "WiFi-connected multi-sensor system with web dashboard",
-            "technologies": ["C++", "ESP32", "Arduino", "MQTT"],
+            "description": "WiFi-connected multi-sensor system with web dashboard for real-time monitoring",
+            "technologies": ["C++", "ESP32", "Arduino", "I2C", "MQTT"],
+            "github": "",
+            "status": "Active"
+          },
+          {
+            "name": "Motor Control System",
+            "description": "Precise DC motor control using PID algorithms for robotics applications",
+            "technologies": ["C", "STM32", "PWM", "Timers", "ADC"],
+            "github": "",
+            "status": "Completed"
+          },
+          {
+            "name": "Bluetooth Sensor Network",
+            "description": "BLE mesh network for distributed temperature and humidity monitoring",
+            "technologies": ["C++", "nRF52", "Bluetooth 5.0", "Nordic SDK"],
+            "github": "",
+            "status": "In Progress"
+          }
+        ],
+        "skills": [
+          "C/C++ for embedded",
+          "ARM Cortex-M architecture",
+          "FreeRTOS",
+          "I2C / SPI / UART",
+          "Power optimization",
+          "JTAG/SWD debugging"
+        ],
+        "learning_notes": "Exploring Zephyr RTOS for multi-platform embedded development and low-power wireless protocols."
+      }
+    },
+    "web-dev": {
+      "id": "web-dev",
+      "title": "Web Development",
+      "description": "Frontend interfaces and full-stack web applications",
+      "icon": "🌐",
+      "category": "projects",
+      "visibility": "public",
+      "enabled": true,
+      "content": {
+        "summary": "Web development projects from vanilla JavaScript to full-stack applications. Building responsive, modular, accessible interfaces.",
+        "projects": [
+          {
+            "name": "Modular Portfolio Platform",
+            "description": "This website — plugin-based architecture with auto-discovery, search, filtering, and interactive tools",
+            "technologies": ["JavaScript", "HTML5", "CSS3", "JSON", "Git"],
+            "github": "https://github.com/Robert26912/portofolio",
             "status": "Active"
           }
         ],
-        "skills": ["C/C++", "ARM Cortex-M", "FreeRTOS"]
+        "skills": [
+          "Vanilla JavaScript (ES6+)",
+          "HTML5 / CSS3",
+          "Responsive design",
+          "CSS Grid & Flexbox",
+          "DOM manipulation",
+          "Fetch API / async-await"
+        ],
+        "learning_notes": "Building a strong vanilla JS foundation before moving to React. Migration path already planned."
       }
     },
     "devops": {
       "id": "devops",
       "title": "DevOps",
-      "description": "CI/CD, automation, and infrastructure",
+      "description": "CI/CD pipelines, containerization, and infrastructure automation",
       "icon": "🚀",
       "category": "projects",
       "visibility": "public",
       "enabled": true,
       "content": {
-        "summary": "DevOps practices and infrastructure automation.",
+        "summary": "DevOps practices, CI/CD pipelines, and infrastructure automation. Focus on streamlining development workflows and deployment processes.",
         "projects": [
           {
             "name": "GitHub Actions CI/CD",
-            "description": "Automated deployment pipeline",
-            "technologies": ["GitHub Actions", "YAML"],
-            "github": "https://github.com/Robert26912/portfolio",
+            "description": "Automated build, test, and deployment pipeline for portfolio website",
+            "technologies": ["GitHub Actions", "YAML", "Git", "GitHub Pages"],
+            "github": "https://github.com/Robert26912/portofolio",
             "status": "Active"
+          },
+          {
+            "name": "Docker Development Environment",
+            "description": "Containerized development setup for consistent cross-platform builds",
+            "technologies": ["Docker", "Docker Compose", "Linux"],
+            "github": "",
+            "status": "Completed"
+          },
+          {
+            "name": "Automated Testing Suite",
+            "description": "Integration and unit testing framework with automated reporting",
+            "technologies": ["Pytest", "Git Hooks", "CI/CD"],
+            "github": "",
+            "status": "In Progress"
           }
         ],
-        "skills": ["Git", "GitHub Actions", "Docker"]
+        "skills": [
+          "Git version control",
+          "GitHub Actions",
+          "Docker containerization",
+          "Linux command line",
+          "Bash scripting",
+          "CI/CD best practices"
+        ],
+        "learning_notes": "Learning Kubernetes for container orchestration and exploring infrastructure-as-code with Terraform."
       }
     },
     "architecture": {
@@ -85,51 +163,65 @@
       "visibility": "public",
       "enabled": true,
       "content": {
-        "summary": "Exploring architecture from physical buildings to digital systems.",
+        "summary": "Exploring architecture from physical buildings to digital systems. Interest in both structural design and software engineering principles.",
         "projects": [
           {
             "name": "Modular Portfolio Platform",
-            "description": "Plugin-based web application architecture",
-            "technologies": ["JavaScript", "Design Patterns"],
-            "github": "https://github.com/Robert26912/portfolio",
+            "description": "Plugin-based web application with auto-discovery and scalable architecture",
+            "technologies": ["JavaScript", "Modular Design", "JSON Config", "Design Patterns"],
+            "github": "https://github.com/Robert26912/portofolio",
             "status": "Active"
+          },
+          {
+            "name": "IoT System Architecture",
+            "description": "End-to-end architecture for IoT sensor network with cloud integration",
+            "technologies": ["MQTT", "WebSockets", "REST API", "Database Design"],
+            "github": "",
+            "status": "Planning"
           }
         ],
-        "skills": ["System design", "API design", "Scalability"],
+        "skills": [
+          "System design patterns",
+          "Microservices architecture",
+          "API design",
+          "Scalability planning",
+          "Documentation"
+        ],
         "interests": [
           "Sustainable building design",
           "Smart home integration",
           "Urban planning & IoT",
+          "Architectural rendering",
           "Building automation systems"
-        ]
+        ],
+        "learning_notes": "Studying how architectural principles apply to both physical structures and software systems. Exploring smart building technologies that bridge both worlds."
       }
-    
     },
     "dev-tools": {
       "id": "dev-tools",
       "title": "Developer Tools",
-      "description": "Handy utilities for developers",
+      "description": "Interactive utilities — calculators, formatters, encoders",
       "icon": "🧰",
       "category": "tools",
       "visibility": "public",
       "enabled": true,
       "interactive": true,
       "content": {
-        "summary": "Collection of developer utilities accessible right in your browser.",
+        "summary": "Collection of developer utilities accessible right in your browser. No installation needed.",
         "tools": [
           {
             "name": "Calculator",
-            "description": "Scientific calculator",
+            "description": "Scientific calculator with operation display",
             "type": "calculator"
           },
           {
             "name": "JSON Formatter",
-            "description": "Format and validate JSON",
+            "description": "Format, minify, and validate JSON",
             "type": "json-formatter"
           },
           {
             "name": "Base64 Encoder/Decoder",
-            "description": "Encode and decode Base64",
+            "description": "Encode and decode Base64 strings",
             "type": "base64"
           }
         ]

@@ -1,8 +1,8 @@
 {
   "id": "devops",
-  "title": "DeVops",
-  "description": "DevOps is a cultural philosophy, set of practices, and tools that bridges the gap between software development (Dev) and IT operations (Ops) teams, fostering collaboration, automation, and shared responsibility.",
-  "icon": "⚙️🔁🚀",
+  "title": "DevOps",
+  "description": "CI/CD pipelines, containerization, and infrastructure automation",
+  "icon": "🚀",
   "category": "projects",
   "visibility": "public",
   "enabled": true
