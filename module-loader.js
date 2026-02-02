@@ -64,13 +64,37 @@ class ModuleLoader {
 
 
     /**
-     * Discover and load all modules from config
+     * Discover and load all modules from bundled config
+     * FAST VERSION - One HTTP request instead of many
      */
     async discoverModules() {
         console.log('🔍 Discovering modules...');
         
         try {
-            // Load the module registry
+            // Try to load bundled config first (FAST)
+            const response = await fetch('config/modules-bundle.json');
+            
+            if (response.ok) {
+                const bundle = await response.json();
+                
+                // Load all modules from bundle
+                for (const [moduleId, moduleData] of Object.entries(bundle.modules)) {
+                    if (moduleData.enabled) {
+                        this.modules.push(moduleData);
+                        console.log(`✅ Loaded: ${moduleData.title}`);
+                    }
+                }
+                
+                console.log(`✅ Loaded ${this.modules.length} modules (bundled - FAST!)`);
+                return;
+            }
+            
+        } catch (error) {
+            console.warn('⚠️ Bundle not found, falling back to individual files');
+        }
+        
+        // Fallback to old method (slower but works)
+        try {
             const response = await fetch('config/modules.json');
             
             if (!response.ok) {
@@ -79,7 +103,7 @@ class ModuleLoader {
             
             const registry = await response.json();
             
-            // Load each module listed in registry
+            // Load each module individually (SLOW)
             for (const moduleName of registry.modules) {
                 try {
                     await this.loadModule(moduleName);
@@ -88,7 +112,7 @@ class ModuleLoader {
                 }
             }
             
-            console.log(`✅ Loaded ${this.modules.length} modules`);
+            console.log(`✅ Loaded ${this.modules.length} modules (individual files)`);
             
         } catch (error) {
             console.error('❌ Failed to discover modules:', error);

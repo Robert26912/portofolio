@@ -1,17 +1,35 @@
 {
-  "summary": "Collection of architecture drawings and planes done in FAU",
+  "summary": "System architecture design and software engineering principles. Focus on scalable, maintainable solutions from embedded systems to cloud platforms.",
   "projects": [
     {
-      "name": "Apartment building rruga e Durresit",
-      "description": "This is an apartment building plus comercial space project designed for rruga e Durresit",
-      "technologies": ["Autocad", "Graphic design", "Blueprint"],
+      "name": "Modular Portfolio Platform",
+      "description": "Plugin-based web application with auto-discovery and scalable architecture",
+      "technologies": ["JavaScript", "Modular Design", "JSON Config", "Design Patterns"],
+      "github": "https://github.com/Robert26912/portfolio",
+      "status": "Active"
+    },
+    {
+      "name": "IoT System Architecture",
+      "description": "End-to-end architecture for IoT sensor network with cloud integration",
+      "technologies": ["MQTT", "WebSockets", "REST API", "Database Design"],
       "github": "",
-      "status": "In Progress"
+      "status": "Planning"
     }
   ],
   "skills": [
-    "AutoCad",
-    "Composition",
-    "Structural knowledge"
-  ]
+    "System design patterns",
+    "Microservices architecture",
+    "API design",
+    "Database architecture",
+    "Scalability planning",
+    "Documentation"
+  ],
+  "concepts": [
+    "Separation of concerns",
+    "Plugin architecture",
+    "Event-driven design",
+    "RESTful principles",
+    "Clean code practices"
+  ],
+  "learning_notes": "Studying distributed systems architecture and event sourcing patterns for IoT platforms."
 }

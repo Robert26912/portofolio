@@ -1,18 +1,34 @@
 {
-  "summary": "Collection of Python projects showcasing backend development, automation, and data processing skills.",
+  "summary": "Backend development, automation, and data processing projects built with Python. Focus on clean code, efficient algorithms, and practical solutions.",
   "projects": [
     {
-      "name": "API Automation Tool",
-      "description": "Automated testing and monitoring system for REST APIs",
-      "technologies": ["Python", "Requests", "Schedule"],
+      "name": "Portfolio Website System",
+      "description": "Modular portfolio platform with plugin architecture for scalable content management",
+      "technologies": ["JavaScript", "HTML5", "CSS3", "Git"],
+      "github": "https://github.com/Robert26912/portfolio",
+      "status": "Active"
+    },
+    {
+      "name": "IoT Data Logger",
+      "description": "Python backend for collecting and processing sensor data from embedded devices",
+      "technologies": ["Python", "Flask", "MQTT", "SQLite"],
       "github": "",
       "status": "In Progress"
+    },
+    {
+      "name": "API Testing Framework",
+      "description": "Automated testing suite for REST API endpoints with reporting",
+      "technologies": ["Python", "Requests", "Pytest", "JSON"],
+      "github": "",
+      "status": "Completed"
     }
   ],
   "skills": [
     "Python 3.x",
-    "REST API integration",
-    "Data processing"
-  ]
+    "REST API development",
+    "Data processing with Pandas",
+    "Async programming",
+    "Testing & debugging"
+  ],
+  "learning_notes": "Currently exploring FastAPI for high-performance async APIs and integration with embedded systems."
 }
-

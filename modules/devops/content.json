@@ -1,4 +1,35 @@
 {
-  "summary": "Devops notes and projects",
-  "projects": []
+  "summary": "DevOps practices, CI/CD pipelines, and infrastructure automation. Focus on streamlining development workflows and deployment processes.",
+  "projects": [
+    {
+      "name": "GitHub Actions CI/CD",
+      "description": "Automated build, test, and deployment pipeline for portfolio website",
+      "technologies": ["GitHub Actions", "YAML", "Git", "GitHub Pages"],
+      "github": "https://github.com/Robert26912/portfolio",
+      "status": "Active"
+    },
+    {
+      "name": "Docker Development Environment",
+      "description": "Containerized development setup for consistent cross-platform builds",
+      "technologies": ["Docker", "Docker Compose", "Linux"],
+      "github": "",
+      "status": "Completed"
+    },
+    {
+      "name": "Automated Testing Suite",
+      "description": "Integration and unit testing framework with automated reporting",
+      "technologies": ["Pytest", "Git Hooks", "CI/CD"],
+      "github": "",
+      "status": "In Progress"
+    }
+  ],
+  "skills": [
+    "Git version control",
+    "GitHub Actions",
+    "Docker containerization",
+    "Linux command line",
+    "Bash scripting",
+    "CI/CD best practices"
+  ],
+  "learning_notes": "Learning Kubernetes for container orchestration and exploring infrastructure-as-code with Terraform."
 }
