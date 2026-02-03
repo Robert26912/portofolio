@@ -249,20 +249,24 @@ class ProfileLoader {
         if (!container) return;
 
         container.innerHTML = contact.map(c => {
-            // Handle email specially - obfuscate from bots
-            if (c.label === 'Email') {
-                // Split email to rebuild with JS (bots can't read this)
-                const [user, domain] = c.value.split('@');
+            // Protected email - click to reveal
+            if (c.protected && c.label === 'Email') {
+                const encoded = btoa(c.value);
                 return `
-                    <a href="#" class="contact-card" data-user="${user}" data-domain="${domain}" onclick="this.href='mail'+'to:'+this.dataset.user+'@'+this.dataset.domain; return true;">
+                    <div class="contact-card contact-card-protected" 
+                         data-encoded="${encoded}"
+                         onclick="revealEmail(this)"
+                         role="button"
+                         tabindex="0">
                         <span class="contact-icon">${c.icon}</span>
                         <span class="contact-label">${c.label}</span>
-                        <span class="contact-value" data-email="${user}[at]${domain}">${user}@${domain}</span>
-                    </a>
+                        <span class="contact-value">Click to reveal</span>
+                        <span class="contact-hint">🔒 Protected from bots</span>
+                    </div>
                 `;
             }
             
-            // Skip items with no URL (like location)
+            // Static (no URL, like location)
             if (!c.url) {
                 return `
                     <div class="contact-card contact-card-static">
@@ -272,20 +276,49 @@ class ProfileLoader {
                     </div>
                 `;
             }
+            
+            // Preferred contact (LinkedIn)
+            const preferredClass = c.preferred ? 'contact-card-preferred' : '';
+            const badge = c.preferred ? '<span class="contact-badge">✓ Preferred</span>' : '';
+            
             return `
-                <a href="${c.url}" ${c.url.startsWith('http') ? 'target="_blank" rel="noopener noreferrer"' : ''} class="contact-card">
+                <a href="${c.url}" target="_blank" rel="noopener noreferrer" class="contact-card ${preferredClass}">
                     <span class="contact-icon">${c.icon}</span>
                     <span class="contact-label">${c.label}</span>
                     <span class="contact-value">${c.value}</span>
+                    ${badge}
                 </a>
             `;
         }).join('');
+
+        // Add contact note if exists
+        const noteEl = document.querySelector('.contact-note');
+        if (noteEl && this.profile.contactNote) {
+            noteEl.textContent = this.profile.contactNote;
+        }
     }
 
     // Helper
     setText(id, text) {
         const el = document.getElementById(id);
         if (el && text) el.textContent = text;
+    }
+}
+
+// Email reveal function (global)
+function revealEmail(el) {
+    const encoded = el.dataset.encoded;
+    if (!encoded) return;
+    
+    try {
+        const email = atob(encoded);
+        el.querySelector('.contact-value').textContent = email;
+        el.querySelector('.contact-hint').textContent = '📧 Click to send email';
+        el.classList.remove('contact-card-protected');
+        el.classList.add('contact-card-revealed');
+        el.onclick = () => window.location.href = 'mailto:' + email;
+    } catch (e) {
+        console.error('Failed to decode');
     }
 }
 

@@ -8,21 +8,21 @@
 
 /* --- Variables --- */
 :root {
-    --bg:          #0c0f14;
-    --bg-surface:  #141820;
-    --bg-card:     #1a1f2b;
-    --bg-alt:      #0f1219;
-    --border:      #2a3040;
-    --border-hover:#3d4860;
+    --bg:          #0a0c10;
+    --bg-surface:  #12151c;
+    --bg-card:     #1a1e28;
+    --bg-alt:      #0e1116;
+    --border:      #2d3548;
+    --border-hover:#4a5568;
 
-    --text:        #e2e8f0;
-    --text-muted:  #8892a4;
-    --text-dim:    #5a6478;
+    --text:        #f1f5f9;
+    --text-muted:  #94a3b8;
+    --text-dim:    #64748b;
 
     --accent:      #3b82f6;
-    --accent-glow: rgba(59, 130, 246, 0.15);
+    --accent-glow: rgba(59, 130, 246, 0.2);
     --accent-dark: #2563eb;
-    --accent-soft: rgba(59, 130, 246, 0.08);
+    --accent-soft: rgba(59, 130, 246, 0.1);
 
     --font:       'DM Sans', -apple-system, sans-serif;
     --font-mono:  'JetBrains Mono', 'Courier New', monospace;
@@ -71,7 +71,7 @@ body {
     position: absolute;
     border-radius: 50%;
     filter: blur(3px);
-    opacity: 0.4;
+    opacity: 0.25;
 }
 
 /* Orb glow effect */
@@ -448,13 +448,13 @@ img { max-width: 100%; display: block; }
 .section {
     padding: 5rem 2rem;
     position: relative;
-    background: rgba(12, 15, 20, 0.85);
-    backdrop-filter: blur(10px);
+    background: rgba(10, 12, 16, 0.75);
+    backdrop-filter: blur(8px);
 }
 
 /* Alternating section backgrounds for visual rhythm */
 .section-alt {
-    background: rgba(15, 18, 25, 0.9);
+    background: rgba(14, 17, 22, 0.8);
 }
 
 /* Subtle section dividers */
@@ -707,6 +707,64 @@ img { max-width: 100%; display: block; }
     font-size: 0.875rem;
     color: var(--text-muted);
     font-weight: 500;
+}
+
+/* Protected contact (click to reveal) */
+.contact-card-protected {
+    cursor: pointer;
+}
+.contact-card-protected:hover {
+    border-color: var(--accent);
+}
+
+.contact-hint {
+    display: block;
+    font-size: 0.6875rem;
+    color: var(--text-dim);
+    margin-top: 0.25rem;
+}
+
+.contact-card-revealed {
+    cursor: pointer;
+}
+.contact-card-revealed .contact-hint {
+    color: var(--accent);
+}
+
+/* Preferred contact (LinkedIn) */
+.contact-card-preferred {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    position: relative;
+}
+.contact-card-preferred:hover {
+    border-color: var(--accent);
+    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.25);
+}
+
+.contact-badge {
+    display: block;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 0.25rem;
+}
+
+/* Static contact (location) */
+.contact-card-static {
+    cursor: default;
+}
+.contact-card-static:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+/* Contact note */
+.contact-note {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    margin-bottom: 1.5rem;
 }
 
 /* --- Education specific --- */

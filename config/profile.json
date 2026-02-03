@@ -158,10 +158,10 @@
 
 
   "contact": [
-    { "icon": "📱", "label": "Phone", "value": "+358 46 613 3040", "url": "tel:" },
-    { "icon": "✉️", "label": "Email", "value": "robert0hidri@gmail.com", "url": "mailto:" },
+    { "icon": "🔗", "label": "LinkedIn", "value": "Connect with me", "url": "https://www.linkedin.com/in/robert-h-326155199/", "preferred": true },
     { "icon": "💻", "label": "GitHub", "value": "Robert26912", "url": "https://github.com/Robert26912" },
-    { "icon": "🔗", "label": "LinkedIn", "value": "robert-hidri", "url": "https://www.linkedin.com/in/robert-h-326155199/" },
-    { "icon": "📍", "label": "Location", "value": "Turku, Finland", "url": "https://www.google.fi/maps?q=Turku" }
-  ]
+    { "icon": "✉️", "label": "Email", "value": "robert0hidri@gmail.com", "protected": true },
+    { "icon": "📍", "label": "Location", "value": "Turku, Finland" }
+  ],
+  "contactNote": "💡 LinkedIn is the fastest way to reach me. Email available upon request."
 }
