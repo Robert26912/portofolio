@@ -72,4 +72,4 @@ desktop.ini        # Windows folder settings
 # ===========================
 
 *.tmp              # Temporary files
-*.log              # Log files,
+*.log              # Log files
