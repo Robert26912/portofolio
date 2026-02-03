@@ -16,6 +16,7 @@
       "At <strong>Genelec OY</strong>, I started in logistics automation planning, then transitioned to the R&D team where I designed and built a <strong>carbon footprint calculator</strong> — a Python-based tool that calculates CO₂e emissions for individual products based on real production data. This became my thesis (grade: 4/5).",
       "I thrive under constraints — they sharpen my creativity for finding elegant solutions. Whether designing embedded systems or software architecture, I think in modules, interfaces, and connections. This portfolio itself demonstrates that: a plugin architecture where data is separate from presentation."
     ],
+
     "highlights": [
       { "icon": "🎯", "title": "Problem Solver", "text": "Experimental approach — create, test, iterate quickly" },
       { "icon": "🔌", "title": "IoT & Embedded", "text": "Sensors, automation logic, industrial networks, microcontrollers" },
@@ -23,6 +24,7 @@
       { "icon": "🤝", "title": "Team Player", "text": "Collaborative, takes responsibility, supports others' decisions" }
     ]
   },
+
 
   "skills": [
     {
@@ -48,8 +50,14 @@
     {
       "category": "Languages (Human)",
       "items": ["Albanian (native)", "English (fluent)", "Italian (good)", "Finnish (developing)"]
+    },
+    {
+      "category": "Design skills",
+      "items": ["Graphic Desing", "Autocad", "Composition", " bluprint making"]
     }
   ],
+
+
 
   "experience": [
     {
@@ -81,6 +89,8 @@
     }
   ],
 
+
+
   "education": [
     {
       "degree": "Bachelor of Engineering (IoT)",
@@ -103,6 +113,7 @@
         "AI/ML courses at Metropolia UAS"
       ]
     },
+
     {
       "degree": "Finnish Language Studies",
       "school": "Turun TAITO-koulutus",
@@ -111,15 +122,18 @@
       "endDate": "2025",
       "highlights": ["Professional Finnish for workplace integration"]
     },
+
     {
       "degree": "Architecture (discontinued)",
       "school": "Polytechnic University of Tirana",
       "location": "Tirana, Albania",
       "startDate": "2013",
       "endDate": "2019",
-      "highlights": ["Foundation in structural design and spatial thinking"]
+      "highlights": ["Foundation in structural design, spatial thinking and graphical design"]
     }
   ],
+
+
 
   "hobbies": [
     { "icon": "🏗️", "name": "Architecture & Design", "description": "Passion for building design, urban planning, smart buildings — bridging physical and digital architecture" },
@@ -127,6 +141,9 @@
     { "icon": "🔧", "name": "DIY & Making", "description": "Building things, home automation projects, hands-on problem solving" },
     { "icon": "📚", "name": "Continuous Learning", "description": "Online courses, certifications, exploring new technologies" }
   ],
+
+
+
 
   "references": [
     {
@@ -137,6 +154,8 @@
       "contact": "Available upon request"
     }
   ],
+
+
 
   "contact": [
     { "icon": "📱", "label": "Phone", "value": "+358 46 613 3040", "url": "tel:" },
