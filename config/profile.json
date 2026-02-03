@@ -20,7 +20,7 @@
     "highlights": [
       { "icon": "🎯", "title": "Problem Solver", "text": "Experimental approach — create, test, iterate quickly" },
       { "icon": "🔌", "title": "IoT & Embedded", "text": "Sensors, automation logic, industrial networks, microcontrollers" },
-      { "icon": "🐍", "title": "Software Dev", "text": "Python (incl. ML libraries), C, C#, Java, SQL" },
+      { "icon": "🐍", "title": "Software Dev", "text": "Python (incl. ML libraries), C, C#, Java, SQL, Kotlin" },
       { "icon": "🤝", "title": "Team Player", "text": "Collaborative, takes responsibility, supports others' decisions" }
     ]
   },
