@@ -42,6 +42,7 @@ class ProfileLoader {
     render() {
         this.renderHero();
         this.renderAbout();
+        this.renderFeaturedProjects();
         this.renderSkills();
         this.renderExperience();
         this.renderEducation();
@@ -91,6 +92,133 @@ class ProfileLoader {
                 </div>
             `).join('');
         }
+    }
+
+    // ===== FEATURED PROJECTS =====
+    renderFeaturedProjects() {
+        const projects = this.profile.featuredProjects;
+        if (!projects) return;
+
+        const tilesContainer = document.getElementById('projectTiles');
+        if (!tilesContainer) return;
+
+        // Filter to featured only (or first 5)
+        const featured = projects.filter(p => p.featured !== false).slice(0, 5);
+        
+        // Render tiles
+        tilesContainer.innerHTML = featured.map((project, index) => {
+            const statusClass = project.status === 'Completed' ? 'status-done' : 
+                               project.status === 'Active' ? 'status-active' : 'status-wip';
+            return `
+                <div class="project-tile ${index === 0 ? 'active' : ''}" 
+                     data-project-index="${index}"
+                     onmouseenter="profileLoader.showProject(${index})"
+                     onclick="profileLoader.showProject(${index})">
+                    <span class="tile-icon">${project.icon}</span>
+                    <div class="tile-content">
+                        <h4>${project.shortName || project.name}</h4>
+                        <span class="tile-status ${statusClass}">${project.status}</span>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        // Store projects for reference
+        this.featuredProjects = featured;
+        
+        // Show first project by default
+        if (featured.length > 0) {
+            this.showProject(0);
+        }
+    }
+
+    showProject(index) {
+        const project = this.featuredProjects[index];
+        if (!project) return;
+
+        // Update active tile
+        document.querySelectorAll('.project-tile').forEach((tile, i) => {
+            tile.classList.toggle('active', i === index);
+        });
+
+        // Update preview media
+        const mediaEl = document.getElementById('previewMedia');
+        if (mediaEl) {
+            if (project.media && project.media.type === 'image' && project.media.images.length > 0) {
+                mediaEl.innerHTML = `<img src="${project.media.images[0]}" alt="${project.name}" class="preview-image">`;
+            } else if (project.media && project.media.type === 'video' && project.media.video) {
+                mediaEl.innerHTML = `<video src="${project.media.video}" controls class="preview-video"></video>`;
+            } else {
+                // Placeholder
+                const placeholder = project.media?.placeholder || project.icon || '📁';
+                mediaEl.innerHTML = `
+                    <div class="preview-placeholder">
+                        <span class="preview-icon">${placeholder}</span>
+                        <span class="preview-text">${project.status === 'In Progress' ? 'Coming Soon' : 'Preview'}</span>
+                    </div>
+                `;
+            }
+        }
+
+        // Update thumbnails
+        const thumbsEl = document.getElementById('previewThumbnails');
+        if (thumbsEl) {
+            if (project.media && project.media.images && project.media.images.length > 1) {
+                thumbsEl.innerHTML = project.media.images.map((img, i) => `
+                    <div class="thumb ${i === 0 ? 'active' : ''}" onclick="profileLoader.showImage(${index}, ${i})">
+                        <img src="${img}" alt="Thumbnail ${i + 1}">
+                    </div>
+                `).join('');
+                thumbsEl.style.display = 'flex';
+            } else {
+                thumbsEl.innerHTML = '';
+                thumbsEl.style.display = 'none';
+            }
+        }
+
+        // Update details
+        const detailsEl = document.getElementById('previewDetails');
+        if (detailsEl) {
+            const tagsHtml = project.tags.map(tag => `<span class="preview-tag">${tag}</span>`).join('');
+            
+            let linksHtml = '';
+            if (project.links) {
+                if (project.links.thesis) {
+                    linksHtml += `<a href="${project.links.thesis}" target="_blank" rel="noopener" class="preview-link">📄 Read Thesis</a>`;
+                }
+                if (project.links.github && project.links.github !== '') {
+                    linksHtml += `<a href="${project.links.github}" target="_blank" rel="noopener" class="preview-link">💻 View Code</a>`;
+                }
+                if (project.links.live) {
+                    linksHtml += `<a href="${project.links.live}" target="_blank" rel="noopener" class="preview-link">🌐 Live Demo</a>`;
+                }
+            }
+            
+            const isPlaceholder = project.description.includes('[PLACEHOLDER]');
+            const description = project.description.replace('[PLACEHOLDER] ', '');
+            
+            detailsEl.innerHTML = `
+                <h3 class="preview-title">${project.name} ${isPlaceholder ? '<span class="wip-badge-sm">WIP</span>' : ''}</h3>
+                <p class="preview-description">${description}</p>
+                <div class="preview-tags">${tagsHtml}</div>
+                <div class="preview-links">${linksHtml || '<span class="no-links">Links coming soon</span>'}</div>
+            `;
+        }
+    }
+
+    showImage(projectIndex, imageIndex) {
+        const project = this.featuredProjects[projectIndex];
+        if (!project || !project.media || !project.media.images) return;
+        
+        const mediaEl = document.getElementById('previewMedia');
+        if (mediaEl) {
+            mediaEl.innerHTML = `<img src="${project.media.images[imageIndex]}" alt="${project.name}" class="preview-image">`;
+        }
+        
+        // Update active thumbnail
+        document.querySelectorAll('.thumb').forEach((thumb, i) => {
+            thumb.classList.toggle('active', i === imageIndex);
+        });
     }
 
     // ===== SKILLS =====

@@ -9,6 +9,101 @@
     { "value": "4/5", "label": "Thesis Grade" }
   ],
 
+  "featuredProjects": [
+    {
+      "id": "carbon-footprint",
+      "name": "Carbon Footprint Calculator",
+      "shortName": "CO₂ Calculator",
+      "icon": "🌱",
+      "description": "Python-based tool calculating CO₂e emissions for individual products using real production data. Built at Genelec OY as my thesis project. Analyzes materials, energy, transport, and packaging using simplified LCA methodology. Users can modify inputs and see real-time impact on emissions.",
+      "tags": ["Python", "LCA", "Data Analysis", "Genelec"],
+      "status": "Completed",
+      "featured": true,
+      "media": {
+        "type": "placeholder",
+        "placeholder": "🌱",
+        "images": []
+      },
+      "links": {
+        "thesis": "https://www.theseus.fi/handle/10024/796937",
+        "github": ""
+      }
+    },
+    {
+      "id": "portfolio-platform",
+      "name": "Modular Portfolio Platform",
+      "shortName": "This Website",
+      "icon": "🌐",
+      "description": "This portfolio itself — a plugin-based architecture where modules are self-contained folders. JSON config drives both landing page and dashboard. Adding content requires no code changes. Built with vanilla JavaScript, CSS Grid, and a component mindset.",
+      "tags": ["JavaScript", "CSS", "Architecture", "JSON"],
+      "status": "Active",
+      "featured": true,
+      "media": {
+        "type": "placeholder",
+        "placeholder": "🌐",
+        "images": []
+      },
+      "links": {
+        "github": "https://github.com/Robert26912/portofolio",
+        "live": "https://robert26912.github.io/portofolio/"
+      }
+    },
+    {
+      "id": "esp32-monitor",
+      "name": "ESP32 Environmental Monitor",
+      "shortName": "ESP32 Monitor",
+      "icon": "📡",
+      "description": "[PLACEHOLDER] WiFi-connected sensor system monitoring temperature, humidity, and air quality. Data sent via MQTT to a Python backend. Real-time dashboard for visualization. Currently gathering components and code from various projects.",
+      "tags": ["ESP32", "C++", "MQTT", "Sensors"],
+      "status": "In Progress",
+      "featured": true,
+      "media": {
+        "type": "placeholder",
+        "placeholder": "📡",
+        "images": []
+      },
+      "links": {
+        "github": ""
+      }
+    },
+    {
+      "id": "iot-data-logger",
+      "name": "IoT Data Logger Backend",
+      "shortName": "Data Logger",
+      "icon": "🗄️",
+      "description": "[PLACEHOLDER] Python Flask backend service for collecting and storing sensor data. REST API for data submission and retrieval. SQLite database with automatic data retention. Designed to pair with ESP32 devices.",
+      "tags": ["Python", "Flask", "REST API", "SQLite"],
+      "status": "In Progress",
+      "featured": true,
+      "media": {
+        "type": "placeholder",
+        "placeholder": "🗄️",
+        "images": []
+      },
+      "links": {
+        "github": ""
+      }
+    },
+    {
+      "id": "ml-experiments",
+      "name": "Machine Learning Experiments",
+      "shortName": "ML Projects",
+      "icon": "🧠",
+      "description": "Coursework from Metropolia UAS: Introduction to AI, Artificial Intelligence with Python. Hands-on with ML libraries including classification, regression, and neural network basics. Jupyter notebooks documenting learning process.",
+      "tags": ["Python", "ML", "Jupyter", "TensorFlow"],
+      "status": "Completed",
+      "featured": false,
+      "media": {
+        "type": "placeholder",
+        "placeholder": "🧠",
+        "images": []
+      },
+      "links": {
+        "github": ""
+      }
+    }
+  ],
+
   "about": {
     "heading": "Engineer who explains, builds, and solves",
     "paragraphs": [
