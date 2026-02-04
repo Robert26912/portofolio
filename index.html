@@ -54,157 +54,130 @@
         <div class="nav-inner">
             <a href="index.html" class="nav-logo">R<span class="accent">.</span>H</a>
             <div class="nav-links">
-                <a href="#about">About</a>
-                <a href="#projects">Projects</a>
-                <a href="#experience">Experience</a>
-                <a href="#skills">Skills</a>
-                <a href="#contact">Contact</a>
-                <span class="wip-badge">Work in Progress</span>
+                <a href="#experience">Journey</a>
+                <a href="#references">References</a>
+                <a href="dashboard.html" class="nav-cta">Dashboard →</a>
             </div>
         </div>
     </nav>
 
-    <!-- ===== HERO ===== -->
-    <header class="hero">
-        <div class="hero-bg"></div>
-        <div class="hero-content">
-            <p class="hero-label" id="heroTitle">IoT Engineer</p>
-            <h1 class="hero-name" id="heroName">Robert Hidri</h1>
-            <p class="hero-tagline" id="heroTagline">Loading...</p>
-            <div class="hero-actions">
-                <a href="Robert_Hidri_CV.pdf" download class="btn btn-primary">📄 Download CV</a>
-                <a href="#contact" class="btn btn-ghost">Get in Touch</a>
+    <!-- ===== HERO + PROJECTS COMBINED ===== -->
+    <header class="hero-compact">
+        <div class="hero-layout">
+            <!-- Left Column: Profile + Contact -->
+            <div class="left-column">
+                <!-- Profile Card (auto-rotating) -->
+                <div class="profile-card" id="profileCard">
+                    <div class="profile-inner">
+                        <!-- Front: Photo placeholder -->
+                        <div class="profile-face profile-front">
+                            <div class="profile-photo" id="profilePhoto">
+                                <span class="photo-placeholder">R.H</span>
+                            </div>
+                        </div>
+                        <!-- Back: Text only -->
+                        <div class="profile-face profile-back">
+                            <p class="profile-tagline" id="profileTagline">Loading...</p>
+                            <div class="profile-stats" id="profileStats"></div>
+                        </div>
+                    </div>
+                    <h1 class="profile-name" id="heroName">Robert Hidri</h1>
+                    <p class="profile-title" id="heroTitle">IoT Engineer</p>
+                    <button class="btn btn-primary btn-sm" onclick="openCVModal()">📄 View CV</button>
+                </div>
+
+                <!-- Contact Tiles (below profile) -->
+                <div class="contact-mini" id="contactMini">
+                    <!-- Populated by JS -->
+                </div>
             </div>
-            <div class="hero-stats" id="heroStats"></div>
+
+            <!-- Center: Project Showcase -->
+            <div class="center-column">
+                <div class="showcase-preview">
+                    <div class="preview-media" id="previewMedia">
+                        <div class="preview-placeholder">
+                            <span class="preview-icon">🌱</span>
+                            <span class="preview-text">Carbon Footprint Calculator</span>
+                        </div>
+                    </div>
+                    <div class="preview-info" id="previewDetails">
+                        <h3 class="preview-title">Select a Project</h3>
+                        <p class="preview-description">Hover on tiles below to preview.</p>
+                        <div class="preview-tags"></div>
+                        <div class="preview-links"></div>
+                    </div>
+                </div>
+
+                <!-- Project Tiles Row -->
+                <div class="showcase-tiles" id="projectTiles">
+                    <!-- Populated by JS -->
+                </div>
+
+                <a href="dashboard.html" class="showcase-more">More Projects →</a>
+            </div>
+
+            <!-- Right Column: Skills Tabs -->
+            <div class="right-column">
+                <div class="skills-sidebar" id="skillsSidebar">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
         </div>
     </header>
 
     <main>
 
-        <!-- ===== ABOUT ===== -->
-        <section id="about" class="section">
+        <!-- ===== EXPERIENCE & EDUCATION ===== -->
+        <section id="experience" class="section">
             <div class="section-inner">
-                <span class="section-tag">01 — About</span>
-                <h2 id="aboutHeading">Loading...</h2>
-                <div class="about-grid">
-                    <div class="about-text" id="aboutText"></div>
-                    <div class="about-highlights" id="aboutHighlights"></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ===== FEATURED PROJECTS ===== -->
-        <section id="projects" class="section section-alt">
-            <div class="section-inner">
-                <span class="section-tag">02 — Featured Projects</span>
-                <h2>What I've Built</h2>
-                <p class="section-subtitle">Hover or tap a project to see details. More projects in the <a href="dashboard.html">Dashboard</a>.</p>
+                <span class="section-tag">01 — Experience & Education</span>
+                <h2>My Journey</h2>
+                <p class="section-subtitle">Click any tile to expand details.</p>
                 
-                <div class="project-showcase">
-                    <!-- Left: Preview Area -->
-                    <div class="project-preview">
-                        <!-- Video/Image Display -->
-                        <div class="preview-media">
-                            <div class="preview-placeholder" id="previewMedia">
-                                <span class="preview-icon">🎬</span>
-                                <span class="preview-text">Select a project →</span>
-                            </div>
-                        </div>
-                        
-                        <!-- Thumbnail Strip -->
-                        <div class="preview-thumbnails" id="previewThumbnails">
-                            <!-- Thumbnails populate when project selected -->
-                        </div>
-                        
-                        <!-- Project Details -->
-                        <div class="preview-details" id="previewDetails">
-                            <h3 class="preview-title">Select a Project</h3>
-                            <p class="preview-description">Hover or tap on any project tile to see details, images, and links.</p>
-                            <div class="preview-tags"></div>
-                            <div class="preview-links"></div>
-                        </div>
+                <div class="journey-grid">
+                    <!-- Experience tiles -->
+                    <div class="journey-column">
+                        <h3 class="journey-heading">💼 Work</h3>
+                        <div class="journey-tiles" id="experienceTiles"></div>
                     </div>
                     
-                    <!-- Right: Project Tiles -->
-                    <div class="project-tiles" id="projectTiles">
-                        <!-- Tiles populated by JS -->
+                    <!-- Education tiles -->
+                    <div class="journey-column">
+                        <h3 class="journey-heading">🎓 Education</h3>
+                        <div class="journey-tiles" id="educationTiles"></div>
                     </div>
                 </div>
-                
-                <div class="projects-cta">
-                    <a href="dashboard.html" class="btn btn-ghost">View All Projects →</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- ===== EXPERIENCE ===== -->
-        <section id="experience" class="section section-alt">
-            <div class="section-inner">
-                <span class="section-tag">03 — Experience</span>
-                <h2>Work History</h2>
-                <div class="timeline" id="experienceTimeline"></div>
-            </div>
-        </section>
-
-        <!-- ===== EDUCATION ===== -->
-        <section id="education" class="section">
-            <div class="section-inner">
-                <span class="section-tag">04 — Education</span>
-                <h2>Academic Background</h2>
-                <div class="timeline" id="educationTimeline"></div>
-            </div>
-        </section>
-
-        <!-- ===== SKILLS ===== -->
-        <section id="skills" class="section section-alt">
-            <div class="section-inner">
-                <span class="section-tag">05 — Skills</span>
-                <h2>Technical Toolkit</h2>
-                <div class="skills-grid" id="skillsGrid"></div>
             </div>
         </section>
 
         <!-- ===== REFERENCES ===== -->
-        <section id="references" class="section">
+        <section id="references" class="section section-alt">
             <div class="section-inner">
-                <span class="section-tag">06 — References</span>
+                <span class="section-tag">02 — References</span>
                 <h2>What Others Say</h2>
                 <div class="references-grid" id="referencesGrid"></div>
             </div>
         </section>
 
-        <!-- ===== HOBBIES ===== -->
-        <section id="hobbies" class="section section-alt">
-            <div class="section-inner">
-                <span class="section-tag">07 — Interests</span>
-                <h2>Beyond the Code</h2>
-                <div class="hobbies-grid" id="hobbiesGrid"></div>
-            </div>
-        </section>
-
-        <!-- ===== DASHBOARD CTA ===== -->
-        <section class="section section-cta">
-            <div class="section-inner" style="text-align: center;">
-                <h2>See the Work in Action</h2>
-                <p style="max-width: 540px; margin: 0 auto 2rem; color: var(--text-muted);">
-                    The interactive dashboard showcases projects, thesis, certificates, and tools — 
-                    built with the same modular architecture described above.
-                </p>
-                <a href="dashboard.html" class="btn btn-primary btn-lg">Open Project Dashboard →</a>
-            </div>
-        </section>
-
-        <!-- ===== CONTACT ===== -->
-        <section id="contact" class="section">
-            <div class="section-inner">
-                <span class="section-tag">08 — Contact</span>
-                <h2>Let's Connect</h2>
-                <p class="contact-note">Loading...</p>
-                <div class="contact-grid" id="contactGrid"></div>
-            </div>
-        </section>
-
     </main>
+
+    <!-- CV Modal -->
+    <div id="cvModal" class="modal">
+        <div class="modal-content modal-cv">
+            <div class="modal-header">
+                <h3>📄 Curriculum Vitae</h3>
+                <button class="modal-close" onclick="closeCVModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <iframe src="Robert_Hidri_CV.pdf" class="cv-preview"></iframe>
+            </div>
+            <div class="modal-footer">
+                <a href="Robert_Hidri_CV.pdf" download class="btn btn-primary">⬇️ Download PDF</a>
+                <button class="btn btn-ghost" onclick="closeCVModal()">Close</button>
+            </div>
+        </div>
+    </div>
 
     <footer class="footer">
         <div class="footer-inner">

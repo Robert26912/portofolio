@@ -37,14 +37,21 @@
     "python": {
       "id": "python",
       "title": "Python Projects",
-      "description": "Backend development, data processing, automation scripts",
+      "description": "Backend development, data processing, ML, automation",
       "icon": "🐍",
       "category": "projects",
       "visibility": "public",
       "enabled": true,
       "content": {
-        "summary": "Python is my strongest language. I've used it for everything from carbon footprint calculations at Genelec to machine learning experiments and IoT backend services.",
+        "summary": "Python is my strongest language. I've used it for carbon footprint calculations at Genelec, machine learning with TensorFlow, and IoT backend services.",
         "projects": [
+          {
+            "name": "SmartScale - ML Component",
+            "description": "TensorFlow image classification model that identifies items placed on a scale. Trained custom model on product images, deployed on Raspberry Pi using TensorFlow Lite.",
+            "technologies": ["Python", "TensorFlow", "OpenCV", "Jupyter", "NumPy"],
+            "github": "https://github.com/Robert26912/SmartScale",
+            "status": "Completed"
+          },
           {
             "name": "Carbon Footprint Calculator",
             "description": "Production-grade tool calculating CO₂e emissions per product using LCA methodology. My thesis project at Genelec.",
@@ -53,29 +60,22 @@
             "status": "Completed"
           },
           {
-            "name": "IoT Data Logger",
-            "description": "[PLACEHOLDER] Backend service for collecting sensor data from ESP32 devices via MQTT.",
-            "technologies": ["Python", "Flask", "MQTT", "SQLite"],
-            "github": "",
-            "status": "In Progress"
-          },
-          {
             "name": "ML Experiments",
-            "description": "Coursework from Metropolia UAS: Introduction to AI, Artificial Intelligence with Python. Hands-on with ML libraries.",
-            "technologies": ["Python", "ML Libraries", "Jupyter"],
+            "description": "Coursework from Metropolia UAS: Introduction to AI, Artificial Intelligence with Python. Classification, regression, neural networks.",
+            "technologies": ["Python", "TensorFlow", "scikit-learn", "Jupyter"],
             "github": "",
             "status": "Completed"
           }
         ],
         "skills": [
           "Python 3.x",
+          "TensorFlow / TensorFlow Lite",
+          "OpenCV",
           "Data processing",
-          "ML libraries (basics)",
-          "Flask web framework",
-          "SQL databases",
+          "Jupyter notebooks",
           "API development"
         ],
-        "learning_notes": "Completed AI/ML courses at Metropolia UAS. Currently exploring FastAPI for async APIs."
+        "learning_notes": "Completed AI/ML courses at Metropolia UAS. Applied ML practically in SmartScale project."
       }
     },
 
@@ -91,29 +91,37 @@
         "summary": "Embedded systems development from my IoT engineering degree. Experience with microprocessors, sensor integration, and real-time systems.",
         "projects": [
           {
-            "name": "Microprocessor Programming Projects",
-            "description": "Coursework from Savonia UAS: Basics of Microprocessor Programming, Sensor Basics, Digital/Analog Electronics. Hands-on with embedded C.",
-            "technologies": ["C", "Microprocessors", "Sensors", "Electronics"],
-            "github": "",
+            "name": "SmartScale",
+            "description": "AI-powered scale that automatically identifies items using image recognition. Built with Raspberry Pi, TensorFlow, load cell sensor, and LCD display. Role: Hardware Engineer.",
+            "technologies": ["Raspberry Pi", "Python", "TensorFlow", "OpenCV", "Load Cell", "LCD"],
+            "github": "https://github.com/Robert26912/SmartScale",
+            "demo": "https://youtu.be/KrtS9QwIHMU",
             "status": "Completed"
           },
           {
-            "name": "ESP32 Environmental Monitor",
-            "description": "[PLACEHOLDER] WiFi-connected sensor system with temperature, humidity, and air quality monitoring.",
-            "technologies": ["C++", "ESP32", "Arduino", "MQTT"],
+            "name": "ArduinoSense",
+            "description": "Full-stack IoT: Arduino Nano 33 BLE sends sensor data via Bluetooth to Android app, syncing to Node.js backend with PostgreSQL.",
+            "technologies": ["Arduino", "C++", "BLE", "Android", "Node.js", "PostgreSQL"],
+            "github": "https://github.com/Robert26912/ArduinoSense",
+            "status": "Completed"
+          },
+          {
+            "name": "Microprocessor Programming",
+            "description": "Coursework from Savonia UAS: Basics of Microprocessor Programming, Sensor Basics, Digital/Analog Electronics.",
+            "technologies": ["C", "Microprocessors", "Sensors", "Electronics"],
             "github": "",
-            "status": "In Progress"
+            "status": "Completed"
           }
         ],
         "skills": [
-          "C programming",
-          "Microprocessor basics",
+          "C/C++ programming",
+          "Arduino & Raspberry Pi",
           "Sensor integration",
-          "Digital electronics",
-          "Analog electronics",
+          "BLE communication",
+          "Load cells & HX711",
           "Embedded debugging"
         ],
-        "learning_notes": "Strong foundation from degree program. Building more hands-on projects to deepen practical experience."
+        "learning_notes": "Strong foundation from degree program plus hands-on team projects building real hardware systems."
       }
     },
 
@@ -145,6 +153,47 @@
           "Modular architecture"
         ],
         "learning_notes": "Built this from scratch to learn fundamentals before frameworks. React migration path planned."
+      }
+    },
+
+    "iot-projects": {
+      "id": "iot-projects",
+      "title": "IoT Projects",
+      "description": "End-to-end connected systems with hardware and software",
+      "icon": "📡",
+      "category": "iot",
+      "visibility": "public",
+      "enabled": true,
+      "content": {
+        "summary": "Complete IoT systems combining hardware, embedded software, mobile apps, and cloud backends. These projects demonstrate full-stack IoT development from sensors to user interfaces.",
+        "projects": [
+          {
+            "name": "SmartScale",
+            "description": "AI-powered scale using image recognition to identify items. Raspberry Pi captures image → TensorFlow model predicts item → LCD displays name, weight, and price. Includes load cell calibration, camera integration, and ML model training.",
+            "technologies": ["Raspberry Pi", "TensorFlow", "OpenCV", "Python", "Load Cell", "LCD"],
+            "github": "https://github.com/Robert26912/SmartScale",
+            "demo": "https://youtu.be/KrtS9QwIHMU",
+            "role": "Hardware Engineer",
+            "status": "Completed"
+          },
+          {
+            "name": "ArduinoSense",
+            "description": "Full-stack IoT system: Arduino Nano 33 BLE reads temperature/humidity sensors and sends data via Bluetooth to an Android app. App syncs to Node.js backend with PostgreSQL for data storage and history viewing.",
+            "technologies": ["Arduino Nano 33 BLE", "Kotlin", "Node.js", "PostgreSQL", "BLE"],
+            "github": "https://github.com/Robert26912/ArduinoSense",
+            "role": "Team Member",
+            "status": "Completed"
+          }
+        ],
+        "skills": [
+          "End-to-end IoT architecture",
+          "Sensor integration",
+          "BLE communication",
+          "Mobile app development",
+          "Backend APIs",
+          "Database design"
+        ],
+        "learning_notes": "These team projects taught me to work across the full stack — from soldering sensors to deploying backends."
       }
     },
 

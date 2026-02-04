@@ -41,25 +41,23 @@ class ProfileLoader {
 
     render() {
         this.renderHero();
-        this.renderAbout();
+        this.renderContactMini();
+        this.renderSkillsSidebar();
         this.renderFeaturedProjects();
-        this.renderSkills();
         this.renderExperience();
         this.renderEducation();
-        this.renderHobbies();
         this.renderReferences();
-        this.renderContact();
     }
 
-    // ===== HERO =====
+    // ===== HERO (Compact with Profile Card) =====
     renderHero() {
         const p = this.profile;
         
         this.setText('heroName', p.name);
         this.setText('heroTitle', p.title);
-        this.setText('heroTagline', p.tagline);
+        this.setText('profileTagline', p.tagline);
         
-        const statsEl = document.getElementById('heroStats');
+        const statsEl = document.getElementById('profileStats');
         if (statsEl && p.stats) {
             statsEl.innerHTML = p.stats.map(stat => `
                 <div class="stat">
@@ -70,31 +68,47 @@ class ProfileLoader {
         }
     }
 
-    // ===== ABOUT =====
-    renderAbout() {
-        const about = this.profile.about;
-        if (!about) return;
+    // ===== CONTACT MINI (Below Profile) =====
+    renderContactMini() {
+        const contact = this.profile.contact;
+        if (!contact) return;
 
-        this.setText('aboutHeading', about.heading);
-        
-        const textEl = document.getElementById('aboutText');
-        if (textEl && about.paragraphs) {
-            textEl.innerHTML = about.paragraphs.map(p => `<p>${p}</p>`).join('');
-        }
+        const container = document.getElementById('contactMini');
+        if (!container) return;
 
-        const highlightsEl = document.getElementById('aboutHighlights');
-        if (highlightsEl && about.highlights) {
-            highlightsEl.innerHTML = about.highlights.map(h => `
-                <div class="highlight-card">
-                    <span class="highlight-icon">${h.icon}</span>
-                    <h4>${h.title}</h4>
-                    <p>${h.text}</p>
-                </div>
-            `).join('');
-        }
+        container.innerHTML = contact.map(c => {
+            // Protected email - click to reveal
+            if (c.protected && c.label === 'Email') {
+                const encoded = btoa(c.value);
+                return `
+                    <div class="contact-mini-tile" 
+                         id="emailTile"
+                         data-encoded="${encoded}"
+                         onclick="revealEmailMini(this)"
+                         role="button">
+                        <span class="contact-mini-icon">${c.icon}</span>
+                        <span class="contact-mini-label">Click to reveal email</span>
+                    </div>
+                `;
+            }
+            
+            // Skip location for mini view
+            if (!c.url) return '';
+            
+            const preferredClass = c.preferred ? 'preferred' : '';
+            const badge = c.preferred ? '<span class="contact-mini-badge">★ Preferred</span>' : '';
+            
+            return `
+                <a href="${c.url}" target="_blank" rel="noopener noreferrer" class="contact-mini-tile ${preferredClass}">
+                    <span class="contact-mini-icon">${c.icon}</span>
+                    <span class="contact-mini-label">${c.label}</span>
+                    ${badge}
+                </a>
+            `;
+        }).filter(Boolean).join('');
     }
 
-    // ===== FEATURED PROJECTS =====
+    // ===== FEATURED PROJECTS (Showcase) =====
     renderFeaturedProjects() {
         const projects = this.profile.featuredProjects;
         if (!projects) return;
@@ -102,10 +116,10 @@ class ProfileLoader {
         const tilesContainer = document.getElementById('projectTiles');
         if (!tilesContainer) return;
 
-        // Filter to featured only (or first 5)
-        const featured = projects.filter(p => p.featured !== false).slice(0, 5);
+        // Filter to featured only, max 4 for compact view
+        const featured = projects.filter(p => p.featured !== false).slice(0, 4);
         
-        // Render tiles
+        // Render compact tiles
         tilesContainer.innerHTML = featured.map((project, index) => {
             const statusClass = project.status === 'Completed' ? 'status-done' : 
                                project.status === 'Active' ? 'status-active' : 'status-wip';
@@ -115,10 +129,8 @@ class ProfileLoader {
                      onmouseenter="profileLoader.showProject(${index})"
                      onclick="profileLoader.showProject(${index})">
                     <span class="tile-icon">${project.icon}</span>
-                    <div class="tile-content">
-                        <h4>${project.shortName || project.name}</h4>
-                        <span class="tile-status ${statusClass}">${project.status}</span>
-                    </div>
+                    <span class="tile-name">${project.shortName || project.name}</span>
+                    <span class="tile-status ${statusClass}">${project.status}</span>
                 </div>
             `;
         }).join('');
@@ -189,6 +201,9 @@ class ProfileLoader {
                 if (project.links.github && project.links.github !== '') {
                     linksHtml += `<a href="${project.links.github}" target="_blank" rel="noopener" class="preview-link">💻 View Code</a>`;
                 }
+                if (project.links.demo) {
+                    linksHtml += `<a href="${project.links.demo}" target="_blank" rel="noopener" class="preview-link">🎬 Watch Demo</a>`;
+                }
                 if (project.links.live) {
                     linksHtml += `<a href="${project.links.live}" target="_blank" rel="noopener" class="preview-link">🌐 Live Demo</a>`;
                 }
@@ -221,115 +236,144 @@ class ProfileLoader {
         });
     }
 
-    // ===== SKILLS =====
-    renderSkills() {
+    // ===== SKILLS SIDEBAR (Smooth tabs, click to expand) =====
+    renderSkillsSidebar() {
         const skills = this.profile.skills;
         if (!skills) return;
 
-        const container = document.getElementById('skillsGrid');
+        const container = document.getElementById('skillsSidebar');
         if (!container) return;
 
-        container.innerHTML = skills.map(group => `
-            <div class="skill-group">
-                <h4>${group.category}</h4>
-                <div class="skill-pills">
-                    ${group.items.map(item => `<span class="pill">${item}</span>`).join('')}
+        // Add icons for each category
+        const icons = {
+            'Programming Languages': '💻',
+            'IoT & Embedded': '🔌',
+            'Data & Analytics': '📊',
+            'Networking & Infrastructure': '🌐',
+            'Tools & Methods': '🛠️',
+            'Languages (Human)': '🗣️',
+            'Design skills': '🎨'
+        };
+
+        container.innerHTML = skills.map((group, index) => `
+            <div class="skill-tab" data-category="${index}" onclick="profileLoader.toggleSkillTab(${index})">
+                <div class="skill-tab-header">
+                    <span class="skill-tab-icon">${icons[group.category] || '📁'}</span>
+                    <span class="skill-tab-name">${group.category.replace('Languages (Human)', 'Languages')}</span>
+                </div>
+                <div class="skill-tab-expand">
+                    <div class="skill-tab-items">
+                        ${group.items.map(item => `<span class="skill-item">${item}</span>`).join('')}
+                    </div>
                 </div>
             </div>
         `).join('');
     }
 
-    // ===== EXPERIENCE =====
+    toggleSkillTab(index) {
+        const tabs = document.querySelectorAll('.skill-tab');
+        tabs.forEach((tab, i) => {
+            if (i === index) {
+                tab.classList.toggle('expanded');
+            } else {
+                tab.classList.remove('expanded');
+            }
+        });
+    }
+
+    // ===== EXPERIENCE (Tiles) =====
     renderExperience() {
         const experience = this.profile.experience;
         if (!experience) return;
 
-        const container = document.getElementById('experienceTimeline');
+        const container = document.getElementById('experienceTiles');
         if (!container) return;
 
-        container.innerHTML = experience.map(exp => {
+        container.innerHTML = experience.map((exp, index) => {
             const dateRange = exp.endDate 
                 ? `${exp.startDate} – ${exp.endDate}`
-                : exp.startDate;
+                : `${exp.startDate} – Present`;
             
-            const title = exp.company 
-                ? `${exp.role} — ${exp.company}`
-                : exp.role;
-
-            const locationHtml = exp.location 
-                ? `<p class="timeline-location">${exp.location}</p>`
-                : '';
-
-            const tagsHtml = exp.tags && exp.tags.length > 0
-                ? `<div class="timeline-tags">
-                    ${exp.tags.map(tag => `<span class="pill pill-sm">${tag}</span>`).join('')}
-                   </div>`
-                : '';
+            const icon = exp.icon || '💼';
 
             return `
-                <div class="timeline-item">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-content">
-                        <div class="timeline-header">
-                            <h3>${title}</h3>
-                            <span class="timeline-date">${dateRange}</span>
+                <div class="journey-tile" onclick="profileLoader.toggleExpand(this, 'exp-${index}')">
+                    <div class="tile-header">
+                        <span class="tile-icon">${icon}</span>
+                        <div class="tile-info">
+                            <h4>${exp.company || exp.role}</h4>
+                            <span class="tile-date">${dateRange}</span>
                         </div>
-                        ${locationHtml}
-                        <p>${exp.description}</p>
-                        ${tagsHtml}
+                        <span class="tile-arrow">▸</span>
+                    </div>
+                    <div class="tile-expand" id="exp-${index}">
+                        <p class="tile-role">${exp.role}${exp.location ? ' • ' + exp.location : ''}</p>
+                        <p class="tile-desc">${exp.description}</p>
+                        ${exp.tags ? `<div class="tile-tags">${exp.tags.map(t => `<span class="pill pill-sm">${t}</span>`).join('')}</div>` : ''}
                     </div>
                 </div>
             `;
         }).join('');
     }
 
-    // ===== EDUCATION =====
+    // ===== EDUCATION (Tiles) =====
     renderEducation() {
         const education = this.profile.education;
         if (!education) return;
 
-        const container = document.getElementById('educationTimeline');
+        const container = document.getElementById('educationTiles');
         if (!container) return;
 
-        container.innerHTML = education.map(edu => {
+        container.innerHTML = education.map((edu, index) => {
             const dateRange = edu.endDate 
                 ? `${edu.startDate} – ${edu.endDate}`
                 : edu.startDate;
-
-            const gpaHtml = edu.gpa 
-                ? `<p class="timeline-gpa">GPA: ${edu.gpa}</p>`
-                : '';
+            
+            const icon = edu.icon || '🎓';
 
             const thesisHtml = edu.thesis
-                ? `<div class="thesis-card">
+                ? `<div class="tile-thesis">
                     <strong>Thesis:</strong> ${edu.thesis.title}<br>
                     <span class="thesis-grade">Grade: ${edu.thesis.grade}</span>
                     ${edu.thesis.url ? `<a href="${edu.thesis.url}" target="_blank" rel="noopener" class="thesis-link">Read thesis →</a>` : ''}
                    </div>`
                 : '';
 
-            const highlightsHtml = edu.highlights && edu.highlights.length > 0
-                ? `<div class="timeline-tags">
-                    ${edu.highlights.map(h => `<span class="pill pill-sm">${h}</span>`).join('')}
-                   </div>`
-                : '';
-
             return `
-                <div class="timeline-item">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-content">
-                        <div class="timeline-header">
-                            <h3>${edu.degree}</h3>
-                            <span class="timeline-date">${dateRange}</span>
+                <div class="journey-tile" onclick="profileLoader.toggleExpand(this, 'edu-${index}')">
+                    <div class="tile-header">
+                        <span class="tile-icon">${icon}</span>
+                        <div class="tile-info">
+                            <h4>${edu.school}</h4>
+                            <span class="tile-date">${dateRange}</span>
                         </div>
-                        <p class="timeline-location">${edu.school}${edu.location ? ', ' + edu.location : ''}</p>
-                        ${gpaHtml}
+                        <span class="tile-arrow">▸</span>
+                    </div>
+                    <div class="tile-expand" id="edu-${index}">
+                        <p class="tile-role">${edu.degree}${edu.location ? ' • ' + edu.location : ''}</p>
+                        ${edu.gpa ? `<p class="tile-gpa">GPA: ${edu.gpa}</p>` : ''}
                         ${thesisHtml}
-                        ${highlightsHtml}
+                        ${edu.highlights ? `<div class="tile-tags">${edu.highlights.slice(0, 4).map(h => `<span class="pill pill-sm">${h}</span>`).join('')}</div>` : ''}
                     </div>
                 </div>
             `;
         }).join('');
+    }
+
+    // Toggle expand/collapse for tiles
+    toggleExpand(tileEl, expandId) {
+        const expandEl = document.getElementById(expandId);
+        const isExpanded = tileEl.classList.contains('expanded');
+        
+        // Close all others first
+        document.querySelectorAll('.journey-tile.expanded').forEach(t => {
+            if (t !== tileEl) {
+                t.classList.remove('expanded');
+            }
+        });
+        
+        // Toggle this one
+        tileEl.classList.toggle('expanded', !isExpanded);
     }
 
     // ===== HOBBIES =====
@@ -449,6 +493,51 @@ function revealEmail(el) {
         console.error('Failed to decode');
     }
 }
+
+// Mini email reveal function (for sidebar) - shows email inline
+function revealEmailMini(el) {
+    const encoded = el.dataset.encoded;
+    if (!encoded) return;
+    
+    try {
+        const email = atob(encoded);
+        el.innerHTML = `
+            <span class="contact-mini-icon">✉️</span>
+            <span class="contact-mini-label">
+                <span class="contact-mini-email">${email}</span>
+            </span>
+        `;
+        el.classList.add('revealed');
+        el.onclick = () => window.location.href = 'mailto:' + email;
+    } catch (e) {
+        console.error('Failed to decode');
+    }
+}
+
+// CV Modal functions
+function openCVModal() {
+    document.getElementById('cvModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeCVModal() {
+    document.getElementById('cvModal').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+// Close modal on backdrop click
+document.addEventListener('click', (e) => {
+    if (e.target.id === 'cvModal') {
+        closeCVModal();
+    }
+});
+
+// Close modal on Escape key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeCVModal();
+    }
+});
 
 // Start
 const profileLoader = new ProfileLoader();

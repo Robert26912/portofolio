@@ -11,11 +11,30 @@
 
   "featuredProjects": [
     {
+      "id": "smart-scale",
+      "name": "SmartScale",
+      "shortName": "SmartScale",
+      "icon": "⚖️",
+      "description": "AI-powered scale that automatically identifies items using image recognition. Built with Raspberry Pi, TensorFlow, load cell sensor, and LCD display. Place an item → camera captures → ML model predicts → displays name, weight, and price. Role: Hardware Engineer.",
+      "tags": ["TensorFlow", "Raspberry Pi", "Python", "OpenCV", "ML"],
+      "status": "Completed",
+      "featured": true,
+      "media": {
+        "type": "placeholder",
+        "placeholder": "⚖️",
+        "images": []
+      },
+      "links": {
+        "github": "https://github.com/Robert26912/SmartScale",
+        "demo": "https://youtu.be/KrtS9QwIHMU"
+      }
+    },
+    {
       "id": "carbon-footprint",
       "name": "Carbon Footprint Calculator",
       "shortName": "CO₂ Calculator",
       "icon": "🌱",
-      "description": "Python-based tool calculating CO₂e emissions for individual products using real production data. Built at Genelec OY as my thesis project. Analyzes materials, energy, transport, and packaging using simplified LCA methodology. Users can modify inputs and see real-time impact on emissions.",
+      "description": "Python-based tool calculating CO₂e emissions for individual products using real production data. Built at Genelec OY as my thesis project. Analyzes materials, energy, transport, and packaging using simplified LCA methodology.",
       "tags": ["Python", "LCA", "Data Analysis", "Genelec"],
       "status": "Completed",
       "featured": true,
@@ -30,11 +49,29 @@
       }
     },
     {
+      "id": "arduino-sense",
+      "name": "ArduinoSense",
+      "shortName": "ArduinoSense",
+      "icon": "📱",
+      "description": "Full-stack IoT system: Arduino Nano 33 BLE sends temperature/humidity data via Bluetooth to an Android app, which syncs to a Node.js backend with PostgreSQL. Features user auth, real-time sensor display, and historical data viewing.",
+      "tags": ["Arduino", "Android", "Node.js", "PostgreSQL", "BLE"],
+      "status": "Completed",
+      "featured": true,
+      "media": {
+        "type": "placeholder",
+        "placeholder": "📱",
+        "images": []
+      },
+      "links": {
+        "github": "https://github.com/Robert26912/ArduinoSense"
+      }
+    },
+    {
       "id": "portfolio-platform",
       "name": "Modular Portfolio Platform",
       "shortName": "This Website",
       "icon": "🌐",
-      "description": "This portfolio itself — a plugin-based architecture where modules are self-contained folders. JSON config drives both landing page and dashboard. Adding content requires no code changes. Built with vanilla JavaScript, CSS Grid, and a component mindset.",
+      "description": "This portfolio itself — a plugin-based architecture where modules are self-contained folders. JSON config drives both landing page and dashboard. Built with vanilla JavaScript, CSS Grid, and a component mindset.",
       "tags": ["JavaScript", "CSS", "Architecture", "JSON"],
       "status": "Active",
       "featured": true,
@@ -49,47 +86,11 @@
       }
     },
     {
-      "id": "esp32-monitor",
-      "name": "ESP32 Environmental Monitor",
-      "shortName": "ESP32 Monitor",
-      "icon": "📡",
-      "description": "[PLACEHOLDER] WiFi-connected sensor system monitoring temperature, humidity, and air quality. Data sent via MQTT to a Python backend. Real-time dashboard for visualization. Currently gathering components and code from various projects.",
-      "tags": ["ESP32", "C++", "MQTT", "Sensors"],
-      "status": "In Progress",
-      "featured": true,
-      "media": {
-        "type": "placeholder",
-        "placeholder": "📡",
-        "images": []
-      },
-      "links": {
-        "github": ""
-      }
-    },
-    {
-      "id": "iot-data-logger",
-      "name": "IoT Data Logger Backend",
-      "shortName": "Data Logger",
-      "icon": "🗄️",
-      "description": "[PLACEHOLDER] Python Flask backend service for collecting and storing sensor data. REST API for data submission and retrieval. SQLite database with automatic data retention. Designed to pair with ESP32 devices.",
-      "tags": ["Python", "Flask", "REST API", "SQLite"],
-      "status": "In Progress",
-      "featured": true,
-      "media": {
-        "type": "placeholder",
-        "placeholder": "🗄️",
-        "images": []
-      },
-      "links": {
-        "github": ""
-      }
-    },
-    {
       "id": "ml-experiments",
       "name": "Machine Learning Experiments",
-      "shortName": "ML Projects",
+      "shortName": "ML Labs",
       "icon": "🧠",
-      "description": "Coursework from Metropolia UAS: Introduction to AI, Artificial Intelligence with Python. Hands-on with ML libraries including classification, regression, and neural network basics. Jupyter notebooks documenting learning process.",
+      "description": "Coursework from Metropolia UAS covering ML fundamentals: classification, regression, neural networks. Jupyter notebooks with documented experiments using TensorFlow and scikit-learn.",
       "tags": ["Python", "ML", "Jupyter", "TensorFlow"],
       "status": "Completed",
       "featured": false,
@@ -156,6 +157,7 @@
 
   "experience": [
     {
+      "icon": "📰",
       "role": "Newspaper Delivery",
       "company": "Lounais-Suomen Tietojakelu Oy",
       "location": "Turku, Finland",
@@ -165,6 +167,7 @@
       "tags": ["Logistics", "Reliability", "Time Management"]
     },
     {
+      "icon": "🔊",
       "role": "R&D Intern → Software Developer",
       "company": "Genelec OY",
       "location": "Iisalmi, Finland",
@@ -174,6 +177,7 @@
       "tags": ["Python", "LCA", "R&D", "Automation", "Data Analysis"]
     },
     {
+      "icon": "🛡️",
       "role": "Police Officer",
       "company": "Tirana Police Department",
       "location": "Tirana, Albania",
@@ -188,6 +192,7 @@
 
   "education": [
     {
+      "icon": "🎓",
       "degree": "Bachelor of Engineering (IoT)",
       "school": "Savonia University of Applied Sciences",
       "location": "Finland",
@@ -210,6 +215,7 @@
     },
 
     {
+      "icon": "🇫🇮",
       "degree": "Finnish Language Studies",
       "school": "Turun TAITO-koulutus",
       "location": "Turku, Finland",
@@ -219,6 +225,7 @@
     },
 
     {
+      "icon": "🏛️",
       "degree": "Architecture (discontinued)",
       "school": "Polytechnic University of Tirana",
       "location": "Tirana, Albania",
