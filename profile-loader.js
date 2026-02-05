@@ -14,6 +14,7 @@
  */
 
 class ProfileLoader {
+    
     constructor() {
         this.profile = null;
         this.init();
