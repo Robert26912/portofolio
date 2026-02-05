@@ -49,21 +49,31 @@ class ProfileLoader {
         this.renderReferences();
     }
 
-    // ===== HERO (Compact with Profile Card) =====
+    // ===== HERO (Compact with Profile Card + Expandable Bio) =====
     renderHero() {
         const p = this.profile;
         
         this.setText('heroName', p.name);
         this.setText('heroTitle', p.title);
-        this.setText('profileTagline', p.tagline);
         
-        const statsEl = document.getElementById('profileStats');
-        if (statsEl && p.stats) {
-            statsEl.innerHTML = p.stats.map(stat => `
-                <div class="stat">
-                    <span class="stat-value">${stat.value}</span>
-                    <span class="stat-label">${stat.label}</span>
-                </div>
+        // Bio teaser (first sentence)
+        const bioTeaser = document.getElementById('bioTeaser');
+        if (bioTeaser && p.tagline) {
+            const teaser = p.tagline.split('.')[0] + '.';
+            bioTeaser.textContent = teaser;
+        }
+        
+        // Full bio text
+        const bioFullText = document.getElementById('bioFullText');
+        if (bioFullText && p.tagline) {
+            bioFullText.textContent = p.tagline;
+        }
+        
+        // Bio highlights (from about section)
+        const bioHighlights = document.getElementById('bioHighlights');
+        if (bioHighlights && p.about && p.about.highlights) {
+            bioHighlights.innerHTML = p.about.highlights.slice(0, 4).map(h => `
+                <span class="bio-highlight">${h.icon} ${h.title}</span>
             `).join('');
         }
     }
@@ -511,6 +521,19 @@ function revealEmailMini(el) {
         el.onclick = () => window.location.href = 'mailto:' + email;
     } catch (e) {
         console.error('Failed to decode');
+    }
+}
+
+// Toggle bio expansion
+function toggleBio() {
+    const wrapper = document.getElementById('bioWrapper');
+    if (wrapper) {
+        wrapper.classList.toggle('expanded');
+        const btn = document.getElementById('bioExpandBtn');
+        if (btn) {
+            const isExpanded = wrapper.classList.contains('expanded');
+            btn.querySelector('.expand-text').textContent = isExpanded ? 'Show less' : 'Read more';
+        }
     }
 }
 

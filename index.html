@@ -53,23 +53,40 @@
         <div class="hero-layout">
             <!-- Left Column: Profile + Contact -->
             <div class="left-column">
-                <!-- Profile Card (auto-rotating) -->
+                <!-- Profile Card (Static Photo + Expandable Bio) -->
                 <div class="profile-card" id="profileCard">
-                    <div class="profile-inner">
-                        <!-- Front: Photo placeholder -->
-                        <div class="profile-face profile-front">
-                            <div class="profile-photo" id="profilePhoto">
-                                <span class="photo-placeholder">R.H</span>
-                            </div>
-                        </div>
-                        <!-- Back: Text only -->
-                        <div class="profile-face profile-back">
-                            <p class="profile-tagline" id="profileTagline">Loading...</p>
-                            <div class="profile-stats" id="profileStats"></div>
+                    <!-- Static Photo -->
+                    <div class="profile-photo-wrapper">
+                        <div class="profile-photo" id="profilePhoto">
+                            <span class="photo-placeholder">R.H</span>
                         </div>
                     </div>
+                    
                     <h1 class="profile-name" id="heroName">Robert Hidri</h1>
                     <p class="profile-title" id="heroTitle">IoT Engineer</p>
+                    
+                    <!-- Quick Stats (always visible) -->
+                    <div class="profile-quick-stats">
+                        <span class="quick-stat"><strong>4.32</strong> GPA</span>
+                        <span class="quick-stat-divider">•</span>
+                        <span class="quick-stat"><strong>4/5</strong> Thesis</span>
+                    </div>
+                    
+                    <!-- Expandable Bio Section -->
+                    <div class="profile-bio-wrapper" id="bioWrapper">
+                        <div class="profile-bio-preview" onclick="toggleBio()">
+                            <p class="bio-teaser" id="bioTeaser">Building connected systems — from carbon footprint calculators to sensor networks.</p>
+                            <button class="bio-expand-btn" id="bioExpandBtn">
+                                <span class="expand-text">Read more</span>
+                                <span class="expand-icon">▼</span>
+                            </button>
+                        </div>
+                        <div class="profile-bio-full" id="bioFull">
+                            <p class="bio-full-text" id="bioFullText">Loading...</p>
+                            <div class="bio-highlights" id="bioHighlights"></div>
+                        </div>
+                    </div>
+                    
                     <button class="btn btn-primary btn-sm" onclick="openCVModal()">📄 View CV</button>
                 </div>
 
