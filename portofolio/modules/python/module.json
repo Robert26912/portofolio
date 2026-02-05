@@ -1,9 +1,0 @@
-{
-  "id": "python",
-  "title": "Python Projects",
-  "description": "Backend development, automation, and data processing",
-  "icon": "🐍",
-  "category": "projects",
-  "visibility": "public",
-  "enabled": true
-}

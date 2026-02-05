@@ -1,9 +1,0 @@
-{
-  "id": "web-dev",
-  "title": "Web Development",
-  "description": "Frontend and full-stack web applications",
-  "icon": "🌐",
-  "category": "projects",
-  "visibility": "public",
-  "enabled": true
-}

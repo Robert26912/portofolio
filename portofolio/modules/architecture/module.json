@@ -1,9 +1,0 @@
-{
-  "id": "architecture",
-  "title": "Architecture & Design",
-  "description": "Building architecture, software architecture, and system design principles",
-  "icon": "🏗️",
-  "category": "projects",
-  "visibility": "public",
-  "enabled": true
-}

@@ -1,9 +1,0 @@
-{
-  "id": "cpp",
-  "title": "C++ & Embedded",
-  "description": "Low-level systems and embedded device programming",
-  "icon": "⚡",
-  "category": "projects",
-  "visibility": "public",
-  "enabled": true
-}
