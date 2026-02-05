@@ -1,0 +1,28 @@
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor Files
+.vscode/
+.idea/
+*.swp
+*~
+
+# Backup Files
+*.backup
+*.tmp
+*.log
+
+# Environment Variables (secrets)
+.env
+.env.local
+*.key
+
+# Private Data
+modules/*/private/
+data/private/
+
+# Node modules (for future)
+node_modules/

@@ -1,0 +1,10 @@
+{
+  "id": "dev-tools",
+  "title": "Developer Tools",
+  "description": "Handy utilities for developers - calculators, converters, formatters",
+  "icon": "🧰",
+  "category": "tools",
+  "visibility": "public",
+  "enabled": true,
+  "interactive": true
+}

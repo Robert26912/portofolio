@@ -1,0 +1,10 @@
+{
+  "modules": [
+    "python",
+    "cpp",
+    "web-dev",
+    "devops",
+    "dev-tools",
+    "architecture"
+  ]
+}

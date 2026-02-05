@@ -1,0 +1,20 @@
+{
+  "summary": "Collection of developer utilities accessible right in your browser. No installation needed!",
+  "tools": [
+    {
+      "name": "Calculator",
+      "description": "Scientific calculator with common operations",
+      "type": "calculator"
+    },
+    {
+      "name": "JSON Formatter",
+      "description": "Format and validate JSON data",
+      "type": "json-formatter"
+    },
+    {
+      "name": "Base64 Encoder/Decoder",
+      "description": "Encode and decode Base64 strings",
+      "type": "base64"
+    }
+  ]
+}

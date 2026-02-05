@@ -1,0 +1,9 @@
+{
+  "id": "devops",
+  "title": "DevOps",
+  "description": "CI/CD pipelines, containerization, and infrastructure automation",
+  "icon": "🚀",
+  "category": "projects",
+  "visibility": "public",
+  "enabled": true
+}
