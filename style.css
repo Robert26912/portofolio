@@ -1931,3 +1931,187 @@ img { max-width: 100%; display: block; }
         align-items: center;
     }
 }
+/* ===========================================
+   CSS ADDITIONS — Paste these into style.css
+   
+   New styles for:
+   - Skip-to-content link (accessibility)
+   - Mobile hamburger menu
+   - Toast notifications (replaces alert())
+   - Empty state styling
+   - Reduced motion preferences
+   - Minimum font size fixes
+   =========================================== */
+
+
+/* --- Skip to Content (Accessibility) --- */
+.skip-link {
+    position: absolute;
+    top: -100%;
+    left: 1rem;
+    padding: 0.75rem 1.5rem;
+    background: var(--accent);
+    color: white;
+    font-weight: 600;
+    font-size: 0.875rem;
+    border-radius: var(--radius);
+    z-index: 9999;
+    transition: top 0.2s;
+}
+
+.skip-link:focus {
+    top: 0.5rem;
+    color: white;
+}
+
+
+/* --- Mobile Hamburger Menu --- */
+.nav-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    z-index: 1001;
+}
+
+.nav-toggle-bar {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--text-muted);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+/* Animated X when active */
+.nav-toggle.active .nav-toggle-bar:nth-child(1) {
+    transform: rotate(45deg) translate(4px, 4px);
+}
+.nav-toggle.active .nav-toggle-bar:nth-child(2) {
+    opacity: 0;
+}
+.nav-toggle.active .nav-toggle-bar:nth-child(3) {
+    transform: rotate(-45deg) translate(4px, -4px);
+}
+
+@media (max-width: 768px) {
+    .nav-toggle {
+        display: flex;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 3.5rem;
+        left: 0;
+        right: 0;
+        background: rgba(12, 15, 20, 0.95);
+        backdrop-filter: blur(12px);
+        flex-direction: column;
+        padding: 1.5rem 2rem;
+        gap: 1rem;
+        border-bottom: 1px solid var(--border);
+        transform: translateY(-100%);
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s ease;
+    }
+
+    .nav-links.open {
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: all;
+    }
+
+    /* Show all links in mobile menu (they were hidden before) */
+    .nav-links a {
+        display: block !important;
+        font-size: 1rem;
+        padding: 0.5rem 0;
+    }
+}
+
+
+/* --- Toast Notifications (replaces alert()) --- */
+.toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--bg-card);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.875rem 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    z-index: 9999;
+    opacity: 0;
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.toast.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: all;
+}
+
+
+/* --- Empty State (Dashboard) --- */
+.empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-dim);
+}
+
+.error-state {
+    color: #ef4444;
+}
+
+
+/* --- Reduced Motion (Accessibility) --- */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    
+    .orbs-container {
+        display: none;
+    }
+}
+
+
+/* --- Minimum Font Size Fixes --- */
+/* WCAG AA recommends minimum ~12px for body text.
+   Previous sizes of 0.5rem (8px) and 0.5625rem (9px) are too small. */
+
+.skill-item {
+    font-size: 0.6875rem; /* was 0.5625rem (9px), now 11px */
+}
+
+.tile-status,
+.wip-badge-sm {
+    font-size: 0.625rem; /* was 0.5rem (8px), now 10px */
+}
+
+.showcase-tiles .tile-name {
+    font-size: 0.6875rem; /* was 0.625rem, now 11px */
+}
+
+/* Module note (replaces inline style in module-loader.js) */
+.module-note {
+    margin-top: 1.5rem;
+    font-style: italic;
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+}

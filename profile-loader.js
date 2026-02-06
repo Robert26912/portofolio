@@ -1,24 +1,98 @@
 /**
- * PROFILE LOADER
- * Reads config/profile.json and populates the landing page
+ * ============================================================
+ * PROFILE LOADER — Robert Hidri Portfolio
+ * ============================================================
  * 
- * Sections supported:
- * - Hero (name, title, tagline, stats)
- * - About (heading, paragraphs, highlights)
- * - Skills (categories with items)
- * - Experience (timeline)
- * - Education (degrees, thesis)
- * - Hobbies (interests)
- * - References (quotes)
- * - Contact (links)
+ * Reads config/profile.json and populates the landing page.
+ * All DOM rendering is XSS-safe (HTML entities escaped).
+ * 
+ * Sections:
+ *   - Hero (name, title, tagline, stats)
+ *   - Bio (expandable teaser → full text + highlights)
+ *   - Contact (mini tiles, email obfuscation)
+ *   - Featured Projects (showcase with hover preview)
+ *   - Skills Sidebar (accordion tabs)
+ *   - Experience & Education (expandable tiles)
+ *   - References (quote cards)
+ * 
+ * Security:
+ *   - All user-facing strings passed through sanitize()
+ *   - Email obfuscated with char-code splitting (not just base64)
+ *   - CSP-compatible (no inline event handlers in templates)
+ *   - Modal has focus trap for accessibility
+ * 
+ * @author Robert Hidri
+ * @version 2.0.0
  */
 
+/* ---------- Debug flag — set false for production ---------- */
+const DEBUG = false;
+function log(...args) { if (DEBUG) console.log(...args); }
+
+/* ==========================================================
+   SECURITY: HTML Sanitizer
+   Escapes <, >, &, ", ' to prevent XSS via innerHTML.
+   ========================================================== */
+function sanitize(str) {
+    if (typeof str !== 'string') return '';
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+/** Sanitize a URL — only allow http(s) and relative paths */
+function sanitizeUrl(url) {
+    if (!url || typeof url !== 'string') return '#';
+    const trimmed = url.trim();
+    // Allow relative paths, http, https, mailto
+    if (trimmed.startsWith('/') || trimmed.startsWith('./') || trimmed.startsWith('../')) return trimmed;
+    if (trimmed.startsWith('https://') || trimmed.startsWith('http://')) return trimmed;
+    if (trimmed.startsWith('mailto:')) return trimmed;
+    return '#'; // Block javascript:, data:, etc.
+}
+
+
+/* ==========================================================
+   EMAIL OBFUSCATION
+   Multi-layer: char codes → reversed → base64.
+   Much harder for bots than plain base64.
+   ========================================================== */
+function obfuscateEmail(email) {
+    const charCodes = email.split('').map(c => c.charCodeAt(0));
+    const reversed = charCodes.reverse().join('-');
+    return btoa(reversed);
+}
+
+function deobfuscateEmail(encoded) {
+    try {
+        const reversed = atob(encoded);
+        const charCodes = reversed.split('-').reverse().map(Number);
+        return String.fromCharCode(...charCodes);
+    } catch {
+        return null;
+    }
+}
+
+
+/* ==========================================================
+   PROFILE LOADER CLASS
+   ========================================================== */
 class ProfileLoader {
-    
+
     constructor() {
+        /** @type {Object|null} Parsed profile.json data */
         this.profile = null;
+
+        /** @type {Array} Cached featured projects for showcase */
+        this.featuredProjects = [];
+
         this.init();
     }
+
+    /* ---------- Lifecycle ---------- */
 
     async init() {
         if (document.readyState === 'loading') {
@@ -31,55 +105,84 @@ class ProfileLoader {
     async setup() {
         try {
             const response = await fetch('config/profile.json');
-            if (!response.ok) throw new Error('Profile not found');
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
             this.profile = await response.json();
             this.render();
-            console.log('✅ Profile loaded');
+            this.bindGlobalEvents();
+            this.createOrbs();
+            log('✅ Profile loaded');
         } catch (error) {
-            console.error('❌ Failed to load profile:', error);
+            console.error('❌ Failed to load profile:', error.message);
+            this.showFallback();
         }
     }
 
+    /** Render all sections — each in its own try/catch so one failure doesn't break all */
     render() {
-        this.renderHero();
-        this.renderContactMini();
-        this.renderSkillsSidebar();
-        this.renderFeaturedProjects();
-        this.renderExperience();
-        this.renderEducation();
-        this.renderReferences();
+        const sections = [
+            () => this.renderHero(),
+            () => this.renderContactMini(),
+            () => this.renderSkillsSidebar(),
+            () => this.renderFeaturedProjects(),
+            () => this.renderExperience(),
+            () => this.renderEducation(),
+            () => this.renderReferences(),
+        ];
+
+        sections.forEach((renderFn, i) => {
+            try {
+                renderFn();
+            } catch (err) {
+                console.error(`❌ Render section ${i} failed:`, err.message);
+            }
+        });
     }
 
-    // ===== HERO (Compact with Profile Card + Expandable Bio) =====
+    /** Show fallback content if profile.json fails to load */
+    showFallback() {
+        const name = document.getElementById('heroName');
+        if (name) name.textContent = 'Robert Hidri';
+        const title = document.getElementById('heroTitle');
+        if (title) title.textContent = 'IoT Engineer';
+    }
+
+
+    /* ==========================================================
+       HERO (Profile Card + Expandable Bio)
+       ========================================================== */
+
     renderHero() {
         const p = this.profile;
-        
+
         this.setText('heroName', p.name);
         this.setText('heroTitle', p.title);
-        
-        // Bio teaser (first sentence)
+
+        /* Bio teaser — first sentence */
         const bioTeaser = document.getElementById('bioTeaser');
         if (bioTeaser && p.tagline) {
-            const teaser = p.tagline.split('.')[0] + '.';
-            bioTeaser.textContent = teaser;
+            bioTeaser.textContent = p.tagline.split('.')[0] + '.';
         }
-        
-        // Full bio text
+
+        /* Full bio text */
         const bioFullText = document.getElementById('bioFullText');
         if (bioFullText && p.tagline) {
             bioFullText.textContent = p.tagline;
         }
-        
-        // Bio highlights (from about section)
+
+        /* Bio highlights (from about section) */
         const bioHighlights = document.getElementById('bioHighlights');
-        if (bioHighlights && p.about && p.about.highlights) {
-            bioHighlights.innerHTML = p.about.highlights.slice(0, 4).map(h => `
-                <span class="bio-highlight">${h.icon} ${h.title}</span>
-            `).join('');
+        if (bioHighlights && p.about?.highlights) {
+            bioHighlights.innerHTML = p.about.highlights.slice(0, 4).map(h =>
+                `<span class="bio-highlight">${sanitize(h.icon)} ${sanitize(h.title)}</span>`
+            ).join('');
         }
     }
 
-    // ===== CONTACT MINI (Below Profile) =====
+
+    /* ==========================================================
+       CONTACT MINI TILES (Below profile in sidebar)
+       ========================================================== */
+
     renderContactMini() {
         const contact = this.profile.contact;
         if (!contact) return;
@@ -88,38 +191,85 @@ class ProfileLoader {
         if (!container) return;
 
         container.innerHTML = contact.map(c => {
-            // Protected email - click to reveal
+            /* Protected email — click to reveal with obfuscation */
             if (c.protected && c.label === 'Email') {
-                const encoded = btoa(c.value);
+                const encoded = obfuscateEmail(c.value);
                 return `
-                    <div class="contact-mini-tile" 
+                    <div class="contact-mini-tile"
                          id="emailTile"
-                         data-encoded="${encoded}"
-                         onclick="revealEmailMini(this)"
-                         role="button">
-                        <span class="contact-mini-icon">${c.icon}</span>
+                         data-enc="${sanitize(encoded)}"
+                         role="button"
+                         tabindex="0"
+                         aria-label="Click to reveal email address">
+                        <span class="contact-mini-icon">${sanitize(c.icon)}</span>
                         <span class="contact-mini-label">Click to reveal email</span>
                     </div>
                 `;
             }
-            
-            // Skip location for mini view
+
+            /* Skip items with no URL (like location) */
             if (!c.url) return '';
-            
+
             const preferredClass = c.preferred ? 'preferred' : '';
-            const badge = c.preferred ? '<span class="contact-mini-badge">★ Preferred</span>' : '';
-            
+            const badge = c.preferred
+                ? '<span class="contact-mini-badge">★ Preferred</span>'
+                : '';
+
             return `
-                <a href="${c.url}" target="_blank" rel="noopener noreferrer" class="contact-mini-tile ${preferredClass}">
-                    <span class="contact-mini-icon">${c.icon}</span>
-                    <span class="contact-mini-label">${c.label}</span>
+                <a href="${sanitizeUrl(c.url)}" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   class="contact-mini-tile ${preferredClass}">
+                    <span class="contact-mini-icon">${sanitize(c.icon)}</span>
+                    <span class="contact-mini-label">${sanitize(c.label)}</span>
                     ${badge}
                 </a>
             `;
         }).filter(Boolean).join('');
+
+        /* Bind email reveal via event delegation (no inline onclick) */
+        const emailTile = document.getElementById('emailTile');
+        if (emailTile) {
+            const revealHandler = () => this.revealEmail(emailTile);
+            emailTile.addEventListener('click', revealHandler);
+            emailTile.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    revealHandler();
+                }
+            });
+        }
     }
 
-    // ===== FEATURED PROJECTS (Showcase) =====
+    /** Reveal obfuscated email address */
+    revealEmail(el) {
+        const encoded = el.dataset.enc;
+        if (!encoded) return;
+
+        const email = deobfuscateEmail(encoded);
+        if (!email) {
+            console.error('Failed to decode email');
+            return;
+        }
+
+        el.innerHTML = `
+            <span class="contact-mini-icon">✉️</span>
+            <span class="contact-mini-label">
+                <span class="contact-mini-email">${sanitize(email)}</span>
+            </span>
+        `;
+        el.classList.add('revealed');
+
+        /* Second click opens mailto */
+        el.onclick = () => { window.location.href = 'mailto:' + email; };
+        el.setAttribute('aria-label', `Send email to ${email}`);
+    }
+
+
+    /* ==========================================================
+       FEATURED PROJECTS (Showcase with hover preview)
+       ========================================================== */
+
     renderFeaturedProjects() {
         const projects = this.profile.featuredProjects;
         if (!projects) return;
@@ -127,127 +277,126 @@ class ProfileLoader {
         const tilesContainer = document.getElementById('projectTiles');
         if (!tilesContainer) return;
 
-        // Filter to featured only, max 4 for compact view
+        /* Filter to featured, max 4 */
         const featured = projects.filter(p => p.featured !== false).slice(0, 4);
-        
-        // Render compact tiles
+        this.featuredProjects = featured;
+
         tilesContainer.innerHTML = featured.map((project, index) => {
-            const statusClass = project.status === 'Completed' ? 'status-done' : 
-                               project.status === 'Active' ? 'status-active' : 'status-wip';
+            const statusClass = project.status === 'Completed' ? 'status-done'
+                : project.status === 'Active' ? 'status-active' : 'status-wip';
             return `
-                <div class="project-tile ${index === 0 ? 'active' : ''}" 
+                <div class="project-tile ${index === 0 ? 'active' : ''}"
                      data-project-index="${index}"
-                     onmouseenter="profileLoader.showProject(${index})"
-                     onclick="profileLoader.showProject(${index})">
-                    <span class="tile-icon">${project.icon}</span>
-                    <span class="tile-name">${project.shortName || project.name}</span>
-                    <span class="tile-status ${statusClass}">${project.status}</span>
+                     role="tab"
+                     tabindex="0"
+                     aria-selected="${index === 0}"
+                     aria-label="${sanitize(project.shortName || project.name)}">
+                    <span class="tile-icon">${sanitize(project.icon)}</span>
+                    <span class="tile-name">${sanitize(project.shortName || project.name)}</span>
+                    <span class="tile-status ${statusClass}">${sanitize(project.status)}</span>
                 </div>
             `;
         }).join('');
 
-        // Store projects for reference
-        this.featuredProjects = featured;
-        
-        // Show first project by default
-        if (featured.length > 0) {
-            this.showProject(0);
-        }
+        /* Bind events via delegation (no inline handlers) */
+        tilesContainer.addEventListener('mouseenter', (e) => {
+            const tile = e.target.closest('.project-tile');
+            if (tile) this.showProject(Number(tile.dataset.projectIndex));
+        }, true);
+
+        tilesContainer.addEventListener('click', (e) => {
+            const tile = e.target.closest('.project-tile');
+            if (tile) this.showProject(Number(tile.dataset.projectIndex));
+        });
+
+        tilesContainer.addEventListener('keydown', (e) => {
+            const tile = e.target.closest('.project-tile');
+            if (tile && (e.key === 'Enter' || e.key === ' ')) {
+                e.preventDefault();
+                this.showProject(Number(tile.dataset.projectIndex));
+            }
+        });
+
+        /* Show first project by default */
+        if (featured.length > 0) this.showProject(0);
     }
 
+    /** Update the showcase preview for a given project index */
     showProject(index) {
         const project = this.featuredProjects[index];
         if (!project) return;
 
-        // Update active tile
+        /* Update active tile */
         document.querySelectorAll('.project-tile').forEach((tile, i) => {
             tile.classList.toggle('active', i === index);
+            tile.setAttribute('aria-selected', i === index);
         });
 
-        // Update preview media
+        /* Update preview media */
         const mediaEl = document.getElementById('previewMedia');
         if (mediaEl) {
-            if (project.media && project.media.type === 'image' && project.media.images.length > 0) {
-                mediaEl.innerHTML = `<img src="${project.media.images[0]}" alt="${project.name}" class="preview-image">`;
-            } else if (project.media && project.media.type === 'video' && project.media.video) {
-                mediaEl.innerHTML = `<video src="${project.media.video}" controls class="preview-video"></video>`;
+            if (project.media?.type === 'image' && project.media.images?.length > 0) {
+                mediaEl.innerHTML = `<img src="${sanitizeUrl(project.media.images[0])}" 
+                                          alt="${sanitize(project.name)}" 
+                                          class="preview-image" loading="lazy">`;
+            } else if (project.media?.images?.length > 0) {
+                mediaEl.innerHTML = `<img src="${sanitizeUrl(project.media.images[0])}" 
+                                          alt="${sanitize(project.name)}" 
+                                          class="preview-image" loading="lazy">`;
             } else {
-                // Placeholder
                 const placeholder = project.media?.placeholder || project.icon || '📁';
                 mediaEl.innerHTML = `
                     <div class="preview-placeholder">
-                        <span class="preview-icon">${placeholder}</span>
+                        <span class="preview-icon">${sanitize(placeholder)}</span>
                         <span class="preview-text">${project.status === 'In Progress' ? 'Coming Soon' : 'Preview'}</span>
                     </div>
                 `;
             }
         }
 
-        // Update thumbnails
-        const thumbsEl = document.getElementById('previewThumbnails');
-        if (thumbsEl) {
-            if (project.media && project.media.images && project.media.images.length > 1) {
-                thumbsEl.innerHTML = project.media.images.map((img, i) => `
-                    <div class="thumb ${i === 0 ? 'active' : ''}" onclick="profileLoader.showImage(${index}, ${i})">
-                        <img src="${img}" alt="Thumbnail ${i + 1}">
-                    </div>
-                `).join('');
-                thumbsEl.style.display = 'flex';
-            } else {
-                thumbsEl.innerHTML = '';
-                thumbsEl.style.display = 'none';
-            }
-        }
-
-        // Update details
+        /* Update details panel */
         const detailsEl = document.getElementById('previewDetails');
         if (detailsEl) {
-            const tagsHtml = project.tags.map(tag => `<span class="preview-tag">${tag}</span>`).join('');
-            
+            const tagsHtml = (project.tags || [])
+                .map(tag => `<span class="preview-tag">${sanitize(tag)}</span>`)
+                .join('');
+
             let linksHtml = '';
             if (project.links) {
                 if (project.links.thesis) {
-                    linksHtml += `<a href="${project.links.thesis}" target="_blank" rel="noopener" class="preview-link">📄 Read Thesis</a>`;
+                    linksHtml += `<a href="${sanitizeUrl(project.links.thesis)}" target="_blank" rel="noopener" class="preview-link">📄 Read Thesis</a>`;
                 }
-                if (project.links.github && project.links.github !== '') {
-                    linksHtml += `<a href="${project.links.github}" target="_blank" rel="noopener" class="preview-link">💻 View Code</a>`;
+                if (project.links.github) {
+                    linksHtml += `<a href="${sanitizeUrl(project.links.github)}" target="_blank" rel="noopener" class="preview-link">💻 View Code</a>`;
                 }
                 if (project.links.demo) {
-                    linksHtml += `<a href="${project.links.demo}" target="_blank" rel="noopener" class="preview-link">🎬 Watch Demo</a>`;
+                    linksHtml += `<a href="${sanitizeUrl(project.links.demo)}" target="_blank" rel="noopener" class="preview-link">🎬 Watch Demo</a>`;
                 }
                 if (project.links.live) {
-                    linksHtml += `<a href="${project.links.live}" target="_blank" rel="noopener" class="preview-link">🌐 Live Demo</a>`;
+                    linksHtml += `<a href="${sanitizeUrl(project.links.live)}" target="_blank" rel="noopener" class="preview-link">🌐 Live Demo</a>`;
                 }
             }
-            
-            const isPlaceholder = project.description.includes('[PLACEHOLDER]');
-            const description = project.description.replace('[PLACEHOLDER] ', '');
-            
+
+            const isWip = project.description?.includes('[PLACEHOLDER]');
+            const description = (project.description || '').replace('[PLACEHOLDER] ', '');
+
             detailsEl.innerHTML = `
-                <h3 class="preview-title">${project.name} ${isPlaceholder ? '<span class="wip-badge-sm">WIP</span>' : ''}</h3>
-                <p class="preview-description">${description}</p>
+                <h3 class="preview-title">
+                    ${sanitize(project.name)} 
+                    ${isWip ? '<span class="wip-badge-sm">WIP</span>' : ''}
+                </h3>
+                <p class="preview-description">${sanitize(description)}</p>
                 <div class="preview-tags">${tagsHtml}</div>
                 <div class="preview-links">${linksHtml || '<span class="no-links">Links coming soon</span>'}</div>
             `;
         }
     }
 
-    showImage(projectIndex, imageIndex) {
-        const project = this.featuredProjects[projectIndex];
-        if (!project || !project.media || !project.media.images) return;
-        
-        const mediaEl = document.getElementById('previewMedia');
-        if (mediaEl) {
-            mediaEl.innerHTML = `<img src="${project.media.images[imageIndex]}" alt="${project.name}" class="preview-image">`;
-        }
-        
-        // Update active thumbnail
-        document.querySelectorAll('.thumb').forEach((thumb, i) => {
-            thumb.classList.toggle('active', i === imageIndex);
-        });
-    }
 
-    // ===== SKILLS SIDEBAR (Smooth tabs, click to expand) =====
+    /* ==========================================================
+       SKILLS SIDEBAR (Accordion tabs, click to expand)
+       ========================================================== */
+
     renderSkillsSidebar() {
         const skills = this.profile.skills;
         if (!skills) return;
@@ -255,7 +404,6 @@ class ProfileLoader {
         const container = document.getElementById('skillsSidebar');
         if (!container) return;
 
-        // Add icons for each category
         const icons = {
             'Programming Languages': '💻',
             'IoT & Embedded': '🔌',
@@ -263,36 +411,60 @@ class ProfileLoader {
             'Networking & Infrastructure': '🌐',
             'Tools & Methods': '🛠️',
             'Languages (Human)': '🗣️',
-            'Design skills': '🎨'
+            'Design skills': '🎨',
         };
 
         container.innerHTML = skills.map((group, index) => `
-            <div class="skill-tab" data-category="${index}" onclick="profileLoader.toggleSkillTab(${index})">
+            <div class="skill-tab" 
+                 data-category="${index}"
+                 role="button"
+                 tabindex="0"
+                 aria-expanded="false">
                 <div class="skill-tab-header">
                     <span class="skill-tab-icon">${icons[group.category] || '📁'}</span>
-                    <span class="skill-tab-name">${group.category.replace('Languages (Human)', 'Languages')}</span>
+                    <span class="skill-tab-name">${sanitize(group.category.replace('Languages (Human)', 'Languages'))}</span>
                 </div>
-                <div class="skill-tab-expand">
+                <div class="skill-tab-expand" aria-hidden="true">
                     <div class="skill-tab-items">
-                        ${group.items.map(item => `<span class="skill-item">${item}</span>`).join('')}
+                        ${group.items.map(item => `<span class="skill-item">${sanitize(item)}</span>`).join('')}
                     </div>
                 </div>
             </div>
         `).join('');
-    }
 
-    toggleSkillTab(index) {
-        const tabs = document.querySelectorAll('.skill-tab');
-        tabs.forEach((tab, i) => {
-            if (i === index) {
-                tab.classList.toggle('expanded');
-            } else {
-                tab.classList.remove('expanded');
+        /* Bind click/keyboard via delegation */
+        container.addEventListener('click', (e) => {
+            const tab = e.target.closest('.skill-tab');
+            if (tab) this.toggleSkillTab(tab);
+        });
+        container.addEventListener('keydown', (e) => {
+            const tab = e.target.closest('.skill-tab');
+            if (tab && (e.key === 'Enter' || e.key === ' ')) {
+                e.preventDefault();
+                this.toggleSkillTab(tab);
             }
         });
     }
 
-    // ===== EXPERIENCE (Tiles) =====
+    toggleSkillTab(activeTab) {
+        document.querySelectorAll('.skill-tab').forEach(tab => {
+            if (tab === activeTab) {
+                const isExpanded = tab.classList.toggle('expanded');
+                tab.setAttribute('aria-expanded', isExpanded);
+                tab.querySelector('.skill-tab-expand')?.setAttribute('aria-hidden', !isExpanded);
+            } else {
+                tab.classList.remove('expanded');
+                tab.setAttribute('aria-expanded', 'false');
+                tab.querySelector('.skill-tab-expand')?.setAttribute('aria-hidden', 'true');
+            }
+        });
+    }
+
+
+    /* ==========================================================
+       EXPERIENCE (Expandable tiles)
+       ========================================================== */
+
     renderExperience() {
         const experience = this.profile.experience;
         if (!experience) return;
@@ -301,33 +473,43 @@ class ProfileLoader {
         if (!container) return;
 
         container.innerHTML = experience.map((exp, index) => {
-            const dateRange = exp.endDate 
-                ? `${exp.startDate} – ${exp.endDate}`
-                : `${exp.startDate} – Present`;
-            
+            const dateRange = exp.endDate
+                ? `${sanitize(exp.startDate)} – ${sanitize(exp.endDate)}`
+                : `${sanitize(exp.startDate)} – Present`;
             const icon = exp.icon || '💼';
 
             return `
-                <div class="journey-tile" onclick="profileLoader.toggleExpand(this, 'exp-${index}')">
+                <div class="journey-tile" 
+                     data-expand-id="exp-${index}"
+                     role="button"
+                     tabindex="0"
+                     aria-expanded="false">
                     <div class="tile-header">
-                        <span class="tile-icon">${icon}</span>
+                        <span class="tile-icon">${sanitize(icon)}</span>
                         <div class="tile-info">
-                            <h4>${exp.company || exp.role}</h4>
+                            <h4>${sanitize(exp.company || exp.role)}</h4>
                             <span class="tile-date">${dateRange}</span>
                         </div>
-                        <span class="tile-arrow">▸</span>
+                        <span class="tile-arrow" aria-hidden="true">▸</span>
                     </div>
-                    <div class="tile-expand" id="exp-${index}">
-                        <p class="tile-role">${exp.role}${exp.location ? ' • ' + exp.location : ''}</p>
-                        <p class="tile-desc">${exp.description}</p>
-                        ${exp.tags ? `<div class="tile-tags">${exp.tags.map(t => `<span class="pill pill-sm">${t}</span>`).join('')}</div>` : ''}
+                    <div class="tile-expand" id="exp-${index}" aria-hidden="true">
+                        <p class="tile-role">${sanitize(exp.role)}${exp.location ? ' • ' + sanitize(exp.location) : ''}</p>
+                        <p class="tile-desc">${sanitize(exp.description)}</p>
+                        ${exp.tags ? `<div class="tile-tags">${exp.tags.map(t => `<span class="pill pill-sm">${sanitize(t)}</span>`).join('')}</div>` : ''}
                     </div>
                 </div>
             `;
         }).join('');
+
+        /* Bind expand via delegation */
+        this.bindTileExpand(container);
     }
 
-    // ===== EDUCATION (Tiles) =====
+
+    /* ==========================================================
+       EDUCATION (Expandable tiles)
+       ========================================================== */
+
     renderEducation() {
         const education = this.profile.education;
         if (!education) return;
@@ -336,75 +518,84 @@ class ProfileLoader {
         if (!container) return;
 
         container.innerHTML = education.map((edu, index) => {
-            const dateRange = edu.endDate 
-                ? `${edu.startDate} – ${edu.endDate}`
-                : edu.startDate;
-            
+            const dateRange = edu.endDate
+                ? `${sanitize(edu.startDate)} – ${sanitize(edu.endDate)}`
+                : sanitize(edu.startDate);
             const icon = edu.icon || '🎓';
 
             const thesisHtml = edu.thesis
                 ? `<div class="tile-thesis">
-                    <strong>Thesis:</strong> ${edu.thesis.title}<br>
-                    <span class="thesis-grade">Grade: ${edu.thesis.grade}</span>
-                    ${edu.thesis.url ? `<a href="${edu.thesis.url}" target="_blank" rel="noopener" class="thesis-link">Read thesis →</a>` : ''}
+                        <strong>Thesis:</strong> ${sanitize(edu.thesis.title)}<br>
+                        <span class="thesis-grade">Grade: ${sanitize(edu.thesis.grade)}</span>
+                        ${edu.thesis.url ? `<a href="${sanitizeUrl(edu.thesis.url)}" target="_blank" rel="noopener" class="thesis-link">Read thesis →</a>` : ''}
                    </div>`
                 : '';
 
             return `
-                <div class="journey-tile" onclick="profileLoader.toggleExpand(this, 'edu-${index}')">
+                <div class="journey-tile" 
+                     data-expand-id="edu-${index}"
+                     role="button"
+                     tabindex="0"
+                     aria-expanded="false">
                     <div class="tile-header">
-                        <span class="tile-icon">${icon}</span>
+                        <span class="tile-icon">${sanitize(icon)}</span>
                         <div class="tile-info">
-                            <h4>${edu.school}</h4>
+                            <h4>${sanitize(edu.school)}</h4>
                             <span class="tile-date">${dateRange}</span>
                         </div>
-                        <span class="tile-arrow">▸</span>
+                        <span class="tile-arrow" aria-hidden="true">▸</span>
                     </div>
-                    <div class="tile-expand" id="edu-${index}">
-                        <p class="tile-role">${edu.degree}${edu.location ? ' • ' + edu.location : ''}</p>
-                        ${edu.gpa ? `<p class="tile-gpa">GPA: ${edu.gpa}</p>` : ''}
+                    <div class="tile-expand" id="edu-${index}" aria-hidden="true">
+                        <p class="tile-role">${sanitize(edu.degree)}${edu.location ? ' • ' + sanitize(edu.location) : ''}</p>
+                        ${edu.gpa ? `<p class="tile-gpa">GPA: ${sanitize(edu.gpa)}</p>` : ''}
                         ${thesisHtml}
-                        ${edu.highlights ? `<div class="tile-tags">${edu.highlights.slice(0, 4).map(h => `<span class="pill pill-sm">${h}</span>`).join('')}</div>` : ''}
+                        ${edu.highlights ? `<div class="tile-tags">${edu.highlights.slice(0, 4).map(h => `<span class="pill pill-sm">${sanitize(h)}</span>`).join('')}</div>` : ''}
                     </div>
                 </div>
             `;
         }).join('');
+
+        this.bindTileExpand(container);
     }
 
-    // Toggle expand/collapse for tiles
-    toggleExpand(tileEl, expandId) {
-        const expandEl = document.getElementById(expandId);
-        const isExpanded = tileEl.classList.contains('expanded');
-        
-        // Close all others first
-        document.querySelectorAll('.journey-tile.expanded').forEach(t => {
-            if (t !== tileEl) {
-                t.classList.remove('expanded');
+    /** Shared: bind click/keyboard expand for journey tiles */
+    bindTileExpand(container) {
+        const handler = (e) => {
+            const tile = e.target.closest('.journey-tile');
+            if (!tile) return;
+
+            /* Don't collapse if clicking a link inside the expanded area */
+            if (e.target.closest('a')) return;
+
+            const isExpanded = tile.classList.contains('expanded');
+
+            /* Close all others first */
+            container.querySelectorAll('.journey-tile.expanded').forEach(t => {
+                if (t !== tile) {
+                    t.classList.remove('expanded');
+                    t.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            /* Toggle this one */
+            tile.classList.toggle('expanded', !isExpanded);
+            tile.setAttribute('aria-expanded', !isExpanded);
+        };
+
+        container.addEventListener('click', handler);
+        container.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handler(e);
             }
         });
-        
-        // Toggle this one
-        tileEl.classList.toggle('expanded', !isExpanded);
     }
 
-    // ===== HOBBIES =====
-    renderHobbies() {
-        const hobbies = this.profile.hobbies;
-        if (!hobbies) return;
 
-        const container = document.getElementById('hobbiesGrid');
-        if (!container) return;
+    /* ==========================================================
+       REFERENCES
+       ========================================================== */
 
-        container.innerHTML = hobbies.map(hobby => `
-            <div class="hobby-card">
-                <span class="hobby-icon">${hobby.icon}</span>
-                <h4>${hobby.name}</h4>
-                <p>${hobby.description}</p>
-            </div>
-        `).join('');
-    }
-
-    // ===== REFERENCES =====
     renderReferences() {
         const references = this.profile.references;
         if (!references) return;
@@ -414,154 +605,176 @@ class ProfileLoader {
 
         container.innerHTML = references.map(ref => `
             <div class="reference-card">
-                <blockquote>"${ref.quote}"</blockquote>
+                <blockquote>"${sanitize(ref.quote)}"</blockquote>
                 <div class="reference-author">
-                    <strong>${ref.name}</strong>
-                    <span>${ref.title}, ${ref.company}</span>
+                    <strong>${sanitize(ref.name)}</strong>
+                    <span>${sanitize(ref.title)}, ${sanitize(ref.company)}</span>
                 </div>
             </div>
         `).join('');
     }
 
-    // ===== CONTACT =====
-    renderContact() {
-        const contact = this.profile.contact;
-        if (!contact) return;
 
-        const container = document.getElementById('contactGrid');
+    /* ==========================================================
+       GLOBAL EVENT BINDINGS
+       ========================================================== */
+
+    bindGlobalEvents() {
+        /* --- Bio toggle --- */
+        const bioToggle = document.getElementById('bioToggle');
+        if (bioToggle) {
+            const toggle = () => {
+                const wrapper = document.getElementById('bioWrapper');
+                if (!wrapper) return;
+                const isExpanded = wrapper.classList.toggle('expanded');
+                bioToggle.setAttribute('aria-expanded', isExpanded);
+                const bioFull = document.getElementById('bioFull');
+                if (bioFull) bioFull.setAttribute('aria-hidden', !isExpanded);
+                const btn = document.getElementById('bioExpandBtn');
+                if (btn) {
+                    btn.querySelector('.expand-text').textContent = isExpanded ? 'Show less' : 'Read more';
+                }
+            };
+            bioToggle.addEventListener('click', toggle);
+            bioToggle.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+            });
+        }
+
+        /* --- CV Modal --- */
+        const cvOpen = document.getElementById('cvModalOpen');
+        const cvModal = document.getElementById('cvModal');
+        const cvClose = document.getElementById('cvModalClose');
+        const cvCloseFooter = document.getElementById('cvModalCloseFooter');
+        const cvIframe = document.getElementById('cvIframe');
+
+        const openCV = () => {
+            if (!cvModal) return;
+            /* Lazy-load the PDF only when modal opens */
+            if (cvIframe && !cvIframe.src) {
+                cvIframe.src = 'Robert_Hidri_CV.pdf';
+            }
+            cvModal.classList.add('active');
+            cvModal.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+            /* Focus trap: focus the close button */
+            cvClose?.focus();
+        };
+
+        const closeCV = () => {
+            if (!cvModal) return;
+            cvModal.classList.remove('active');
+            cvModal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+            /* Return focus to the trigger button */
+            cvOpen?.focus();
+        };
+
+        cvOpen?.addEventListener('click', openCV);
+        cvClose?.addEventListener('click', closeCV);
+        cvCloseFooter?.addEventListener('click', closeCV);
+
+        /* Close modal on backdrop click */
+        cvModal?.addEventListener('click', (e) => {
+            if (e.target === cvModal) closeCV();
+        });
+
+        /* Close on Escape, focus trap inside modal */
+        document.addEventListener('keydown', (e) => {
+            if (!cvModal?.classList.contains('active')) return;
+
+            if (e.key === 'Escape') {
+                closeCV();
+                return;
+            }
+
+            /* Focus trap: keep Tab within modal */
+            if (e.key === 'Tab') {
+                const focusable = cvModal.querySelectorAll(
+                    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+                );
+                if (focusable.length === 0) return;
+
+                const first = focusable[0];
+                const last = focusable[focusable.length - 1];
+
+                if (e.shiftKey && document.activeElement === first) {
+                    e.preventDefault();
+                    last.focus();
+                } else if (!e.shiftKey && document.activeElement === last) {
+                    e.preventDefault();
+                    first.focus();
+                }
+            }
+        });
+
+        /* --- Mobile nav toggle --- */
+        const navToggle = document.getElementById('navToggle');
+        const navLinks = document.getElementById('navLinks');
+        if (navToggle && navLinks) {
+            navToggle.addEventListener('click', () => {
+                const isOpen = navLinks.classList.toggle('open');
+                navToggle.classList.toggle('active', isOpen);
+                navToggle.setAttribute('aria-expanded', isOpen);
+            });
+
+            /* Close mobile nav when a link is clicked */
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('open');
+                    navToggle.classList.remove('active');
+                    navToggle.setAttribute('aria-expanded', 'false');
+                });
+            });
+        }
+    }
+
+
+    /* ==========================================================
+       FLOATING ORBS (Ambient background animation)
+       ========================================================== */
+
+    createOrbs() {
+        const container = document.getElementById('orbsContainer');
         if (!container) return;
 
-        container.innerHTML = contact.map(c => {
-            // Protected email - click to reveal
-            if (c.protected && c.label === 'Email') {
-                const encoded = btoa(c.value);
-                return `
-                    <div class="contact-card contact-card-protected" 
-                         data-encoded="${encoded}"
-                         onclick="revealEmail(this)"
-                         role="button"
-                         tabindex="0">
-                        <span class="contact-icon">${c.icon}</span>
-                        <span class="contact-label">${c.label}</span>
-                        <span class="contact-value">Click to reveal</span>
-                        <span class="contact-hint">🔒 Protected from bots</span>
-                    </div>
-                `;
-            }
-            
-            // Static (no URL, like location)
-            if (!c.url) {
-                return `
-                    <div class="contact-card contact-card-static">
-                        <span class="contact-icon">${c.icon}</span>
-                        <span class="contact-label">${c.label}</span>
-                        <span class="contact-value">${c.value}</span>
-                    </div>
-                `;
-            }
-            
-            // Preferred contact (LinkedIn)
-            const preferredClass = c.preferred ? 'contact-card-preferred' : '';
-            const badge = c.preferred ? '<span class="contact-badge">✓ Preferred</span>' : '';
-            
-            return `
-                <a href="${c.url}" target="_blank" rel="noopener noreferrer" class="contact-card ${preferredClass}">
-                    <span class="contact-icon">${c.icon}</span>
-                    <span class="contact-label">${c.label}</span>
-                    <span class="contact-value">${c.value}</span>
-                    ${badge}
-                </a>
-            `;
-        }).join('');
+        /* Respect prefers-reduced-motion */
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-        // Add contact note if exists
-        const noteEl = document.querySelector('.contact-note');
-        if (noteEl && this.profile.contactNote) {
-            noteEl.textContent = this.profile.contactNote;
-        }
+        const orbConfigs = [
+            { class: 'orb orb-blue orb-lg orb-1',  style: 'top:10%;left:5%' },
+            { class: 'orb orb-purple orb-md orb-2', style: 'top:60%;left:85%' },
+            { class: 'orb orb-indigo orb-sm orb-3', style: 'top:30%;left:75%' },
+            { class: 'orb orb-blue orb-xl orb-4',   style: 'top:80%;left:15%' },
+            { class: 'orb orb-purple orb-md orb-5',  style: 'top:45%;left:50%' },
+            { class: 'orb orb-indigo orb-lg orb-6',  style: 'top:15%;left:60%' },
+            { class: 'orb orb-blue orb-sm orb-7',    style: 'top:70%;left:40%' },
+            { class: 'orb orb-purple orb-md orb-8',  style: 'top:5%;left:30%' },
+        ];
+
+        orbConfigs.forEach(cfg => {
+            const orb = document.createElement('div');
+            orb.className = cfg.class;
+            orb.style.cssText = cfg.style;
+            orb.setAttribute('aria-hidden', 'true');
+            container.appendChild(orb);
+        });
     }
 
-    // Helper
+
+    /* ==========================================================
+       UTILITIES
+       ========================================================== */
+
+    /** Safely set text content of an element by ID */
     setText(id, text) {
         const el = document.getElementById(id);
-        if (el && text) el.textContent = text;
+        if (el && text) el.textContent = text; // textContent is XSS-safe
     }
 }
 
-// Email reveal function (global)
-function revealEmail(el) {
-    const encoded = el.dataset.encoded;
-    if (!encoded) return;
-    
-    try {
-        const email = atob(encoded);
-        el.querySelector('.contact-value').textContent = email;
-        el.querySelector('.contact-hint').textContent = '📧 Click to send email';
-        el.classList.remove('contact-card-protected');
-        el.classList.add('contact-card-revealed');
-        el.onclick = () => window.location.href = 'mailto:' + email;
-    } catch (e) {
-        console.error('Failed to decode');
-    }
-}
 
-// Mini email reveal function (for sidebar) - shows email inline
-function revealEmailMini(el) {
-    const encoded = el.dataset.encoded;
-    if (!encoded) return;
-    
-    try {
-        const email = atob(encoded);
-        el.innerHTML = `
-            <span class="contact-mini-icon">✉️</span>
-            <span class="contact-mini-label">
-                <span class="contact-mini-email">${email}</span>
-            </span>
-        `;
-        el.classList.add('revealed');
-        el.onclick = () => window.location.href = 'mailto:' + email;
-    } catch (e) {
-        console.error('Failed to decode');
-    }
-}
-
-// Toggle bio expansion
-function toggleBio() {
-    const wrapper = document.getElementById('bioWrapper');
-    if (wrapper) {
-        wrapper.classList.toggle('expanded');
-        const btn = document.getElementById('bioExpandBtn');
-        if (btn) {
-            const isExpanded = wrapper.classList.contains('expanded');
-            btn.querySelector('.expand-text').textContent = isExpanded ? 'Show less' : 'Read more';
-        }
-    }
-}
-
-// CV Modal functions
-function openCVModal() {
-    document.getElementById('cvModal').classList.add('active');
-    document.body.style.overflow = 'hidden';
-}
-
-function closeCVModal() {
-    document.getElementById('cvModal').classList.remove('active');
-    document.body.style.overflow = '';
-}
-
-// Close modal on backdrop click
-document.addEventListener('click', (e) => {
-    if (e.target.id === 'cvModal') {
-        closeCVModal();
-    }
-});
-
-// Close modal on Escape key
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        closeCVModal();
-    }
-});
-
-// Start
+/* ==========================================================
+   INITIALIZE
+   ========================================================== */
 const profileLoader = new ProfileLoader();

@@ -1,0 +1,30 @@
+# ===========================
+# OPERATING SYSTEM FILES
+# ===========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===========================
+# EDITOR / IDE FILES
+# ===========================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ===========================
+# TEMPORARY & DEV FILES
+# ===========================
+*.tmp
+*.log
+*.backup
+git-setup-steps.txt
+
+# ===========================
+# BUILD ARTIFACTS
+# ===========================
+node_modules/
+dist/
+.cache/
