@@ -912,36 +912,52 @@ body {
     margin: 0;
 }
 
-/* --- Light Mode --- */
-@media (prefers-color-scheme: light) {
-    :root {
-        --bg:          #f8f9fb;
-        --bg-surface:  #ffffff;
-        --bg-card:     #ffffff;
-        --bg-alt:      #f1f3f7;
-        --border:      #d1d5db;
-        --border-hover:#9ca3af;
+/* --- Light Mode (toggle-based) --- */
+[data-theme="light"] {
+    --bg:          #f8f9fb;
+    --bg-surface:  #ffffff;
+    --bg-card:     #ffffff;
+    --bg-alt:      #f1f3f7;
+    --border:      #d1d5db;
+    --border-hover:#9ca3af;
 
-        --text:        #1f2937;
-        --text-muted:  #4b5563;
-        --text-dim:    #6b7280;
+    --text:        #1f2937;
+    --text-muted:  #4b5563;
+    --text-dim:    #6b7280;
 
-        --accent:      #2563eb;
-        --accent-glow: rgba(37, 99, 235, 0.15);
-        --accent-dark: #1d4ed8;
-    }
+    --accent:      #2563eb;
+    --accent-glow: rgba(37, 99, 235, 0.15);
+    --accent-dark: #1d4ed8;
+}
 
-    .dashboard-header {
-        background: rgba(248, 249, 251, 0.9);
-    }
+[data-theme="light"] .dashboard-header {
+    background: rgba(248, 249, 251, 0.9);
+}
 
-    .modal-backdrop {
-        background: rgba(0, 0, 0, 0.4);
-    }
+[data-theme="light"] .modal-backdrop {
+    background: rgba(0, 0, 0, 0.4);
+}
 
-    .tile:hover {
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
-    }
+[data-theme="light"] .tile:hover {
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+}
+
+/* --- Theme Toggle Button --- */
+.theme-toggle {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 0.625rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0.25rem 0.5rem;
+    line-height: 1;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.theme-toggle:hover {
+    border-color: var(--accent);
+    color: var(--text);
 }
 
 /* --- Focus Indicators --- */

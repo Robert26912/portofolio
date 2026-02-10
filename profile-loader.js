@@ -65,7 +65,7 @@ class ProfileLoader {
             this.profile = await response.json();
             this.render();
             this.bindGlobalEvents();
-            this.createOrbs();
+            /* Orbs removed — clean background */
             log('✅ Profile loaded');
         } catch (error) {
             console.error('❌ Failed to load profile:', error.message);
@@ -683,38 +683,6 @@ class ProfileLoader {
                 });
             });
         }
-    }
-
-
-    /* ==========================================================
-       FLOATING ORBS (Ambient background animation)
-       ========================================================== */
-
-    createOrbs() {
-        const container = document.getElementById('orbsContainer');
-        if (!container) return;
-
-        /* Respect prefers-reduced-motion */
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-        const orbConfigs = [
-            { class: 'orb orb-blue orb-lg orb-1',  style: 'top:10%;left:5%' },
-            { class: 'orb orb-purple orb-md orb-2', style: 'top:60%;left:85%' },
-            { class: 'orb orb-indigo orb-sm orb-3', style: 'top:30%;left:75%' },
-            { class: 'orb orb-blue orb-xl orb-4',   style: 'top:80%;left:15%' },
-            { class: 'orb orb-purple orb-md orb-5',  style: 'top:45%;left:50%' },
-            { class: 'orb orb-indigo orb-lg orb-6',  style: 'top:15%;left:60%' },
-            { class: 'orb orb-blue orb-sm orb-7',    style: 'top:70%;left:40%' },
-            { class: 'orb orb-purple orb-md orb-8',  style: 'top:5%;left:30%' },
-        ];
-
-        orbConfigs.forEach(cfg => {
-            const orb = document.createElement('div');
-            orb.className = cfg.class;
-            orb.style.cssText = cfg.style;
-            orb.setAttribute('aria-hidden', 'true');
-            container.appendChild(orb);
-        });
     }
 
 

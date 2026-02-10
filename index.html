@@ -41,8 +41,7 @@
     <meta name="twitter:image" content="https://robert26912.github.io/portofolio/og-image.png">
 
     <!-- Theme color for mobile browsers -->
-    <meta name="theme-color" content="#0a0c10" media="(prefers-color-scheme: dark)">
-    <meta name="theme-color" content="#f8f9fb" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0a0c10" id="themeColorMeta">
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
@@ -60,9 +59,6 @@
 <body>
     <!-- Accessibility: Skip to main content link -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
-
-    <!-- Floating Background Orbs (created by JS, CSS-animated) -->
-    <div class="orbs-container" aria-hidden="true" id="orbsContainer"></div>
 
     <!-- Honeypot: invisible email trap for bots -->
     <div style="position:absolute;left:-9999px;top:-9999px;" aria-hidden="true">
@@ -87,6 +83,7 @@
                 <a href="#experience">Journey</a>
                 <a href="#references">References</a>
                 <a href="dashboard.html" class="nav-cta">Dashboard →</a>
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode" title="Toggle theme">🌙</button>
             </div>
         </div>
     </nav>
@@ -155,7 +152,7 @@
 
                     <div class="preview-info" id="previewDetails">
                         <h3 class="preview-title">Select a Project</h3>
-                        <p class="preview-description">Hover on tiles below to preview.</p>
+                        <p class="preview-description">Select a project below to preview.</p>
                         <div class="preview-tags"></div>
                         <div class="preview-links"></div>
                     </div>

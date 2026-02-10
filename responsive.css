@@ -766,7 +766,6 @@
 /* ===== PRINT STYLES ===== */
 @media print {
     .nav,
-    .orbs-container,
     .modal,
     .btn,
     .showcase-more {
@@ -804,9 +803,6 @@
         transition-duration: 0.01ms !important;
     }
     
-    .orbs-container {
-        display: none;
-    }
     
     .profile-front,
     .profile-back {
@@ -823,11 +819,9 @@
 }
 
 /* ===== LIGHT MODE responsive adjustments ===== */
-@media (prefers-color-scheme: light) {
-    .nav-links.open,
-    .nav-links {
-        background: rgba(248, 249, 251, 0.95);
-    }
+[data-theme="light"] .nav-links.open,
+[data-theme="light"] .nav-links {
+    background: rgba(248, 249, 251, 0.95);
 }
 
 /* ===== HIGH CONTRAST MODE ===== */
