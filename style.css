@@ -312,11 +312,11 @@ img { max-width: 100%; display: block; }
 /* --- Hero Compact (3-Column Layout) --- */
 .hero-compact {
     position: relative;
-    min-height: 100vh;
+    min-height: auto;
     display: flex;
-    align-items: center;
-    padding: 5rem 2rem 3rem;
-    background: 
+    align-items: flex-start;
+    padding: 5rem 2rem 1.5rem;
+    background:
         radial-gradient(ellipse 50% 50% at 30% 50%, rgba(59, 130, 246, 0.06) 0%, transparent 70%),
         radial-gradient(ellipse 40% 40% at 70% 30%, rgba(139, 92, 246, 0.04) 0%, transparent 60%);
 }
@@ -325,8 +325,8 @@ img { max-width: 100%; display: block; }
     max-width: 1300px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 220px 1fr 200px;
-    gap: 2rem;
+    grid-template-columns: 230px 1fr 230px;
+    gap: 1.5rem;
     align-items: start;
     width: 100%;
 }
@@ -679,12 +679,12 @@ img { max-width: 100%; display: block; }
 .showcase-preview {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
+    gap: 1.25rem;
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
-    padding: 1.5rem;
-    min-height: 260px;
+    padding: 1.25rem;
+    min-height: auto;
 }
 
 .showcase-preview .preview-media {
@@ -1014,7 +1014,7 @@ img { max-width: 100%; display: block; }
 
 /* --- Sections --- */
 .section {
-    padding: 5rem 2rem;
+    padding: 3rem 2rem;
     position: relative;
     background: rgba(10, 12, 16, 0.75);
     backdrop-filter: blur(8px);
@@ -1932,19 +1932,10 @@ img { max-width: 100%; display: block; }
     }
 }
 /* ===========================================
-   CSS ADDITIONS — Paste these into style.css
-   
-   New styles for:
-   - Skip-to-content link (accessibility)
-   - Mobile hamburger menu
-   - Toast notifications (replaces alert())
-   - Empty state styling
-   - Reduced motion preferences
-   - Minimum font size fixes
+   ACCESSIBILITY & UI ADDITIONS
    =========================================== */
 
-
-/* --- Skip to Content (Accessibility) --- */
+/* --- Skip to Content --- */
 .skip-link {
     position: absolute;
     top: -100%;
@@ -1964,6 +1955,18 @@ img { max-width: 100%; display: block; }
     color: white;
 }
 
+/* --- Focus Indicators --- */
+:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+button:focus-visible,
+a:focus-visible,
+[tabindex]:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
 
 /* --- Mobile Hamburger Menu --- */
 .nav-toggle {
@@ -1986,7 +1989,6 @@ img { max-width: 100%; display: block; }
     transition: all 0.3s ease;
 }
 
-/* Animated X when active */
 .nav-toggle.active .nav-toggle-bar:nth-child(1) {
     transform: rotate(45deg) translate(4px, 4px);
 }
@@ -2025,7 +2027,6 @@ img { max-width: 100%; display: block; }
         pointer-events: all;
     }
 
-    /* Show all links in mobile menu (they were hidden before) */
     .nav-links a {
         display: block !important;
         font-size: 1rem;
@@ -2033,8 +2034,7 @@ img { max-width: 100%; display: block; }
     }
 }
 
-
-/* --- Toast Notifications (replaces alert()) --- */
+/* --- Toast Notifications --- */
 .toast {
     position: fixed;
     bottom: 2rem;
@@ -2060,8 +2060,7 @@ img { max-width: 100%; display: block; }
     pointer-events: all;
 }
 
-
-/* --- Empty State (Dashboard) --- */
+/* --- Empty / Error States --- */
 .empty-state {
     grid-column: 1 / -1;
     text-align: center;
@@ -2073,8 +2072,20 @@ img { max-width: 100%; display: block; }
     color: #ef4444;
 }
 
+/* --- Noscript Fallback --- */
+.noscript-msg {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: var(--text-muted);
+    font-size: 1rem;
+    max-width: 600px;
+    margin: 2rem auto;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+}
 
-/* --- Reduced Motion (Accessibility) --- */
+/* --- Reduced Motion --- */
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -2084,34 +2095,107 @@ img { max-width: 100%; display: block; }
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
     }
-    
+
     .orbs-container {
         display: none;
     }
 }
 
-
 /* --- Minimum Font Size Fixes --- */
-/* WCAG AA recommends minimum ~12px for body text.
-   Previous sizes of 0.5rem (8px) and 0.5625rem (9px) are too small. */
-
 .skill-item {
-    font-size: 0.6875rem; /* was 0.5625rem (9px), now 11px */
+    font-size: 0.6875rem;
 }
 
 .tile-status,
 .wip-badge-sm {
-    font-size: 0.625rem; /* was 0.5rem (8px), now 10px */
+    font-size: 0.625rem;
 }
 
 .showcase-tiles .tile-name {
-    font-size: 0.6875rem; /* was 0.625rem, now 11px */
+    font-size: 0.6875rem;
 }
 
-/* Module note (replaces inline style in module-loader.js) */
 .module-note {
     margin-top: 1.5rem;
     font-style: italic;
     font-size: 0.8125rem;
     color: var(--text-muted);
+}
+
+/* ===========================================
+   LIGHT MODE
+   Respects system preference. Dark is default.
+   =========================================== */
+@media (prefers-color-scheme: light) {
+    :root {
+        --bg:          #f8f9fb;
+        --bg-surface:  #ffffff;
+        --bg-card:     #ffffff;
+        --bg-alt:      #f1f3f7;
+        --border:      #d1d5db;
+        --border-hover:#9ca3af;
+
+        --text:        #1f2937;
+        --text-muted:  #4b5563;
+        --text-dim:    #6b7280;
+
+        --accent:      #2563eb;
+        --accent-glow: rgba(37, 99, 235, 0.15);
+        --accent-dark: #1d4ed8;
+        --accent-soft: rgba(37, 99, 235, 0.08);
+    }
+
+    body {
+        background: #f0f2f5;
+    }
+
+    .nav {
+        background: rgba(248, 249, 251, 0.9);
+    }
+
+    .section {
+        background: rgba(248, 249, 251, 0.8);
+    }
+
+    .section-alt {
+        background: rgba(241, 243, 247, 0.85);
+    }
+
+    .modal {
+        background: rgba(0, 0, 0, 0.4);
+    }
+
+    .orb {
+        opacity: 0.1;
+    }
+
+    .orb::before {
+        opacity: 0.15;
+    }
+
+    .hero-compact {
+        background:
+            radial-gradient(ellipse 50% 50% at 30% 50%, rgba(37, 99, 235, 0.04) 0%, transparent 70%),
+            radial-gradient(ellipse 40% 40% at 70% 30%, rgba(139, 92, 246, 0.03) 0%, transparent 60%);
+    }
+
+    .profile-photo {
+        box-shadow: 0 4px 20px rgba(37, 99, 235, 0.15);
+    }
+
+    .section::before {
+        background: linear-gradient(90deg,
+            transparent 0%,
+            rgba(37, 99, 235, 0.15) 50%,
+            transparent 100%
+        );
+    }
+
+    .btn-primary {
+        box-shadow: 0 0 16px rgba(37, 99, 235, 0.15);
+    }
+
+    .toast {
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    }
 }

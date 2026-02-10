@@ -29,52 +29,8 @@
 const DEBUG = false;
 function log(...args) { if (DEBUG) console.log(...args); }
 
-/* ==========================================================
-   SECURITY: HTML Sanitizer
-   Escapes <, >, &, ", ' to prevent XSS via innerHTML.
-   ========================================================== */
-function sanitize(str) {
-    if (typeof str !== 'string') return '';
-    return str
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
-}
-
-/** Sanitize a URL — only allow http(s) and relative paths */
-function sanitizeUrl(url) {
-    if (!url || typeof url !== 'string') return '#';
-    const trimmed = url.trim();
-    // Allow relative paths, http, https, mailto
-    if (trimmed.startsWith('/') || trimmed.startsWith('./') || trimmed.startsWith('../')) return trimmed;
-    if (trimmed.startsWith('https://') || trimmed.startsWith('http://')) return trimmed;
-    if (trimmed.startsWith('mailto:')) return trimmed;
-    return '#'; // Block javascript:, data:, etc.
-}
-
-
-/* ==========================================================
-   EMAIL OBFUSCATION
-   Multi-layer: char codes → reversed → base64.
-   Much harder for bots than plain base64.
-   ========================================================== */
-function obfuscateEmail(email) {
-    const charCodes = email.split('').map(c => c.charCodeAt(0));
-    const reversed = charCodes.reverse().join('-');
-    return btoa(reversed);
-}
-
-function deobfuscateEmail(encoded) {
-    try {
-        const reversed = atob(encoded);
-        const charCodes = reversed.split('-').reverse().map(Number);
-        return String.fromCharCode(...charCodes);
-    } catch {
-        return null;
-    }
-}
+/* Security utilities (sanitize, sanitizeUrl, obfuscateEmail, deobfuscateEmail)
+   are loaded from sanitize.js — shared across all modules. */
 
 
 /* ==========================================================

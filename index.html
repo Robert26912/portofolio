@@ -40,6 +40,10 @@
     <meta name="twitter:description" content="Building connected systems from carbon footprint calculators to sensor networks.">
     <meta name="twitter:image" content="https://robert26912.github.io/portofolio/og-image.png">
 
+    <!-- Theme color for mobile browsers -->
+    <meta name="theme-color" content="#0a0c10" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f8f9fb" media="(prefers-color-scheme: light)">
+
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
 
@@ -175,6 +179,14 @@
         </div>
     </header>
 
+    <!-- Fallback when JavaScript is disabled -->
+    <noscript>
+        <div class="noscript-msg">
+            <p><strong>Robert Hidri</strong> — IoT Engineer</p>
+            <p>This portfolio requires JavaScript for interactive features. Please enable JavaScript to explore projects, skills, and experience.</p>
+        </div>
+    </noscript>
+
     <!-- ===== MAIN CONTENT ===== -->
     <main id="main-content">
 
@@ -235,7 +247,8 @@
         </div>
     </footer>
 
-    <!-- Scripts (defer for performance) -->
+    <!-- Scripts: shared utilities first, then loader -->
+    <script src="sanitize.js" defer></script>
     <script src="profile-loader.js" defer></script>
 </body>
 </html>

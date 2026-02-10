@@ -93,7 +93,7 @@
     
     /* Hero compact adjustments */
     .hero-compact {
-        padding: 4.5rem 1rem 2rem;
+        padding: 4.5rem 1rem 1.5rem;
         min-height: auto;
     }
     
@@ -133,7 +133,7 @@
     
     /* Sections */
     .section {
-        padding: 3rem 1rem;
+        padding: 2.5rem 1rem;
     }
     
     .section h2 {
@@ -819,6 +819,14 @@
     
     .profile-back {
         transform: rotateY(180deg);
+    }
+}
+
+/* ===== LIGHT MODE responsive adjustments ===== */
+@media (prefers-color-scheme: light) {
+    .nav-links.open,
+    .nav-links {
+        background: rgba(248, 249, 251, 0.95);
     }
 }
 

@@ -1,4 +1,21 @@
 {
-  "summary": "Modern web applications built with React, Vue, and vanilla JS.",
-  "projects": []
+  "summary": "Frontend development with vanilla JavaScript. This portfolio demonstrates modular architecture: data-driven pages, plugin system, separation of concerns.",
+  "projects": [
+    {
+      "name": "Modular Portfolio Platform",
+      "description": "This website — plugin-based architecture where modules are self-contained folders. JSON config drives both landing page and dashboard. No code changes needed to add content.",
+      "technologies": ["JavaScript ES6+", "HTML5", "CSS3", "JSON", "Git"],
+      "github": "https://github.com/Robert26912/portofolio",
+      "status": "Active"
+    }
+  ],
+  "skills": [
+    "JavaScript (ES6 classes, async/await)",
+    "DOM manipulation",
+    "CSS Grid & Flexbox",
+    "Responsive design",
+    "Fetch API",
+    "Modular architecture"
+  ],
+  "learning_notes": "Built this from scratch to learn fundamentals before frameworks. React migration path planned."
 }
