@@ -21,6 +21,10 @@
     <meta name="author" content="Robert Hidri">
     <title>Dashboard — Robert Hidri</title>
 
+    <!-- Theme color for mobile browsers -->
+    <meta name="theme-color" content="#0c0f14" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f8f9fb" media="(prefers-color-scheme: light)">
+
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
 
@@ -101,7 +105,15 @@
         <p>&copy; 2026 Robert Hidri · Built with vanilla JS &amp; plugin architecture</p>
     </footer>
 
-    <!-- Scripts: tools FIRST, then loader -->
+    <!-- Fallback when JS is disabled -->
+    <noscript>
+        <div style="text-align:center;padding:3rem 2rem;color:#8892a4;">
+            <p>This dashboard requires JavaScript to load project modules.</p>
+        </div>
+    </noscript>
+
+    <!-- Scripts: shared utilities first, then tools, then loader -->
+    <script src="sanitize.js" defer></script>
     <script src="modules/dev-tools/tools.js" defer></script>
     <script src="module-loader.js" defer></script>
 </body>

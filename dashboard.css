@@ -912,6 +912,44 @@ body {
     margin: 0;
 }
 
+/* --- Light Mode --- */
+@media (prefers-color-scheme: light) {
+    :root {
+        --bg:          #f8f9fb;
+        --bg-surface:  #ffffff;
+        --bg-card:     #ffffff;
+        --bg-alt:      #f1f3f7;
+        --border:      #d1d5db;
+        --border-hover:#9ca3af;
+
+        --text:        #1f2937;
+        --text-muted:  #4b5563;
+        --text-dim:    #6b7280;
+
+        --accent:      #2563eb;
+        --accent-glow: rgba(37, 99, 235, 0.15);
+        --accent-dark: #1d4ed8;
+    }
+
+    .dashboard-header {
+        background: rgba(248, 249, 251, 0.9);
+    }
+
+    .modal-backdrop {
+        background: rgba(0, 0, 0, 0.4);
+    }
+
+    .tile:hover {
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+    }
+}
+
+/* --- Focus Indicators --- */
+:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
 /* --- Responsive --- */
 @media (max-width: 768px) {
     .header-content {

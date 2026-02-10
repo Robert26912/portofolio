@@ -1033,10 +1033,25 @@
 </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 // Tab switching
 document.querySelectorAll('.tab').forEach(tab => {
   tab.addEventListener('click', () => {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-    ta
+    tab.classList.add('active');
+    const panel = document.getElementById(tab.dataset.panel);
+    if (panel) panel.classList.add('active');
+  });
+});
+
+// Expandable blocks
+document.querySelectorAll('.expand-header').forEach(header => {
+  header.addEventListener('click', () => {
+    const block = header.closest('.expandable');
+    if (block) block.classList.toggle('open');
+  });
+});
+</script>
+</body>
+</html>
