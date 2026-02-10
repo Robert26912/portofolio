@@ -21,35 +21,8 @@
 const ML_DEBUG = false;
 function mlLog(...args) { if (ML_DEBUG) console.log(...args); }
 
-/* ---------- Security: HTML Sanitizer ---------- */
-function mlSanitize(str) {
-    if (typeof str !== 'string') return '';
-    return str
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
-}
-
-/** Sanitize a URL — only allow http(s), relative paths, mailto */
-function mlSanitizeUrl(url) {
-    if (!url || typeof url !== 'string') return '#';
-    const trimmed = url.trim();
-    if (trimmed.startsWith('/') || trimmed.startsWith('./') || trimmed.startsWith('../')) return trimmed;
-    if (trimmed.startsWith('https://') || trimmed.startsWith('http://')) return trimmed;
-    if (trimmed.startsWith('mailto:')) return trimmed;
-    return '#';
-}
-
-/** Debounce utility — delays execution until pause in calls */
-function debounce(fn, delay) {
-    let timer;
-    return (...args) => {
-        clearTimeout(timer);
-        timer = setTimeout(() => fn(...args), delay);
-    };
-}
+/* Security utilities (sanitize, sanitizeUrl, debounce)
+   are loaded from sanitize.js — shared across all modules. */
 
 
 /* ==========================================================
@@ -226,11 +199,11 @@ class ModuleLoader {
 
         tile.innerHTML = `
             ${lock}
-            <div class="tile-icon" aria-hidden="true">${mlSanitize(mod.icon || '📦')}</div>
-            <h3 class="tile-title">${mlSanitize(mod.title)}</h3>
-            <p class="tile-description">${mlSanitize(mod.description)}</p>
+            <div class="tile-icon" aria-hidden="true">${sanitize(mod.icon || '📦')}</div>
+            <h3 class="tile-title">${sanitize(mod.title)}</h3>
+            <p class="tile-description">${sanitize(mod.description)}</p>
             <div class="tile-footer">
-                <span class="tile-category">${mlSanitize(mod.category)}</span>
+                <span class="tile-category">${sanitize(mod.category)}</span>
             </div>
         `;
 
@@ -288,14 +261,14 @@ class ModuleLoader {
 
         /* Interactive tools module */
         if (mod.interactive && mod.content?.tools) {
-            html += `<p class="module-summary">${mlSanitize(mod.content.summary || '')}</p>`;
+            html += `<p class="module-summary">${sanitize(mod.content.summary || '')}</p>`;
             html += '<div class="tools-list">';
             mod.content.tools.forEach(tool => {
                 html += `
                     <div class="tool-item">
-                        <h4>${mlSanitize(tool.name)}</h4>
-                        <p>${mlSanitize(tool.description)}</p>
-                        <button class="btn btn-primary" data-tool-type="${mlSanitize(tool.type)}">Open</button>
+                        <h4>${sanitize(tool.name)}</h4>
+                        <p>${sanitize(tool.description)}</p>
+                        <button class="btn btn-primary" data-tool-type="${sanitize(tool.type)}">Open</button>
                     </div>
                 `;
             });
@@ -306,7 +279,7 @@ class ModuleLoader {
 
         /* Regular content module */
         if (mod.content?.summary) {
-            html += `<p class="module-summary">${mlSanitize(mod.content.summary)}</p>`;
+            html += `<p class="module-summary">${sanitize(mod.content.summary)}</p>`;
         }
 
         /* Projects section */
@@ -315,13 +288,13 @@ class ModuleLoader {
             mod.content.projects.forEach(proj => {
                 const statusClass = (proj.status || '').toLowerCase().replace(' ', '-');
                 html += `<div class="project-card">`;
-                html += `<h4>${mlSanitize(proj.name)}</h4>`;
-                html += `<p>${mlSanitize(proj.description)}</p>`;
+                html += `<h4>${sanitize(proj.name)}</h4>`;
+                html += `<p>${sanitize(proj.description)}</p>`;
 
                 if (proj.technologies?.length > 0) {
                     html += '<div class="tech-tags">';
                     proj.technologies.forEach(t => {
-                        html += `<span class="tech-tag">${mlSanitize(t)}</span>`;
+                        html += `<span class="tech-tag">${sanitize(t)}</span>`;
                     });
                     html += '</div>';
                 }
@@ -331,19 +304,19 @@ class ModuleLoader {
                 if (hasLinks) {
                     html += '<div class="project-links">';
                     if (proj.github) {
-                        html += `<a href="${mlSanitizeUrl(proj.github)}" target="_blank" rel="noopener" class="project-link">View on GitHub →</a>`;
+                        html += `<a href="${sanitizeUrl(proj.github)}" target="_blank" rel="noopener" class="project-link">View on GitHub →</a>`;
                     }
                     if (proj.links?.thesis) {
-                        html += `<a href="${mlSanitizeUrl(proj.links.thesis)}" target="_blank" rel="noopener" class="project-link">Read Thesis →</a>`;
+                        html += `<a href="${sanitizeUrl(proj.links.thesis)}" target="_blank" rel="noopener" class="project-link">Read Thesis →</a>`;
                     }
                     if (proj.links?.demo) {
-                        html += `<a href="${mlSanitizeUrl(proj.links.demo)}" target="_blank" rel="noopener" class="project-link">View Demo →</a>`;
+                        html += `<a href="${sanitizeUrl(proj.links.demo)}" target="_blank" rel="noopener" class="project-link">View Demo →</a>`;
                     }
                     html += '</div>';
                 }
 
                 if (proj.status) {
-                    html += `<span class="project-status ${mlSanitize(statusClass)}">${mlSanitize(proj.status)}</span>`;
+                    html += `<span class="project-status ${sanitize(statusClass)}">${sanitize(proj.status)}</span>`;
                 }
                 html += '</div>';
             });
@@ -356,9 +329,9 @@ class ModuleLoader {
             mod.content.areas.forEach(area => {
                 html += `
                     <div class="area-card">
-                        <span class="area-icon">${mlSanitize(area.icon || '')}</span>
-                        <h4>${mlSanitize(area.name)}</h4>
-                        <p>${mlSanitize(area.description)}</p>
+                        <span class="area-icon">${sanitize(area.icon || '')}</span>
+                        <h4>${sanitize(area.name)}</h4>
+                        <p>${sanitize(area.description)}</p>
                     </div>
                 `;
             });
@@ -373,12 +346,12 @@ class ModuleLoader {
                 html += `
                     <div class="download-card ${isPlaceholder ? 'placeholder' : ''}">
                         <div class="download-info">
-                            <h4>${mlSanitize(dl.name)}</h4>
-                            <p>${mlSanitize(dl.description)}</p>
+                            <h4>${sanitize(dl.name)}</h4>
+                            <p>${sanitize(dl.description)}</p>
                         </div>
                         ${isPlaceholder
                             ? '<span class="download-status">Coming soon</span>'
-                            : `<a href="${mlSanitizeUrl(dl.url)}" target="_blank" rel="noopener" class="btn btn-primary">Download PDF</a>`
+                            : `<a href="${sanitizeUrl(dl.url)}" target="_blank" rel="noopener" class="btn btn-primary">Download PDF</a>`
                         }
                     </div>
                 `;
@@ -394,12 +367,12 @@ class ModuleLoader {
                 html += `
                     <div class="roadmap-card">
                         <div class="roadmap-info">
-                            <h4>${mlSanitize(item.name)}</h4>
-                            <p>${mlSanitize(item.description)}</p>
+                            <h4>${sanitize(item.name)}</h4>
+                            <p>${sanitize(item.description)}</p>
                         </div>
                         <div class="roadmap-actions">
-                            <span class="roadmap-priority ${mlSanitize(priorityClass)}">${mlSanitize(item.priority || '')}</span>
-                            ${item.url ? `<a href="${mlSanitizeUrl(item.url)}" target="_blank" rel="noopener" class="btn btn-secondary">Learn more →</a>` : ''}
+                            <span class="roadmap-priority ${sanitize(priorityClass)}">${sanitize(item.priority || '')}</span>
+                            ${item.url ? `<a href="${sanitizeUrl(item.url)}" target="_blank" rel="noopener" class="btn btn-secondary">Learn more →</a>` : ''}
                         </div>
                     </div>
                 `;
@@ -411,14 +384,14 @@ class ModuleLoader {
         if (mod.content?.skills?.length > 0) {
             html += '<div class="skills-section"><h3>Key Skills</h3><ul class="skills-list">';
             mod.content.skills.forEach(skill => {
-                html += `<li>${mlSanitize(skill)}</li>`;
+                html += `<li>${sanitize(skill)}</li>`;
             });
             html += '</ul></div>';
         }
 
         /* Learning notes */
         if (mod.content?.learning_notes) {
-            html += `<p class="module-note">📚 ${mlSanitize(mod.content.learning_notes)}</p>`;
+            html += `<p class="module-note">📚 ${sanitize(mod.content.learning_notes)}</p>`;
         }
 
         return html;
@@ -519,7 +492,7 @@ class ModuleLoader {
         if (this.tileGrid) {
             this.tileGrid.innerHTML = `
                 <div class="empty-state error-state">
-                    <p>⚠️ ${mlSanitize(message)}</p>
+                    <p>⚠️ ${sanitize(message)}</p>
                 </div>
             `;
         }
