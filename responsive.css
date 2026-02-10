@@ -62,8 +62,8 @@
     }
     
     .showcase-preview .preview-media {
-        aspect-ratio: 16/9;
-        max-height: 250px;
+        aspect-ratio: 21/9;
+        max-height: 220px;
     }
     
     /* Skills sidebar becomes horizontal */
