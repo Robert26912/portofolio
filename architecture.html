@@ -3,436 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Security Headers -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Content-Security-Policy"
+          content="default-src 'self';
+                   script-src 'self';
+                   style-src 'self' https://fonts.googleapis.com 'unsafe-inline';
+                   font-src 'self' https://fonts.gstatic.com;
+                   img-src 'self' data:;
+                   connect-src 'self';">
+
+    <meta name="description" content="Architecture visualizer for Robert Hidri's modular portfolio platform.">
+    <meta name="author" content="Robert Hidri">
     <title>Architecture — Robert Hidri Portfolio</title>
+
+    <!-- Theme color for mobile browsers -->
+    <meta name="theme-color" content="#0a0c10" id="themeColorMeta">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #0a0c10;
-            --bg-surface: #12151c;
-            --bg-card: #1a1e28;
-            --border: #2d3548;
-            --text: #f1f5f9;
-            --text-muted: #94a3b8;
-            --text-dim: #64748b;
-            --accent: #3b82f6;
-            --accent-soft: rgba(59, 130, 246, 0.1);
-            --green: #10b981;
-            --yellow: #fbbf24;
-            --purple: #a855f7;
-            --red: #ef4444;
-            --font: 'DM Sans', sans-serif;
-            --font-mono: 'JetBrains Mono', monospace;
-        }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: var(--font);
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            min-height: 100vh;
-        }
-
-        /* Header */
-        .header {
-            background: var(--bg-surface);
-            border-bottom: 1px solid var(--border);
-            padding: 1rem 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .header-back {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.875rem;
-        }
-
-        .header-back:hover { color: var(--text); }
-
-        .header h1 {
-            font-size: 1.25rem;
-            font-weight: 600;
-        }
-
-        .header-status {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--green);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        /* Main Layout */
-        .main {
-            display: grid;
-            grid-template-columns: 280px 1fr 300px;
-            height: calc(100vh - 60px);
-        }
-
-        /* File Tree Panel */
-        .file-panel {
-            background: var(--bg-surface);
-            border-right: 1px solid var(--border);
-            overflow-y: auto;
-            padding: 1rem;
-        }
-
-        .panel-title {
-            font-size: 0.6875rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--text-dim);
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .file-tree {
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-        }
-
-        .tree-item {
-            padding: 0.375rem 0.5rem;
-            border-radius: 4px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all 0.15s;
-        }
-
-        .tree-item:hover {
-            background: var(--accent-soft);
-        }
-
-        .tree-item.active {
-            background: var(--accent-soft);
-            color: var(--accent);
-        }
-
-        .tree-item.folder {
-            color: var(--yellow);
-        }
-
-        .tree-item.file-html { color: #f97316; }
-        .tree-item.file-css { color: #3b82f6; }
-        .tree-item.file-js { color: #fbbf24; }
-        .tree-item.file-json { color: #10b981; }
-        .tree-item.file-md { color: #94a3b8; }
-
-        .tree-children {
-            margin-left: 1rem;
-            border-left: 1px solid var(--border);
-            padding-left: 0.5rem;
-        }
-
-        .file-size {
-            margin-left: auto;
-            font-size: 0.625rem;
-            color: var(--text-dim);
-        }
-
-        /* Diagram Panel */
-        .diagram-panel {
-            padding: 2rem;
-            overflow: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
-
-        .diagram-section {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
-        }
-
-        .diagram-title {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        /* Layer Diagram */
-        .layer-diagram {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .layer {
-            background: var(--bg-surface);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-
-        .layer:hover {
-            border-color: var(--accent);
-            transform: translateX(4px);
-        }
-
-        .layer.active {
-            border-color: var(--accent);
-            background: var(--accent-soft);
-        }
-
-        .layer-icon {
-            font-size: 1.5rem;
-            width: 40px;
-            text-align: center;
-        }
-
-        .layer-info {
-            flex: 1;
-        }
-
-        .layer-name {
-            font-weight: 600;
-            font-size: 0.875rem;
-        }
-
-        .layer-desc {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
-
-        .layer-files {
-            display: flex;
-            gap: 0.25rem;
-            flex-wrap: wrap;
-        }
-
-        .layer-file {
-            font-family: var(--font-mono);
-            font-size: 0.625rem;
-            padding: 0.125rem 0.375rem;
-            background: var(--bg);
-            border-radius: 4px;
-            color: var(--text-dim);
-        }
-
-        /* Flow Arrows */
-        .flow-arrow {
-            text-align: center;
-            color: var(--text-dim);
-            font-size: 1.25rem;
-            padding: 0.25rem;
-        }
-
-        /* Data Flow Diagram */
-        .flow-diagram {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        .flow-node {
-            background: var(--bg-surface);
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            padding: 0.75rem 1rem;
-            text-align: center;
-            min-width: 100px;
-            transition: all 0.3s;
-        }
-
-        .flow-node:hover {
-            border-color: var(--accent);
-        }
-
-        .flow-node-icon {
-            font-size: 1.5rem;
-            margin-bottom: 0.25rem;
-        }
-
-        .flow-node-label {
-            font-size: 0.6875rem;
-            font-weight: 600;
-        }
-
-        .flow-connector {
-            color: var(--accent);
-            font-size: 1.25rem;
-        }
-
-        /* Info Panel */
-        .info-panel {
-            background: var(--bg-surface);
-            border-left: 1px solid var(--border);
-            overflow-y: auto;
-            padding: 1rem;
-        }
-
-        .info-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .info-card-title {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--accent);
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .info-card-content {
-            font-size: 0.8125rem;
-            color: var(--text-muted);
-            line-height: 1.6;
-        }
-
-        .info-card-content code {
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            background: var(--bg);
-            padding: 0.125rem 0.375rem;
-            border-radius: 4px;
-            color: var(--green);
-        }
-
-        /* Stats */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.5rem;
-        }
-
-        .stat-item {
-            background: var(--bg);
-            border-radius: 6px;
-            padding: 0.75rem;
-            text-align: center;
-        }
-
-        .stat-value {
-            font-family: var(--font-mono);
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--accent);
-        }
-
-        .stat-label {
-            font-size: 0.625rem;
-            color: var(--text-dim);
-            text-transform: uppercase;
-        }
-
-        /* Concept Cards */
-        .concept-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .concept-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.5rem;
-            padding: 0.5rem;
-            background: var(--bg);
-            border-radius: 6px;
-        }
-
-        .concept-icon {
-            font-size: 1rem;
-        }
-
-        .concept-text {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
-
-        .concept-text strong {
-            color: var(--text);
-        }
-
-        /* Responsive */
-        @media (max-width: 1200px) {
-            .main {
-                grid-template-columns: 1fr;
-            }
-            .file-panel, .info-panel {
-                display: none;
-            }
-        }
-    </style>
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="architecture.css">
 </head>
 <body>
 
-    <header class="header">
+    <header class="header" role="banner">
         <div class="header-left">
-            <a href="index.html" class="header-back">← Back to Portfolio</a>
-            <h1>🏗️ Architecture Visualizer</h1>
+            <a href="index.html" class="header-back" aria-label="Back to portfolio home">← Back to Portfolio</a>
+            <h1>Architecture Visualizer</h1>
         </div>
-        <div class="header-status">
-            <span class="status-dot"></span>
-            <span id="lastUpdate">Analyzing structure...</span>
+        <div class="header-right">
+            <div class="header-status">
+                <span class="status-dot" aria-hidden="true"></span>
+                <span id="lastUpdate">Analyzing structure...</span>
+            </div>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode" title="Toggle theme">🌙</button>
         </div>
     </header>
 
-    <main class="main">
+    <main class="main" id="main-content">
         <!-- File Tree -->
-        <aside class="file-panel">
-            <div class="panel-title">📁 File Structure</div>
-            <div class="file-tree" id="fileTree">
+        <aside class="file-panel" aria-label="File structure">
+            <div class="panel-title">File Structure</div>
+            <div class="file-tree" id="fileTree" role="tree">
                 <!-- Populated by JS -->
             </div>
         </aside>
 
         <!-- Main Diagram Area -->
-        <section class="diagram-panel">
-            
+        <section class="diagram-panel" aria-label="Architecture diagrams">
+
             <!-- Architecture Layers -->
             <div class="diagram-section">
-                <h2 class="diagram-title">📊 Architecture Layers</h2>
-                <div class="layer-diagram">
-                    <div class="layer" data-layer="presentation" onclick="showLayerInfo('presentation')">
-                        <div class="layer-icon">🖥️</div>
+                <h2 class="diagram-title">Architecture Layers</h2>
+                <div class="layer-diagram" id="layerDiagram">
+                    <div class="layer" data-layer="presentation" role="button" tabindex="0">
+                        <div class="layer-icon" aria-hidden="true">🖥️</div>
                         <div class="layer-info">
                             <div class="layer-name">Presentation Layer</div>
                             <div class="layer-desc">What users see and interact with</div>
@@ -440,28 +75,30 @@
                                 <span class="layer-file">index.html</span>
                                 <span class="layer-file">dashboard.html</span>
                                 <span class="layer-file">style.css</span>
+                                <span class="layer-file">responsive.css</span>
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="flow-arrow">↓ renders ↓</div>
-                    
-                    <div class="layer" data-layer="logic" onclick="showLayerInfo('logic')">
-                        <div class="layer-icon">⚙️</div>
+
+                    <div class="flow-arrow" aria-hidden="true">↓ renders ↓</div>
+
+                    <div class="layer" data-layer="logic" role="button" tabindex="0">
+                        <div class="layer-icon" aria-hidden="true">⚙️</div>
                         <div class="layer-info">
                             <div class="layer-name">Logic Layer</div>
                             <div class="layer-desc">JavaScript that controls behavior</div>
                             <div class="layer-files">
                                 <span class="layer-file">profile-loader.js</span>
                                 <span class="layer-file">module-loader.js</span>
+                                <span class="layer-file">sanitize.js</span>
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="flow-arrow">↓ fetches ↓</div>
-                    
-                    <div class="layer" data-layer="data" onclick="showLayerInfo('data')">
-                        <div class="layer-icon">📦</div>
+
+                    <div class="flow-arrow" aria-hidden="true">↓ fetches ↓</div>
+
+                    <div class="layer" data-layer="data" role="button" tabindex="0">
+                        <div class="layer-icon" aria-hidden="true">📦</div>
                         <div class="layer-info">
                             <div class="layer-name">Data Layer</div>
                             <div class="layer-desc">JSON configuration files</div>
@@ -471,16 +108,17 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="flow-arrow">↓ defines ↓</div>
-                    
-                    <div class="layer" data-layer="modules" onclick="showLayerInfo('modules')">
-                        <div class="layer-icon">🧩</div>
+
+                    <div class="flow-arrow" aria-hidden="true">↓ defines ↓</div>
+
+                    <div class="layer" data-layer="modules" role="button" tabindex="0">
+                        <div class="layer-icon" aria-hidden="true">🧩</div>
                         <div class="layer-info">
                             <div class="layer-name">Module Layer</div>
                             <div class="layer-desc">Self-contained feature plugins</div>
                             <div class="layer-files">
                                 <span class="layer-file">modules/</span>
+                                <span class="layer-file">media/</span>
                             </div>
                         </div>
                     </div>
@@ -489,74 +127,74 @@
 
             <!-- Data Flow -->
             <div class="diagram-section">
-                <h2 class="diagram-title">🔄 Data Flow</h2>
+                <h2 class="diagram-title">Data Flow</h2>
                 <div class="flow-diagram">
                     <div class="flow-node">
-                        <div class="flow-node-icon">📄</div>
+                        <div class="flow-node-icon" aria-hidden="true">📄</div>
                         <div class="flow-node-label">JSON Config</div>
                     </div>
-                    <div class="flow-connector">→</div>
+                    <div class="flow-connector" aria-hidden="true">→</div>
                     <div class="flow-node">
-                        <div class="flow-node-icon">⚙️</div>
+                        <div class="flow-node-icon" aria-hidden="true">⚙️</div>
                         <div class="flow-node-label">JS Loader</div>
                     </div>
-                    <div class="flow-connector">→</div>
+                    <div class="flow-connector" aria-hidden="true">→</div>
                     <div class="flow-node">
-                        <div class="flow-node-icon">🧱</div>
+                        <div class="flow-node-icon" aria-hidden="true">🧱</div>
                         <div class="flow-node-label">DOM Elements</div>
                     </div>
-                    <div class="flow-connector">→</div>
+                    <div class="flow-connector" aria-hidden="true">→</div>
                     <div class="flow-node">
-                        <div class="flow-node-icon">👁️</div>
+                        <div class="flow-node-icon" aria-hidden="true">👁️</div>
                         <div class="flow-node-label">User Sees</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Component Relationships -->
+            <!-- Component Relationships (CSS grid, replaces fixed SVG) -->
             <div class="diagram-section">
-                <h2 class="diagram-title">🔗 Component Relationships</h2>
-                <svg width="100%" height="200" id="relationshipSvg">
-                    <!-- Nodes -->
-                    <g class="nodes">
-                        <g transform="translate(100, 50)">
-                            <circle r="30" fill="#1a1e28" stroke="#3b82f6" stroke-width="2"/>
-                            <text text-anchor="middle" dy="5" fill="#f1f5f9" font-size="10">index.html</text>
-                        </g>
-                        <g transform="translate(250, 50)">
-                            <circle r="30" fill="#1a1e28" stroke="#10b981" stroke-width="2"/>
-                            <text text-anchor="middle" dy="5" fill="#f1f5f9" font-size="10">profile.json</text>
-                        </g>
-                        <g transform="translate(400, 50)">
-                            <circle r="30" fill="#1a1e28" stroke="#fbbf24" stroke-width="2"/>
-                            <text text-anchor="middle" dy="5" fill="#f1f5f9" font-size="10">profile-loader</text>
-                        </g>
-                        <g transform="translate(175, 150)">
-                            <circle r="30" fill="#1a1e28" stroke="#a855f7" stroke-width="2"/>
-                            <text text-anchor="middle" dy="5" fill="#f1f5f9" font-size="10">dashboard</text>
-                        </g>
-                        <g transform="translate(325, 150)">
-                            <circle r="30" fill="#1a1e28" stroke="#10b981" stroke-width="2"/>
-                            <text text-anchor="middle" dy="5" fill="#f1f5f9" font-size="10">modules.json</text>
-                        </g>
-                    </g>
-                    <!-- Connections -->
-                    <g class="connections" stroke="#3d4550" stroke-width="1">
-                        <line x1="130" y1="50" x2="220" y2="50"/>
-                        <line x1="280" y1="50" x2="370" y2="50"/>
-                        <line x1="100" y1="80" x2="175" y2="120"/>
-                        <line x1="250" y1="80" x2="325" y2="120"/>
-                        <line x1="205" y1="150" x2="295" y2="150"/>
-                    </g>
-                </svg>
+                <h2 class="diagram-title">Component Relationships</h2>
+                <div class="relationship-grid">
+                    <div class="rel-node" data-color="blue">
+                        <div class="rel-node-icon" aria-hidden="true">📄</div>
+                        <div class="rel-node-label">index.html</div>
+                        <div class="rel-node-desc">Landing page</div>
+                    </div>
+                    <div class="rel-node" data-color="yellow">
+                        <div class="rel-node-icon" aria-hidden="true">⚡</div>
+                        <div class="rel-node-label">profile-loader.js</div>
+                        <div class="rel-node-desc">Reads profile.json</div>
+                    </div>
+                    <div class="rel-node" data-color="green">
+                        <div class="rel-node-icon" aria-hidden="true">📦</div>
+                        <div class="rel-node-label">profile.json</div>
+                        <div class="rel-node-desc">Personal data</div>
+                    </div>
+                    <div class="rel-arrows" aria-hidden="true">↕ index loads profile-loader → fetches profile.json ↕</div>
+                    <div class="rel-node" data-color="purple">
+                        <div class="rel-node-icon" aria-hidden="true">🖥️</div>
+                        <div class="rel-node-label">dashboard.html</div>
+                        <div class="rel-node-desc">Project dashboard</div>
+                    </div>
+                    <div class="rel-node" data-color="yellow">
+                        <div class="rel-node-icon" aria-hidden="true">⚡</div>
+                        <div class="rel-node-label">module-loader.js</div>
+                        <div class="rel-node-desc">Reads modules bundle</div>
+                    </div>
+                    <div class="rel-node" data-color="green">
+                        <div class="rel-node-icon" aria-hidden="true">📦</div>
+                        <div class="rel-node-label">modules-bundle.json</div>
+                        <div class="rel-node-desc">All module data</div>
+                    </div>
+                </div>
             </div>
 
         </section>
 
         <!-- Info Panel -->
-        <aside class="info-panel">
-            <div class="panel-title">📋 Details</div>
-            
+        <aside class="info-panel" aria-label="Details panel">
+            <div class="panel-title">Details</div>
+
             <div class="info-card">
                 <div class="info-card-title">Project Stats</div>
                 <div class="stats-grid" id="projectStats">
@@ -590,19 +228,19 @@
                 <div class="info-card-title">Key Concepts</div>
                 <div class="concept-list">
                     <div class="concept-item">
-                        <span class="concept-icon">📦</span>
+                        <span class="concept-icon" aria-hidden="true">📦</span>
                         <span class="concept-text"><strong>Data-Driven:</strong> Content lives in JSON, not HTML</span>
                     </div>
                     <div class="concept-item">
-                        <span class="concept-icon">🧩</span>
+                        <span class="concept-icon" aria-hidden="true">🧩</span>
                         <span class="concept-text"><strong>Modular:</strong> Each feature is self-contained</span>
                     </div>
                     <div class="concept-item">
-                        <span class="concept-icon">🔌</span>
+                        <span class="concept-icon" aria-hidden="true">🔌</span>
                         <span class="concept-text"><strong>Plugin System:</strong> Add modules without code changes</span>
                     </div>
                     <div class="concept-item">
-                        <span class="concept-icon">🎨</span>
+                        <span class="concept-icon" aria-hidden="true">🎨</span>
                         <span class="concept-text"><strong>Separation:</strong> Style, logic, and data are independent</span>
                     </div>
                 </div>
@@ -612,173 +250,24 @@
                 <div class="info-card-title">How to Add Content</div>
                 <div class="info-card-content">
                     <p>1. Edit <code>profile.json</code> for personal info</p>
-                    <p style="margin-top: 0.5rem;">2. Edit <code>modules-bundle.json</code> for projects</p>
-                    <p style="margin-top: 0.5rem;">3. No HTML/JS changes needed!</p>
+                    <p>2. Edit <code>modules-bundle.json</code> for projects</p>
+                    <p>3. Drop images in <code>media/</code> folders</p>
+                    <p>4. No HTML/JS changes needed!</p>
                 </div>
             </div>
         </aside>
     </main>
 
-    <script>
-        // File structure data
-        const fileStructure = {
-            name: 'portfolio/',
-            type: 'folder',
-            children: [
-                { name: 'index.html', type: 'html', size: '8.2 KB', desc: 'Main landing page' },
-                { name: 'dashboard.html', type: 'html', size: '3.1 KB', desc: 'Project dashboard' },
-                { name: 'architecture.html', type: 'html', size: '12 KB', desc: 'This page' },
-                { name: 'style.css', type: 'css', size: '45 KB', desc: 'All styles' },
-                { name: 'dashboard.css', type: 'css', size: '8 KB', desc: 'Dashboard styles' },
-                { name: 'profile-loader.js', type: 'js', size: '15 KB', desc: 'Loads profile data' },
-                { name: 'module-loader.js', type: 'js', size: '6 KB', desc: 'Loads modules' },
-                {
-                    name: 'config/',
-                    type: 'folder',
-                    children: [
-                        { name: 'profile.json', type: 'json', size: '8 KB', desc: 'Personal data' },
-                        { name: 'modules-bundle.json', type: 'json', size: '12 KB', desc: 'All modules' },
-                        { name: 'modules.json', type: 'json', size: '1 KB', desc: 'Module index' }
-                    ]
-                },
-                {
-                    name: 'modules/',
-                    type: 'folder',
-                    children: [
-                        { name: 'python/', type: 'folder' },
-                        { name: 'cpp/', type: 'folder' },
-                        { name: 'web-dev/', type: 'folder' },
-                        { name: 'devops/', type: 'folder' },
-                        { name: 'architecture/', type: 'folder' }
-                    ]
-                }
-            ]
-        };
+    <!-- Fallback when JS is disabled -->
+    <noscript>
+        <div class="noscript-msg">
+            <p><strong>Architecture Visualizer</strong></p>
+            <p>This page requires JavaScript to render the interactive architecture diagrams.</p>
+        </div>
+    </noscript>
 
-        // Layer info data
-        const layerInfo = {
-            presentation: {
-                title: 'Presentation Layer',
-                description: 'The visual interface users interact with. HTML provides structure, CSS provides styling. No business logic here — just rendering.',
-                files: ['index.html', 'dashboard.html', 'style.css', 'dashboard.css'],
-                principles: ['Semantic HTML', 'CSS Grid/Flexbox', 'Responsive design', 'Accessibility']
-            },
-            logic: {
-                title: 'Logic Layer',
-                description: 'JavaScript classes that fetch data, process it, and update the DOM. Follows Single Responsibility Principle — each class does one thing.',
-                files: ['profile-loader.js', 'module-loader.js'],
-                principles: ['ES6 Classes', 'Async/Await', 'DOM manipulation', 'Event handling']
-            },
-            data: {
-                title: 'Data Layer',
-                description: 'JSON configuration files that define ALL content. Change these files to update the site — no code changes needed.',
-                files: ['profile.json', 'modules-bundle.json'],
-                principles: ['Single source of truth', 'Schema consistency', 'Human-readable', 'Version controllable']
-            },
-            modules: {
-                title: 'Module Layer',
-                description: 'Self-contained feature folders. Each module can have its own config, content, and even custom JavaScript. Plugin architecture.',
-                files: ['modules/*'],
-                principles: ['Self-contained', 'Hot-swappable', 'Independent', 'Discoverable']
-            }
-        };
-
-        // Render file tree
-        function renderFileTree(node, container, depth = 0) {
-            if (node.type === 'folder') {
-                const folderEl = document.createElement('div');
-                folderEl.className = 'tree-item folder';
-                folderEl.innerHTML = `📁 ${node.name}`;
-                container.appendChild(folderEl);
-                
-                if (node.children) {
-                    const childContainer = document.createElement('div');
-                    childContainer.className = 'tree-children';
-                    node.children.forEach(child => renderFileTree(child, childContainer, depth + 1));
-                    container.appendChild(childContainer);
-                }
-            } else {
-                const fileEl = document.createElement('div');
-                fileEl.className = `tree-item file-${node.type}`;
-                const icon = {
-                    html: '📄',
-                    css: '🎨',
-                    js: '⚡',
-                    json: '📦',
-                    md: '📝'
-                }[node.type] || '📄';
-                fileEl.innerHTML = `${icon} ${node.name} <span class="file-size">${node.size || ''}</span>`;
-                fileEl.title = node.desc || '';
-                fileEl.onclick = () => showFileInfo(node);
-                container.appendChild(fileEl);
-            }
-        }
-
-        // Show layer info
-        function showLayerInfo(layerId) {
-            const info = layerInfo[layerId];
-            const infoEl = document.getElementById('layerInfo');
-            
-            // Update active state
-            document.querySelectorAll('.layer').forEach(l => l.classList.remove('active'));
-            document.querySelector(`[data-layer="${layerId}"]`).classList.add('active');
-            
-            infoEl.innerHTML = `
-                <div class="info-card-title">${info.title}</div>
-                <div class="info-card-content">
-                    <p>${info.description}</p>
-                    <p style="margin-top: 0.75rem;"><strong>Files:</strong></p>
-                    <p>${info.files.map(f => `<code>${f}</code>`).join(' ')}</p>
-                    <p style="margin-top: 0.75rem;"><strong>Principles:</strong></p>
-                    <p>${info.principles.join(', ')}</p>
-                </div>
-            `;
-        }
-
-        // Show file info
-        function showFileInfo(file) {
-            const infoEl = document.getElementById('layerInfo');
-            infoEl.innerHTML = `
-                <div class="info-card-title">${file.name}</div>
-                <div class="info-card-content">
-                    <p><strong>Type:</strong> ${file.type.toUpperCase()}</p>
-                    <p><strong>Size:</strong> ${file.size || 'Unknown'}</p>
-                    <p style="margin-top: 0.5rem;">${file.desc || 'No description'}</p>
-                </div>
-            `;
-        }
-
-        // Update stats
-        async function updateStats() {
-            try {
-                const profileRes = await fetch('config/profile.json');
-                const profile = await profileRes.json();
-                
-                const modulesRes = await fetch('config/modules-bundle.json');
-                const modules = await modulesRes.json();
-                
-                document.getElementById('statFiles').textContent = '12';
-                document.getElementById('statLines').textContent = '~3K';
-                document.getElementById('statModules').textContent = Object.keys(modules.modules || {}).length;
-                document.getElementById('statProjects').textContent = profile.featuredProjects?.length || 0;
-                
-                document.getElementById('lastUpdate').textContent = 'Live • ' + new Date().toLocaleTimeString();
-            } catch (e) {
-                console.error('Could not load stats:', e);
-            }
-        }
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            const treeContainer = document.getElementById('fileTree');
-            fileStructure.children.forEach(child => renderFileTree(child, treeContainer));
-            
-            updateStats();
-            
-            // Auto-refresh stats every 30 seconds
-            setInterval(updateStats, 30000);
-        });
-    </script>
-
+    <!-- Scripts: shared utilities (theme toggle + sanitize) first -->
+    <script src="sanitize.js" defer></script>
+    <script src="architecture.js" defer></script>
 </body>
 </html>
