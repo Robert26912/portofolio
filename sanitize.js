@@ -56,3 +56,41 @@ function debounce(fn, delay) {
         timer = setTimeout(() => fn(...args), delay);
     };
 }
+
+/* ==========================================================
+   THEME TOGGLE
+   Persists choice in localStorage. Dark is the default.
+   Works on every page that loads sanitize.js.
+   ========================================================== */
+(function initTheme() {
+    const saved = localStorage.getItem('theme');
+    if (saved === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const btn = document.getElementById('themeToggle');
+        if (!btn) return;
+
+        function updateIcon() {
+            const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+            btn.textContent = isLight ? '☀️' : '🌙';
+            const meta = document.getElementById('themeColorMeta');
+            if (meta) meta.content = isLight ? '#f8f9fb' : '#0a0c10';
+        }
+
+        updateIcon();
+
+        btn.addEventListener('click', () => {
+            const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+            if (isLight) {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                localStorage.setItem('theme', 'light');
+            }
+            updateIcon();
+        });
+    });
+})();
