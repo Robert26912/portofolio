@@ -18,11 +18,15 @@ The site uses a **JSON-driven modular system**:
 portfolio/
 ├── index.html              # Landing page
 ├── dashboard.html           # Project dashboard
-├── architecture.html        # Architecture documentation
-├── style.css               # Main stylesheet + design system
+├── architecture.html        # Architecture visualizer
+├── style.css               # Main stylesheet + design tokens
 ├── responsive.css           # All responsive breakpoints
+├── dashboard.css            # Dashboard styles
+├── architecture.css         # Architecture page styles
+├── sanitize.js              # Shared utilities: sanitize, theme toggle, debounce
 ├── profile-loader.js        # Loads profile.json → renders landing page
 ├── module-loader.js         # Discovers modules → renders dashboard
+├── architecture.js          # Architecture page logic
 ├── config/
 │   ├── profile.json         # All personal/professional data
 │   ├── modules.json         # Module registry (fallback)
@@ -34,7 +38,11 @@ portfolio/
 │   ├── devops/              # DevOps module
 │   ├── architecture/        # Architecture module
 │   └── dev-tools/           # Interactive dev tools
-├── media/                   # Project images and videos
+├── media/                   # Project images (drop files here)
+│   ├── smartscale/          # SmartScale project images
+│   ├── carbon-calc/         # Carbon Calculator images
+│   ├── arduino-sense/       # ArduinoSense images
+│   └── portfolio/           # This Website images
 ├── Robert_Hidri_CV.pdf      # Downloadable CV
 ├── og-image.png             # Social sharing preview image
 ├── robots.txt               # Search engine directives
@@ -47,6 +55,7 @@ portfolio/
 - **CSS3** — Custom properties, Grid, Flexbox, animations
 - **Vanilla JavaScript** — ES6+ classes, async/await, event delegation
 - **No frameworks** — Zero dependencies, zero build step
+- **Dark/Light theme** — Toggle via button, persists via localStorage, dark default
 
 ## Security Features
 
@@ -65,6 +74,19 @@ portfolio/
 - Focus trapping in modals
 - `prefers-reduced-motion` support
 - Minimum font sizes meeting WCAG guidelines
+
+## Adding Project Images
+
+1. Drop your image into the matching `media/` subfolder (e.g. `media/carbon-calc/1.jpg`)
+2. Add the path to the project's `media.images` array in `config/profile.json`:
+   ```json
+   "media": {
+     "images": ["media/carbon-calc/1.jpg"]
+   }
+   ```
+3. The landing page preview will show the image when you click the project tile
+
+Tips: use `.jpg` for photos, `.png` for screenshots. Keep files under 200KB. The preview area is 21:9 so wide images work best.
 
 ## Adding a New Module
 

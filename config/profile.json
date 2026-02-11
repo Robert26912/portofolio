@@ -21,11 +21,8 @@
       "featured": true,
       "media": {
         "images": [
-          "media/smartscale/1.jpg",
-          "media/smartscale/2.jpg",
-          "media/smartscale/3.jpg"
-        ],
-        "video": "media/smartscale/demo.mp4"
+          "media/smartscale/1.jpg"
+        ]
       },
       "links": {
         "github": "https://github.com/Robert26912/SmartScale",
@@ -42,10 +39,7 @@
       "status": "Completed",
       "featured": true,
       "media": {
-        "images": [
-          "media/carbon-calc/1.jpg",
-          "media/carbon-calc/2.jpg"
-        ]
+        "images": []
       },
       "links": {
         "thesis": "https://www.theseus.fi/handle/10024/796937",
@@ -62,10 +56,7 @@
       "status": "Completed",
       "featured": true,
       "media": {
-        "images": [
-          "media/arduino-sense/1.jpg",
-          "media/arduino-sense/2.jpg"
-        ]
+        "images": []
       },
       "links": {
         "github": "https://github.com/Robert26912/ArduinoSense"
@@ -81,10 +72,7 @@
       "status": "Active",
       "featured": true,
       "media": {
-        "images": [
-          "media/portfolio/1.jpg",
-          "media/portfolio/2.jpg"
-        ]
+        "images": []
       },
       "links": {
         "github": "https://github.com/Robert26912/portofolio",
