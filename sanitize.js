@@ -24,7 +24,9 @@ function sanitize(str) {
 function sanitizeUrl(url) {
     if (!url || typeof url !== 'string') return '#';
     const trimmed = url.trim();
+    if (/^(javascript|data|vbscript):/i.test(trimmed)) return '#';
     if (trimmed.startsWith('/') || trimmed.startsWith('./') || trimmed.startsWith('../')) return trimmed;
+    if (/^[a-zA-Z0-9][a-zA-Z0-9/_\-.]*(\?[a-zA-Z0-9=&_%\-.]*)?(#[a-zA-Z0-9_-]+)?$/.test(trimmed)) return trimmed;
     if (trimmed.startsWith('https://') || trimmed.startsWith('http://')) return trimmed;
     if (trimmed.startsWith('mailto:')) return trimmed;
     return '#';
