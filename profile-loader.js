@@ -291,13 +291,9 @@ class ProfileLoader {
         /* Update preview media */
         const mediaEl = document.getElementById('previewMedia');
         if (mediaEl) {
-            if (project.media?.type === 'image' && project.media.images?.length > 0) {
-                mediaEl.innerHTML = `<img src="${sanitizeUrl(project.media.images[0])}" 
-                                          alt="${sanitize(project.name)}" 
-                                          class="preview-image" loading="lazy">`;
-            } else if (project.media?.images?.length > 0) {
-                mediaEl.innerHTML = `<img src="${sanitizeUrl(project.media.images[0])}" 
-                                          alt="${sanitize(project.name)}" 
+            if (project.media?.images?.length > 0) {
+                mediaEl.innerHTML = `<img src="${sanitizeUrl(project.media.images[0])}"
+                                          alt="${sanitize(project.name)}"
                                           class="preview-image" loading="lazy">`;
             } else {
                 const placeholder = project.media?.placeholder || project.icon || '📁';
