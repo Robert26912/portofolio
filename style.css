@@ -536,6 +536,16 @@ img { max-width: 100%; display: block; }
     object-fit: cover;
 }
 
+
+.preview-media-gallery {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+
+
+
 .preview-placeholder {
     display: flex;
     flex-direction: column;
