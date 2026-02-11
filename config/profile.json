@@ -40,7 +40,9 @@
       "status": "Completed",
       "featured": true,
       "media": {
-        "images": []
+        "images": [
+          "media/carbon-calc/1.jpg"
+        ]
       },
       "links": {
         "thesis": "https://www.theseus.fi/handle/10024/796937",
@@ -57,7 +59,9 @@
       "status": "Completed",
       "featured": true,
       "media": {
-        "images": []
+        "images": [
+          "media/arduino-sense/1.jpg"
+        ]
       },
       "links": {
         "github": "https://github.com/Robert26912/ArduinoSense"
@@ -73,7 +77,9 @@
       "status": "Active",
       "featured": true,
       "media": {
-        "images": []
+        "images": [
+          "og-image.png"
+        ]
       },
       "links": {
         "github": "https://github.com/Robert26912/portofolio",
