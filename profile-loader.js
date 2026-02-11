@@ -342,10 +342,6 @@ class ProfileLoader {
         /* Update preview media */
         const mediaEl = document.getElementById('previewMedia');
         if (mediaEl) {
-            if (project.media?.images?.length > 0) {
-                mediaEl.innerHTML = `<img src="${sanitizeUrl(project.media.images[0])}"
-                                          alt="${sanitize(project.name)}"
-                                          class="preview-image" loading="lazy">`;
             const images = project.media?.images?.filter(Boolean) || [];
 
             if (images.length > 0) {
