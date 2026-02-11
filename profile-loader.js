@@ -113,16 +113,58 @@ class ProfileLoader {
         this.setText('heroName', p.name);
         this.setText('heroTitle', p.title);
 
-        /* Bio teaser — first sentence */
+        /* Profile photo — load from JSON or show initials */
+        const photoEl = document.getElementById('profilePhoto');
+        const placeholderEl = document.getElementById('photoPlaceholder');
+        if (photoEl && p.photo) {
+            const img = document.createElement('img');
+            img.src = sanitizeUrl(p.photo);
+            img.alt = sanitize(p.name);
+            img.loading = 'eager';
+            img.addEventListener('load', () => {
+                if (placeholderEl) placeholderEl.style.display = 'none';
+            });
+            img.addEventListener('error', () => {
+                img.remove();
+                if (placeholderEl) placeholderEl.style.display = '';
+            });
+            photoEl.appendChild(img);
+        }
+
+        /* Location — find from contact array */
+        const locationEntry = p.contact?.find(c => c.label === 'Location');
+        if (locationEntry) {
+            this.setText('heroLocation', `📍 ${locationEntry.value}`);
+        }
+
+        /* Quick stats — render from profile.stats array */
+        const statsEl = document.getElementById('profileStats');
+        if (statsEl && p.stats?.length) {
+            statsEl.innerHTML = p.stats.map((stat, i) => {
+                const divider = i < p.stats.length - 1
+                    ? '<span class="quick-stat-divider" aria-hidden="true">•</span>'
+                    : '';
+                return `<span class="quick-stat"><strong>${sanitize(stat.value)}</strong> ${sanitize(stat.label)}</span>${divider}`;
+            }).join('');
+        }
+
+        /* Bio teaser — tagline first sentence */
         const bioTeaser = document.getElementById('bioTeaser');
         if (bioTeaser && p.tagline) {
             bioTeaser.textContent = p.tagline.split('.')[0] + '.';
         }
 
-        /* Full bio text */
+        /* Full bio — use about.paragraphs if available, else tagline */
         const bioFullText = document.getElementById('bioFullText');
-        if (bioFullText && p.tagline) {
-            bioFullText.textContent = p.tagline;
+        if (bioFullText) {
+            if (p.about?.paragraphs?.length) {
+                /* Render paragraphs as plain text (strip HTML tags from content) */
+                bioFullText.innerHTML = p.about.paragraphs.map(para =>
+                    `<p class="bio-paragraph">${sanitize(para).replace(/&lt;strong&gt;/g, '<strong>').replace(/&lt;\/strong&gt;/g, '</strong>')}</p>`
+                ).join('');
+            } else if (p.tagline) {
+                bioFullText.textContent = p.tagline;
+            }
         }
 
         /* Bio highlights (from about section) */
@@ -163,8 +205,15 @@ class ProfileLoader {
                 `;
             }
 
-            /* Skip items with no URL (like location) */
-            if (!c.url) return '';
+            /* Static items (like location) — show as non-clickable tile */
+            if (!c.url) {
+                return `
+                    <div class="contact-mini-tile contact-mini-static">
+                        <span class="contact-mini-icon">${sanitize(c.icon)}</span>
+                        <span class="contact-mini-label">${sanitize(c.value)}</span>
+                    </div>
+                `;
+            }
 
             const preferredClass = c.preferred ? 'preferred' : '';
             const badge = c.preferred

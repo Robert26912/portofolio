@@ -217,6 +217,12 @@ img { max-width: 100%; display: block; }
     font-family: var(--font-mono);
     font-size: 0.75rem;
     color: var(--accent);
+    margin-bottom: 0.25rem;
+}
+
+.profile-location {
+    font-size: 0.6875rem;
+    color: var(--text-dim);
     margin-bottom: 0.5rem;
 }
 
@@ -314,7 +320,7 @@ img { max-width: 100%; display: block; }
 }
 
 .profile-bio-wrapper.expanded .profile-bio-full {
-    max-height: 500px;
+    max-height: 800px;
     padding: 0.75rem;
 }
 
@@ -323,6 +329,19 @@ img { max-width: 100%; display: block; }
     color: var(--text-muted);
     line-height: 1.6;
     margin-bottom: 0.75rem;
+}
+
+.bio-full-text .bio-paragraph {
+    margin-bottom: 0.5rem;
+}
+
+.bio-full-text .bio-paragraph:last-child {
+    margin-bottom: 0;
+}
+
+.bio-full-text .bio-paragraph strong {
+    color: var(--text);
+    font-weight: 600;
 }
 
 .bio-highlights {
@@ -401,6 +420,16 @@ img { max-width: 100%; display: block; }
     font-size: 0.625rem;
     color: var(--accent);
     font-weight: 600;
+}
+
+.contact-mini-tile.contact-mini-static {
+    cursor: default;
+    opacity: 0.8;
+}
+
+.contact-mini-tile.contact-mini-static:hover {
+    transform: none;
+    border-color: var(--border);
 }
 
 .contact-mini-tile.revealed {

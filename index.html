@@ -98,19 +98,18 @@
                 <!-- Profile Card -->
                 <div class="profile-card" id="profileCard">
                     <div class="profile-photo-wrapper">
-                        <div class="profile-photo" id="profilePhoto" role="img" aria-label="Robert Hidri profile photo">
-                              <img src="media\portfolio\1.jpg" alt="Robert Hidri profile photo">
+                        <div class="profile-photo" id="profilePhoto" role="img" aria-label="Profile photo">
+                            <span class="photo-placeholder" id="photoPlaceholder">R.H</span>
                         </div>
                     </div>
 
                     <h1 class="profile-name" id="heroName">Robert Hidri</h1>
                     <p class="profile-title" id="heroTitle">IoT Engineer</p>
+                    <p class="profile-location" id="heroLocation"></p>
 
-                    <!-- Quick Stats -->
-                    <div class="profile-quick-stats" aria-label="Academic achievements">
-                        <span class="quick-stat"><strong>4.32</strong> GPA</span>
-                        <span class="quick-stat-divider" aria-hidden="true">•</span>
-                        <span class="quick-stat"><strong>4/5</strong> Thesis</span>
+                    <!-- Quick Stats (rendered from profile.json) -->
+                    <div class="profile-quick-stats" id="profileStats" aria-label="Key achievements">
+                        <!-- Populated by JS from profile.stats array -->
                     </div>
 
                     <!-- Expandable Bio Section -->
@@ -124,7 +123,7 @@
                         </div>
 
                         <div class="profile-bio-full" id="bioFull" aria-hidden="true">
-                            <p class="bio-full-text" id="bioFullText">Loading...</p>
+                            <div class="bio-full-text" id="bioFullText">Loading...</div>
                             <div class="bio-highlights" id="bioHighlights"></div>
                         </div>
                     </div>
