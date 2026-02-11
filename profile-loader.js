@@ -45,7 +45,6 @@ class ProfileLoader {
         /** @type {Array} Cached featured projects for showcase */
         this.featuredProjects = [];
 
-
         this.init();
     }
 
@@ -283,7 +282,6 @@ class ProfileLoader {
         const project = this.featuredProjects[index];
         if (!project) return;
 
-
         /* Update active tile */
         document.querySelectorAll('.project-tile').forEach((tile, i) => {
             tile.classList.toggle('active', i === index);
@@ -293,14 +291,14 @@ class ProfileLoader {
         /* Update preview media */
         const mediaEl = document.getElementById('previewMedia');
         if (mediaEl) {
-            if (project.media?.images?.length > 0) {
-                mediaEl.innerHTML = `<img src="${sanitizeUrl(project.media.images[0])}"
-                                          alt="${sanitize(project.name)}"
+            if (project.media?.type === 'image' && project.media.images?.length > 0) {
+                mediaEl.innerHTML = `<img src="${sanitizeUrl(project.media.images[0])}" 
+                                          alt="${sanitize(project.name)}" 
                                           class="preview-image" loading="lazy">`;
-            const images = project.media?.images?.filter(Boolean) || [];
-
-            if (images.length > 0) {
-                this.renderProjectMedia(mediaEl, project, images[0]);
+            } else if (project.media?.images?.length > 0) {
+                mediaEl.innerHTML = `<img src="${sanitizeUrl(project.media.images[0])}" 
+                                          alt="${sanitize(project.name)}" 
+                                          class="preview-image" loading="lazy">`;
             } else {
                 const placeholder = project.media?.placeholder || project.icon || '📁';
                 mediaEl.innerHTML = `
@@ -349,37 +347,6 @@ class ProfileLoader {
             `;
         }
     }
-
-    renderProjectMedia(mediaEl, project, imagePath) {
-        const currentImage = sanitizeUrl(imagePath);
-        const canRenderImage = currentImage !== '#';
-
-        mediaEl.innerHTML = canRenderImage
-            ? `
-                <div class="preview-media-gallery">
-                    <img src="${currentImage}" alt="${sanitize(project.name)} preview" class="preview-image" loading="lazy">
-                </div>
-            `
-            : `
-                <div class="preview-placeholder">
-                    <span class="preview-icon">${sanitize(project.icon || '📁')}</span>
-                    <span class="preview-text">Preview unavailable</span>
-                </div>
-            `;
-
-        const previewImage = mediaEl.querySelector('.preview-image');
-        if (previewImage) {
-            previewImage.addEventListener('error', () => {
-                mediaEl.innerHTML = `
-                    <div class="preview-placeholder">
-                        <span class="preview-icon">${sanitize(project.icon || '📁')}</span>
-                        <span class="preview-text">Preview unavailable</span>
-                    </div>
-                `;
-            }, { once: true });
-        }
-    }
-
 
 
     /* ==========================================================
